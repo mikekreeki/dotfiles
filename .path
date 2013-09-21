@@ -1,0 +1,13 @@
+# GENERAL
+
+# HOMEBREW
+export PATH="/usr/local/bin:$PATH"
+
+# RVM
+export PATH="$HOME/.rvm/bin:$PATH"
+
+# NPM
+export PATH="/usr/local/share/npm/bin:$PATH"
+
+# Heroku Toolbelt
+export PATH="/usr/local/heroku/bin:$PATH"

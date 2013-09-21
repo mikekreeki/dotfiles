@@ -1,0 +1,28 @@
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Icon?
+ehthumbs.db
+Thumbs.db
+
+# RVM
+.rvmrc
+
+# POW
+.powrc
+
+# GIT
+.git-wtfrc
+
+# VIM
+.swp
+*.swp
+tags
+
+# RAILS
+.env
+config/mongoid.yml
+config/database.yml

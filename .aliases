@@ -1,0 +1,40 @@
+# SHELL
+alias pwdc='pwd | pbcopy'
+
+# BUNDLER
+alias bi='bundle install'
+
+# RAILS
+alias rs='clear && rails s'
+alias migrate='rake db:migrate'
+
+# TESTS
+alias cu='clear && cucumber'
+
+# GIT
+alias gs='git status'
+alias gss='git status -s'
+alias ga='git add'
+
+alias gbr='git branch'
+alias gcl='git clone'
+alias gco='git checkout'
+
+alias gd='git diff'
+alias gdc='git diff --cached'
+
+alias gci='git commit'
+alias gme='git merge'
+alias grb='git rebase'
+
+alias gls='git ls'
+alias gld='git ld'
+
+alias gsh='git show'
+
+alias gwtf='git wtf'
+alias gwtfa="git branch | sed 's/^..//' | grep '^\d' | xargs git wtf"
+
+# NOCORRECT
+
+alias mvim='nocorrect mvim'
