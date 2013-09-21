@@ -1,96 +1,188 @@
-set nocompatible
-colorscheme railscasts
-execute pathogen#infect()
+" GENERAL
+  set nocompatible
 
-syntax on
-filetype plugin indent on
+  syntax on
+  filetype plugin indent on
 
-set omnifunc=syntaxcomplete#Complete
+  set shell=/bin/sh
 
-set hidden
+  execute pathogen#infect()  
+  
+  set hidden
+  set number
+  set nowrap
+  set showbreak=+++
+  set textwidth=100
+  set showmatch
+  set errorbells
+  set visualbell
 
-set number
-set nowrap
-set showbreak=+++
-set textwidth=100
-set showmatch
-set errorbells
-set visualbell
+  set notildeop
+  set modelines=0
 
-set wildmenu
-set wildmode=longest:full,full
 
-set hlsearch
-set smartcase
-set gdefault
-set ignorecase
-set incsearch
-set scs
-set showmatch
+" INDENTATION
 
-set autoindent
-set expandtab
-set shiftwidth=2
-set smartindent
-set smarttab
-set softtabstop=2
+  set autoindent
+  set expandtab
+  set shiftwidth=2
+  set smartindent
+  set smarttab
+  set softtabstop=2
 
-set notildeop
 
-set undolevels=1000
-set nobackup
-set nowritebackup
-set backspace=indent,eol,start
+" SEARCH
 
-set selectmode=mouse
-" set cmdheight=2
+  set ignorecase
+  set smartcase
+  set gdefault
+  set incsearch
+  set showmatch
+  set hlsearch
+  set scs  
 
-set history=50
-set showcmd
+  nnoremap / /\v
+  vnoremap / /\v
 
-set laststatus=2
-set statusline=[%02n]\ %f\ %(\[%M%R%H]%)%=\ %4l,%02c%2V\ %P%*
+  nnoremap <leader><space> :noh<cr> 
 
-set shell=/bin/sh
-set guifont=Monaco:h12
 
-let mapleader = ","
-set clipboard=unnamed
+" MOVEMENT
 
-highlight Cursor guifg=white guibg=steelblue
-set guicursor+=a:blinkon0
-set guicursor+=i:ver10
+  nnoremap <up> <nop>
+  nnoremap <down> <nop>
+  nnoremap <left> <nop>
+  nnoremap <right> <nop>
+  inoremap <up> <nop>
+  inoremap <down> <nop>
+  inoremap <left> <nop>
+  inoremap <right> <nop>
 
-au InsertLeave * hi Cursor guifg=white guibg=steelblue
-au InsertEnter * hi Cursor guibg=grey
+  nnoremap j gj
+  nnoremap k gk
 
-nnoremap J <C-d>
-nnoremap K <C-u>
+  nnoremap J <C-d>
+  nnoremap K <C-u>
 
-nmap <leader>d :bd<CR>
+  nnoremap <tab> %
+  vnoremap <tab> %
 
-set pastetoggle=<F3>
 
-let g:ctrlp_map = 'P'
-let g:ctrlp_cmd = 'CtrlP'
+" EDITING
 
-let g:bufExplorerShowRelativePath=1
-let g:bufExplorerSplitOutPathName=0
+  "" Backspace over everything
+  set backspace=indent,eol,start
+  
 
-let ruby_operators = 1
+" COPY/PASTE
 
-set shortmess+=I
+  set clipboard=unnamed
 
-set guioptions-=r 
-set guioptions-=L 
+  " Toggle paste mode
+  set pastetoggle=<F3>
 
-map <Leader>rt :!ctags --exclude=.git --exclude=log -R * `bundle show --paths`
-nmap <leader>t <C-]>
-nmap <leader>r <C-t>
+  " reselect the text that was just pasted
+  nnoremap <leader>v V`]
 
-noremap <leader>h :set hlsearch! hlsearch?<CR>
 
-let g:rails_projections = {
+" SELECTION
+
+  set selectmode=mouse
+
+
+" AUTOCOMPLETION
+  
+  set wildmenu
+  set wildmode=longest:full,full
+
+  set omnifunc=syntaxcomplete#Complete
+
+
+" HISTORY
+
+  set undolevels=1000
+  set nobackup
+  set nowritebackup
+
+  set history=50
+
+  
+" MAPPINGS
+
+  "" Leader
+  let mapleader = ","
+
+  nmap     <leader>d :bd<CR>  
+  nnoremap <leader>a :Ag                                " Project find
+  nnoremap <leader>w <C-w>v<C-w>                        " Open a new vertical split and switch over to it
+  nnoremap <leader>W :%s/\s\+$//<cr>:let @/=''<CR>      " Strip trailing whitespace in buffer 
+
+  "" Other
+  inoremap jj <ESC>
+
+
+" GUI
+
+  "" Theme
+  colorscheme railscasts
+
+  "" Font
+  set guifont=Monaco:h12
+
+  "" Status line
+  set laststatus=2
+  set statusline=[%02n]\ %f\ %(\[%M%R%H]%)%=\ %4l,%02c%2V\ %P%*
+
+  set showcmd
+
+  "" Cursors
+  highlight Cursor guifg=white guibg=steelblue
+
+  set guicursor+=a:blinkon0
+  set guicursor+=i:ver10
+
+  au InsertLeave * hi Cursor guifg=white guibg=steelblue
+  au InsertEnter * hi Cursor guibg=grey
+
+  "" Hide tollbars, scrollbars and other bars
+  set shortmess+=I
+
+  set guioptions-=r 
+  set guioptions-=L
+
+  "" Start in fullscreen by default
+  set fu
+
+
+" CTAGS
+
+  map  <Leader>rt :!ctags * `bundle show --paths`
+  nmap <leader>t <C-]>
+  nmap <leader>r <C-t>
+
+
+" PLUGINS
+
+  "" CtrpP
+  let g:ctrlp_map = 'P'
+  let g:ctrlp_cmd = 'CtrlP'
+
+  "" Buffer Explorer
+  let g:bufExplorerShowRelativePath=1
+  let g:bufExplorerSplitOutPathName=0
+
+  "" Scratch
+  nnoremap <silent> <leader><TAB> :Scratch<CR>
+
+
+" LANGUAGES
+
+  "" Ruby
+  let ruby_operators = 1
+
+  "" Rails.vim custom projections
+
+  let g:rails_projections = {
 \  "app/serializers/*_serializer.rb": {
 \    "command": "serializer",
 \    "test": "spec/serializers/%s_spec.rb",
