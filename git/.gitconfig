@@ -46,3 +46,8 @@
 
 [branch]
   autosetuprebase = always
+
+[heroku]
+  remote = staging
+[help]
+	autocorrect = 1

@@ -8,6 +8,7 @@ alias bi='bundle install'
 alias rs='clear && rails s'
 alias migrate='rake db:migrate'
 
+alias restart='touch tmp/restart.txt'
 # TESTS
 alias cu='clear && cucumber'
 
@@ -34,6 +35,10 @@ alias gsh='git show'
 
 alias gwtf='git wtf'
 alias gwtfa="git branch | sed 's/^..//' | grep '^\d' | xargs git wtf"
+
+# VIM
+
+alias vim="mvim -v"
 
 # NOCORRECT
 

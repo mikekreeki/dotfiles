@@ -13,6 +13,7 @@ Thumbs.db
 
 # POW
 .powrc
+.powenv
 
 # GIT
 .git-wtfrc

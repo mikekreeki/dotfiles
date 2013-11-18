@@ -6,19 +6,25 @@
 
   set shell=/bin/sh
 
-  execute pathogen#infect()  
-  
+  execute pathogen#infect()
+
+  let mapleader = ","
+
   set hidden
   set number
   set nowrap
   set showbreak=+++
-  set textwidth=100
   set showmatch
   set errorbells
   set visualbell
 
   set notildeop
   set modelines=0
+
+  set mouse=
+
+  set nobackup
+  set noswapfile
 
 
 " INDENTATION
@@ -39,12 +45,15 @@
   set incsearch
   set showmatch
   set hlsearch
-  set scs  
+  set scs
 
   nnoremap / /\v
   vnoremap / /\v
 
-  nnoremap <leader><space> :noh<cr> 
+  nnoremap <leader><space> :noh<cr>
+
+  " Project search using Ag
+  nnoremap <leader>f :Ag
 
 
 " MOVEMENT
@@ -61,18 +70,28 @@
   nnoremap j gj
   nnoremap k gk
 
-  nnoremap J <C-d>
-  nnoremap K <C-u>
+  nnoremap J 10j
+  nnoremap K 10k
 
   nnoremap <tab> %
   vnoremap <tab> %
+
+  " Use _ as a word-separator
+  " set iskeyword-=_
 
 
 " EDITING
 
   "" Backspace over everything
   set backspace=indent,eol,start
-  
+
+  " Bubble single lines
+  nmap <Up> [e
+  nmap <Down> ]e
+  " Bubble multiple lines
+  vmap <Up> [egv
+  vmap <Down> ]egv
+
 
 " COPY/PASTE
 
@@ -84,18 +103,38 @@
   " reselect the text that was just pasted
   nnoremap <leader>v V`]
 
+  " Duplicate selection in visual mode
+  vmap D y'>p
+
 
 " SELECTION
 
-  set selectmode=mouse
+  " set selectmode=mouse
+
+  " Visually select the text that was last edited/pasted
+  nmap gV `[v`]
 
 
 " AUTOCOMPLETION
-  
+
   set wildmenu
   set wildmode=longest:full,full
 
-  set omnifunc=syntaxcomplete#Complete
+  " set omnifunc=syntaxcomplete#Complete
+
+  " let g:neocomplete#enable_at_startup = 1
+  " let g:neocomplete#enable_smart_case = 1
+
+  " inoremap <expr><C-l> neocomplete#complete_common_string()
+
+
+" FORMATTING
+
+  set shiftround " When at 3 spaces and I hit >>, go to 4, not 5.
+
+  " Ctrl-j/k deletes blank line below/above, and Alt-j/k inserts.
+  nnoremap <silent><C-j> m`:silent +g/\m^\s*$/d<CR>``:noh<CR>
+  nnoremap <silent><C-k> m`:silent -g/\m^\s*$/d<CR>``:noh<CR>
 
 
 " HISTORY
@@ -106,22 +145,76 @@
 
   set history=50
 
-  
-" MAPPINGS
 
-  "" Leader
-  let mapleader = ","
+" MOVING BETWEEN FILES
 
-  nmap     <leader>d :bd<CR>  
-  nnoremap <leader>a :Ag                                " Project find
-  nnoremap <leader>w <C-w>v<C-w>                        " Open a new vertical split and switch over to it
-  nnoremap <leader>W :%s/\s\+$//<cr>:let @/=''<CR>      " Strip trailing whitespace in buffer 
+  " Switch between the last two files
+  nnoremap <leader><leader> <c-^>
 
-  "" Other
+
+" MODES
+
   inoremap jj <ESC>
 
 
+" BUFFERS
+
+  nmap <leader>d :bd<CR>
+
+
+" SPLITS
+
+  " Open vertical split on right
+  set splitright
+
+  " Open a new vertical split and switch over to it
+  nnoremap <leader>w <C-w>v<C-w>
+
+
+" UTILITIES
+
+  " Strip trailing whitespace in buffer
+  " nnoremap <leader>W :%s/\s\+$//<cr>:let @/=''<CR>
+
+  function! Preserve(command)
+    " Preparation: save last search, and cursor position.
+    let _s=@/
+    let l = line(".")
+    let c = col(".")
+    " Do the business:
+    execute a:command
+    " Clean up: restore previous search history, and cursor position
+    let @/=_s
+    call cursor(l, c)
+  endfunction
+  nmap _$ :call Preserve("%s/\\s\\+$//e")<CR>
+  nmap _= :call Preserve("normal gg=G")<CR>
+
+  autocmd BufWritePre *.rb,*.js,*.coffee,*.css,*.sass,*.scss :call Preserve("%s/\\s\\+$//e")
+
+  vnoremap :align :EasyAlign
+
+  command! Path :call EchoPath()
+  function! EchoPath()
+    echo join(split(&path, ","), "\n")
+  endfunction
+
+
+" MAPPINGS
+
+  "" Leader
+  nnoremap ; :
+
+
+" ALIASES
+
+  :command! W w
+
+
 " GUI
+
+  "" Set the vertical split character to a space 
+  set fillchars+=vert:\ " there is a single space after '\ '
 
   "" Theme
   colorscheme railscasts
@@ -147,18 +240,20 @@
   "" Hide tollbars, scrollbars and other bars
   set shortmess+=I
 
-  set guioptions-=r 
+  set guioptions-=r
   set guioptions-=L
 
   "" Start in fullscreen by default
-  set fu
+  if has("gui_running")
+    set fu
+  end
 
 
 " CTAGS
 
-  map  <Leader>rt :!ctags * `bundle show --paths`
-  nmap <leader>t <C-]>
-  nmap <leader>r <C-t>
+  " map  <Leader>rt :!ctags * `bundle show --paths`
+  " nmap <leader>t <C-]>
+  " nmap <leader>r <C-t>
 
 
 " PLUGINS
@@ -174,13 +269,39 @@
   "" Scratch
   nnoremap <silent> <leader><TAB> :Scratch<CR>
 
+  "" Rspec.vim
+  " map <Leader>t :call RunCurrentSpecFile()<CR>
+  " map <Leader>s :call RunNearestSpec()<CR>
+  " map <Leader>l :call RunLastSpec()<CR>
+  " map <Leader>a :call RunAllSpecs()<CR>
+
+  "" Vroom
+
+  let g:vroom_use_bundle_exec = 0
+
+  " Rainbow Parenstheses ()
+  nnoremap <leader>p :RainbowParenthesesToggle<CR>
+
+  " au VimEnter * RainbowParenthesesToggle
+  au Syntax * RainbowParenthesesLoadRound
+  au Syntax * RainbowParenthesesLoadSquare
+  au Syntax * RainbowParenthesesLoadBraces
+
 
 " LANGUAGES
 
   "" Ruby
   let ruby_operators = 1
 
-  "" Rails.vim custom projections
+  let g:syntastic_enable_signs=0
+  let g:syntastic_auto_loc_list=1
+
+  " autocmd FileType ruby,eruby set omnifunc=rubycomplete#Complete
+ 
+  "" Convert hashes to 1.9 syntax
+  nmap <leader>h :%s/:\([^=,'"]*\) =>/\1:/gc<CR>
+
+  "" Rails.vim
 
   let g:rails_projections = {
 \  "app/serializers/*_serializer.rb": {
@@ -196,6 +317,11 @@
 \    "affinity": "model",
 \    "template": "class %SDecorator < Draper::Decorator\nend",
 \    "test": "spec/decorators/%s_decorator_spec.rb"
+\  },
+\  "app/services/*_service.rb": {
+\    "command": "service",
+\    "template": "class %SService",
+\    "test": "spec/services/%s_service_spec.rb"
 \  },
 \  "app/jobs/*_job.rb": {
 \    "command": "job",
