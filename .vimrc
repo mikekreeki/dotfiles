@@ -320,7 +320,7 @@
 \  },
 \  "app/services/*_service.rb": {
 \    "command": "service",
-\    "template": "class %SService",
+\    "template": "class %SService\nend",
 \    "test": "spec/services/%s_service_spec.rb"
 \  },
 \  "app/jobs/*_job.rb": {
