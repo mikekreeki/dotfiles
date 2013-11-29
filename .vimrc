@@ -279,6 +279,9 @@
 
   let g:vroom_use_bundle_exec = 0
 
+  let g:vroom_use_spring = 1
+  " let g:vroom_spec_command='spring rspec '
+  
   " Rainbow Parenstheses ()
   nnoremap <leader>p :RainbowParenthesesToggle<CR>
 
@@ -292,10 +295,13 @@
 
   "" Ruby
   let ruby_operators = 1
+  let ruby_no_expensive = 1
+  let ruby_minlines = 100
 
   let g:syntastic_enable_signs=0
   let g:syntastic_auto_loc_list=1
 
+  
   " autocmd FileType ruby,eruby set omnifunc=rubycomplete#Complete
  
   "" Convert hashes to 1.9 syntax
@@ -330,5 +336,15 @@
 \    "template": "class %SJob\nend",
 \    "test": "spec/jobs/%s_job_spec.rb"
 \   },
-\   "config/routes.rb": {"command": "routes"}
+\   "config/routes.rb": {"command": "routes"},
+\  
+\  "spec/factories/*.rb": {
+\    "command": "factory",
+\    "affinity": "collection",
+\    "alternate": "app/models/%i.rb",
+\    "related": "db/schema.rb#%s",
+\    "test": "spec/models/%i_test.rb",
+\    "template": "FactoryGirl.define do\n  factory :%i do\n  end\nend",
+\    "keywords": "factory sequence"
+\  }
 \ }

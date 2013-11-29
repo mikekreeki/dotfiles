@@ -43,3 +43,4 @@ alias vim="mvim -v"
 # NOCORRECT
 
 alias mvim='nocorrect mvim'
+alias mvim='nocorrect spring'
