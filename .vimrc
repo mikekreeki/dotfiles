@@ -130,6 +130,8 @@
 
 " FORMATTING
 
+  set colorcolumn=80 
+
   set shiftround " When at 3 spaces and I hit >>, go to 4, not 5.
 
   " Ctrl-j/k deletes blank line below/above, and Alt-j/k inserts.
@@ -243,11 +245,15 @@
   set guioptions-=r
   set guioptions-=L
 
+  " Use console dialogs
+  set guioptions+=c
+
   "" Start in fullscreen by default
   if has("gui_running")
     set fu
   end
-
+  
+  highlight ColorColumn ctermbg=233 guibg=#333333
 
 " CTAGS
 
@@ -271,33 +277,33 @@
     let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
   endif
 
+
   "" Buffer Explorer
   let g:bufExplorerShowRelativePath=1
   let g:bufExplorerSplitOutPathName=0
 
+
   "" Scratch
   nnoremap <silent> <leader><TAB> :Scratch<CR>
 
-  "" Rspec.vim
-  " map <Leader>t :call RunCurrentSpecFile()<CR>
-  " map <Leader>s :call RunNearestSpec()<CR>
-  " map <Leader>l :call RunLastSpec()<CR>
-  " map <Leader>a :call RunAllSpecs()<CR>
 
   "" Vroom
 
   let g:vroom_use_bundle_exec = 0
-
   let g:vroom_use_spring = 1
-  " let g:vroom_spec_command='spring rspec '
+
   
   " Rainbow Parenstheses ()
   nnoremap <leader>p :RainbowParenthesesToggle<CR>
+
 
   " au VimEnter * RainbowParenthesesToggle
   au Syntax * RainbowParenthesesLoadRound
   au Syntax * RainbowParenthesesLoadSquare
   au Syntax * RainbowParenthesesLoadBraces
+
+  "" Switch.vim
+  nnoremap - :Switch<CR>
 
 
 " LANGUAGES
@@ -315,6 +321,7 @@
  
   "" Convert hashes to 1.9 syntax
   nmap <leader>h :%s/:\([^=,'"]*\) =>/\1:/gc<CR>
+
 
   "" Rails.vim
 
