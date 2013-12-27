@@ -75,10 +75,8 @@
 
   nnoremap <tab> %
   vnoremap <tab> %
-
-  " Use _ as a word-separator
-  " set iskeyword-=_
-
+  
+  nnoremap ů g;
 
 " EDITING
 
@@ -316,8 +314,7 @@
   let g:syntastic_enable_signs=0
   let g:syntastic_auto_loc_list=1
 
-  
-  " autocmd FileType ruby,eruby set omnifunc=rubycomplete#Complete
+  autocmd FileType ruby,eruby set omnifunc=rubycomplete#Complete
  
   "" Convert hashes to 1.9 syntax
   nmap <leader>h :%s/:\([^=,'"]*\) =>/\1:/gc<CR>
