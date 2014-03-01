@@ -37,7 +37,6 @@
 
   churn= "!f() { git log --all -M -C --name-only --format='format:' \"$@\" | sort | grep -v '^$' | uniq -c | sort | awk 'BEGIN {print \"count\tfile\"} {print $1 \"\t\" $2}' | sort -g; }; f"
 
-
 [core]
   excludesfile = /Users/Kreeki/.gitignore
 
@@ -49,7 +48,9 @@
 
 [heroku]
   remote = staging
+
 [help]
-	autocorrect = 1
+  autocorrect = 1
+
 [credential]
-	helper = osxkeychain
+  helper = osxkeychain

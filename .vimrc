@@ -10,6 +10,7 @@ set shell=/bin/sh
 execute pathogen#infect()
 
 let mapleader = ","
+set macmeta
 
 set hidden
 set number
@@ -28,6 +29,8 @@ set nobackup
 set noswapfile
 
 set lazyredraw
+
+set scrolloff=5
 
 " taken from https://github.com/dduponchel/dotfiles/blob/master/vim/vimrc
 " Indicates a fast terminal connection.  More characters will be sent to
@@ -96,7 +99,6 @@ vnoremap <tab> %
 " move to beginning/end of line
 nnoremap B ^
 nnoremap E $
-
 vnoremap B ^
 vnoremap E $
 
@@ -107,6 +109,7 @@ vnoremap $ <nop>
 vnoremap ^ <nop>
 
 nnoremap ů g;
+nnoremap ; g;
 
 
 " EDITING
@@ -192,7 +195,11 @@ inoremap jj <ESC>
 
 " BUFFERS
 
+map <right> <ESC>:bn<CR>
+map <left> <ESC>:bp<CR>
+
 nmap <leader>d :bd<CR>
+nmap <leader>D :only<CR>
 
 
 " SPLITS
@@ -310,8 +317,30 @@ highlight SignColumn guibg=black
 
 " PLUGINS
 
-" CtrpP
-let g:ctrlp_map = 'P'
+" NERDTree
+function! OpenNERDTree()
+  "" Check if NERDTree is open
+  if exists("t:NERDTreeBufName")
+    let s:ntree = bufwinnr(t:NERDTreeBufName)
+  else
+    let s:ntree = -1
+  endif
+
+  if (s:ntree != -1)
+    "" If NERDTree is open, close it.
+    :NERDTreeClose
+  else
+    :NERDTreeFind
+  endif
+endfunction
+
+nnoremap <Leader>n :call OpenNERDTree()<CR>
+let NERDTreeMinimalUI = 1
+let g:NERDTreeWinSize = 40
+let NERDTreeAutoDeleteBuffer = 1
+
+" CtrlP
+let g:ctrlp_map = '<c-p>'
 let g:ctrlp_cmd = 'CtrlP'
 
 " Use The Silver Searcher https://github.com/ggreer/the_silver_searcher
@@ -361,7 +390,7 @@ let g:neocomplete#force_overwrite_completefunc = 1
 let g:neocomplete#enable_smart_case = 1
 
 let g:neosnippet#enable_snipmate_compatibility = 1
-let g:neosnippet#snippets_directory='~/.vim/bundle/vim-snippets/snippets'
+let g:neosnippet#snippets_directory='~/.vim/snippets'
 
 imap <C-k>     <Plug>(neosnippet_expand_or_jump)
 smap <C-k>     <Plug>(neosnippet_expand_or_jump)
@@ -385,7 +414,6 @@ inoremap <expr><C-y>  neocomplete#close_popup()
 inoremap <expr><C-e>  neocomplete#cancel_popup()
 
 " Neosnippet
-
 imap <expr><TAB> neosnippet#expandable_or_jumpable() ?
   \ "\<Plug>(neosnippet_expand_or_jump)"
   \: pumvisible() ? "\<C-n>" : "\<TAB>"
@@ -397,6 +425,19 @@ imap <expr><TAB> neosnippet#expandable_or_jumpable() ?
 if has('conceal')
   set conceallevel=2 concealcursor=i
 endif
+
+" EasyMotion
+let g:EasyMotion_smartcase = 1
+let g:EasyMotion_move_highlight = 0
+
+map <Leader>e <Plug>(easymotion-prefix)
+nmap s <Plug>(easymotion-s2)
+nmap t <Plug>(easymotion-t2)
+
+nmap / <Plug>(easymotion-sn)
+omap / <Plug>(easymotion-tn)
+nmap n <Plug>(easymotion-next)
+nmap N <Plug>(easymotion-prev)
 
 
 " LANGUAGES
