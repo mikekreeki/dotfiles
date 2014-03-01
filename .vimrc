@@ -1,16 +1,70 @@
 " GENERAL
 
 set nocompatible
+filetype off
 
-syntax on
+set rtp+=~/.vim/bundle/vundle/
+call vundle#rc()
+
+Bundle 'gmarik/vundle'
+
+Bundle 'rking/ag.vim'
+Bundle 'corntrace/bufexplorer'
+Bundle 'kien/ctrlp.vim'
+Bundle 'vim-scripts/guicolorscheme.vim'
+Bundle 'othree/html5.vim'
+Bundle 'Yggdroot/indentLine'
+Bundle 'Shougo/neocomplete.vim'
+Bundle 'Shougo/neosnippet.vim'
+Bundle 'scrooloose/nerdtree'
+Bundle 'kien/rainbow_parentheses.vim'
+Bundle 'danro/rename.vim'
+Bundle 'scrooloose/syntastic'
+Bundle 'majutsushi/tagbar'
+Bundle 'tomtom/tlib_vim'
+Bundle 'MarcWeber/vim-addon-mw-utils'
+Bundle 'tpope/vim-bundler'
+Bundle 'kchmck/vim-coffee-script'
+Bundle 'tpope/vim-commentary'
+Bundle 'junegunn/vim-easy-align'
+Bundle 'Lokaltog/vim-easymotion'
+Bundle 'tpope/vim-endwise'
+Bundle 'tpope/vim-fugitive'
+Bundle 'tpope/vim-haml'
+Bundle 'nono/vim-handlebars'
+Bundle 'pangloss/vim-javascript'
+Bundle 'edsono/vim-matchit'
+Bundle 'xolox/vim-misc'
+Bundle 'Lokaltog/vim-powerline'
+Bundle 'tpope/vim-rails'
+Bundle 'tpope/vim-repeat'
+Bundle 'vim-ruby/vim-ruby'
+Bundle 'rking/vim-ruby-refactoring'
+Bundle 'tpope/vim-rvm'
+Bundle 'duff/vim-scratch'
+Bundle 'slim-template/vim-slim'
+" Bundle 'honza/vim-snippets'
+Bundle 'tpope/vim-surround'
+Bundle 'szw/vim-tags'
+Bundle 'milkypostman/vim-togglelist'
+Bundle 'tpope/vim-unimpaired'
+Bundle 'skalnik/vim-vroom'
+Bundle 'maxbrunsfeld/vim-yankstack'
+Bundle 'Shougo/vimproc.vim'
+
 filetype plugin indent on
+syntax on
 
 set shell=/bin/sh
 
-execute pathogen#infect()
+set encoding=utf-8
+set fileencoding=utf-8
+
+" execute pathogen#infect()
 
 let mapleader = ","
-set macmeta
+
+" set macmeta
 
 set hidden
 set number
@@ -95,6 +149,11 @@ nnoremap K 10k
 
 nnoremap <tab> %
 vnoremap <tab> %
+
+nnoremap <C-J> <C-d>
+nnoremap <C-K> <C-u>
+vnoremap <C-J> <C-d>
+vnoremap <C-K> <C-u>
 
 " move to beginning/end of line
 nnoremap B ^
