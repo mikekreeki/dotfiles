@@ -8,49 +8,51 @@ call vundle#rc()
 
 Bundle 'gmarik/vundle'
 
-Bundle 'rking/ag.vim'
 Bundle 'corntrace/bufexplorer'
 Bundle 'kien/ctrlp.vim'
-Bundle 'vim-scripts/guicolorscheme.vim'
-Bundle 'othree/html5.vim'
-Bundle 'Yggdroot/indentLine'
+Bundle 'scrooloose/nerdtree'
+Bundle 'scrooloose/syntastic'
 Bundle 'Shougo/neocomplete.vim'
 Bundle 'Shougo/neosnippet.vim'
-Bundle 'scrooloose/nerdtree'
+Bundle 'Yggdroot/indentLine'
 Bundle 'kien/rainbow_parentheses.vim'
 Bundle 'danro/rename.vim'
-Bundle 'scrooloose/syntastic'
 Bundle 'majutsushi/tagbar'
-Bundle 'tomtom/tlib_vim'
-Bundle 'MarcWeber/vim-addon-mw-utils'
-Bundle 'tpope/vim-bundler'
-Bundle 'kchmck/vim-coffee-script'
+Bundle 'Lokaltog/vim-powerline'
 Bundle 'tpope/vim-commentary'
 Bundle 'junegunn/vim-easy-align'
 Bundle 'Lokaltog/vim-easymotion'
 Bundle 'tpope/vim-endwise'
-Bundle 'tpope/vim-fugitive'
-Bundle 'tpope/vim-haml'
-Bundle 'nono/vim-handlebars'
-Bundle 'pangloss/vim-javascript'
 Bundle 'edsono/vim-matchit'
-Bundle 'xolox/vim-misc'
-Bundle 'Lokaltog/vim-powerline'
-Bundle 'tpope/vim-rails'
 Bundle 'tpope/vim-repeat'
-Bundle 'vim-ruby/vim-ruby'
-Bundle 'rking/vim-ruby-refactoring'
-Bundle 'tpope/vim-rvm'
 Bundle 'duff/vim-scratch'
-Bundle 'slim-template/vim-slim'
-" Bundle 'honza/vim-snippets'
 Bundle 'tpope/vim-surround'
 Bundle 'szw/vim-tags'
 Bundle 'milkypostman/vim-togglelist'
 Bundle 'tpope/vim-unimpaired'
-Bundle 'skalnik/vim-vroom'
 Bundle 'maxbrunsfeld/vim-yankstack'
+
+Bundle 'tomtom/tlib_vim'
 Bundle 'Shougo/vimproc.vim'
+Bundle 'xolox/vim-misc'
+Bundle 'MarcWeber/vim-addon-mw-utils'
+Bundle 'vim-scripts/guicolorscheme.vim'
+
+Bundle 'rking/ag.vim'
+Bundle 'tpope/vim-fugitive'
+Bundle 'skalnik/vim-vroom'
+Bundle 'tpope/vim-rvm'
+Bundle 'tpope/vim-bundler'
+
+Bundle 'tpope/vim-rails'
+Bundle 'vim-ruby/vim-ruby'
+Bundle 'rking/vim-ruby-refactoring'
+Bundle 'tpope/vim-haml'
+Bundle 'slim-template/vim-slim'
+Bundle 'othree/html5.vim'
+Bundle 'pangloss/vim-javascript'
+Bundle 'kchmck/vim-coffee-script'
+Bundle 'nono/vim-handlebars'
 
 filetype plugin indent on
 syntax on
@@ -257,7 +259,7 @@ inoremap jj <ESC>
 map <right> <ESC>:bn<CR>
 map <left> <ESC>:bp<CR>
 
-nmap <leader>d :bd<CR>
+nmap <leader>d :close<CR>
 nmap <leader>D :only<CR>
 
 
