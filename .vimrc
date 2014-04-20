@@ -31,15 +31,21 @@ Bundle 'szw/vim-tags'
 Bundle 'milkypostman/vim-togglelist'
 Bundle 'tpope/vim-unimpaired'
 Bundle 'maxbrunsfeld/vim-yankstack'
+" Bundle 'zhaocai/GoldenView.Vim'
+Bundle 'chrisbra/NrrwRgn'
+Bundle 'vim-scripts/toggle_maximize.vim'
+Bundle 'michaeljsmith/vim-indent-object'
 
 Bundle 'tomtom/tlib_vim'
 Bundle 'Shougo/vimproc.vim'
 Bundle 'xolox/vim-misc'
 Bundle 'MarcWeber/vim-addon-mw-utils'
 Bundle 'vim-scripts/guicolorscheme.vim'
+Bundle 'endel/vim-github-colorscheme'
 
 Bundle 'rking/ag.vim'
 Bundle 'tpope/vim-fugitive'
+Bundle 'int3/vim-extradite'
 Bundle 'skalnik/vim-vroom'
 Bundle 'tpope/vim-rvm'
 Bundle 'tpope/vim-bundler'
@@ -53,6 +59,7 @@ Bundle 'othree/html5.vim'
 Bundle 'pangloss/vim-javascript'
 Bundle 'kchmck/vim-coffee-script'
 Bundle 'nono/vim-handlebars'
+Bundle 'othree/javascript-libraries-syntax.vim'
 
 filetype plugin indent on
 syntax on
@@ -158,19 +165,20 @@ vnoremap <C-J> <C-d>
 vnoremap <C-K> <C-u>
 
 " move to beginning/end of line
-nnoremap B ^
-nnoremap E $
-vnoremap B ^
-vnoremap E $
+noremap B ^
+noremap E $
+noremap B ^
+noremap E $
 
 " $/^ doesn't do anything
-nnoremap $ <nop>
-nnoremap ^ <nop>
-vnoremap $ <nop>
-vnoremap ^ <nop>
+noremap $ <nop>
+noremap ^ <nop>
+noremap $ <nop>
+noremap ^ <nop>
 
 nnoremap ů g;
 nnoremap ; g;
+nnoremap <TAB> g;
 
 
 " EDITING
@@ -189,7 +197,7 @@ vmap <Down> ]egv
 
 " COPY/PASTE
 
-set clipboard=unnamed
+set clipboard=unnamed,unnamedplus
 
 " Toggle paste mode
 set pastetoggle=<F3>
@@ -203,21 +211,30 @@ vmap D y'>p
 " assume the /g flag on :s substitutions to replace all matches in a line
 set gdefault
 
+" R replaces cursor to end of line with what's copied
+nnoremap <silent> R v$hp
+
 
 " SELECTION
 
 " Visually select the text that was last edited/pasted
-  nmap gV `[v`]
+nmap gV `[v`]
 
 " reselect visual block after indent/outdent
-  vnoremap < <gv
-  vnoremap > >gv
+vnoremap < <gv
+vnoremap > >gv
 
 
 " AUTOCOMPLETION
 
 set wildmenu
 set wildmode=longest:full,full
+
+set completefunc=syntaxcomplete#Complete
+
+" ABBREVIATIONS
+
+iabbrev anno ##############################<Enter><Enter>#############################<C-O>k
 
 
 " FORMATTING
@@ -265,14 +282,23 @@ nmap <leader>D :only<CR>
 
 " SPLITS
 
+set winwidth=80
 " Open vertical split on right
 set splitright
 
 " Open a new vertical split and switch over to it
 nnoremap <leader>w <C-w>v<C-w>
 
+" Alias for toggle_maximize.vim
+map <C-CR> <C-f>
+
 " Resize splits when the window is resized
 au VimResized * exe "normal! \<c-w>="
+
+map <C-h> <C-w>h
+map <C-j> <C-w>j
+map <C-k> <C-w>k
+map <C-l> <C-w>l
 
 
 " UTILITIES
@@ -339,6 +365,19 @@ if has("gui_running")
   set fu
 end
 
+" set number
+" set relativenumber
+" function! NumberToggle()
+"   if(&relativenumber == 1)
+"     set norelativenumber
+"     set number
+"   else
+"     set number
+"     set relativenumber
+"   endif
+" endfunc
+" nnoremap <F2> :call NumberToggle()<cr>
+
 
 " THEME AND COLORS
 
@@ -374,6 +413,12 @@ highlight SignColumn guibg=black
 " map  <Leader>rt :!ctags * `bundle show --paths`
 " nmap <leader>t <C-]>
 " nmap <leader>r <C-t>
+
+
+" QUICKFIX
+
+nnoremap ) :cnext<CR>
+nnoremap ú :cprevious<CR>
 
 
 " PLUGINS
@@ -492,6 +537,8 @@ let g:EasyMotion_smartcase = 1
 let g:EasyMotion_move_highlight = 0
 
 map <Leader>e <Plug>(easymotion-prefix)
+
+nmap F <Plug>(easymotion-s)
 nmap s <Plug>(easymotion-s2)
 nmap t <Plug>(easymotion-t2)
 
@@ -500,8 +547,22 @@ omap / <Plug>(easymotion-tn)
 nmap n <Plug>(easymotion-next)
 nmap N <Plug>(easymotion-prev)
 
+" GoldenView
+" let g:goldenview__enable_default_mapping = 0
+
+" Extradite
+let g:extradite_width = 80
+
+" Yankstack
+nmap <C-ú> <Plug>yankstack_substitute_older_paste
+nmap <C-)> <Plug>yankstack_substitute_newer_paste
+
 
 " LANGUAGES
+
+" force spell when doing a git commit 
+autocmd FileType gitcommit setlocal spell
+autocmd FileType gitcommit setlocal spelllang=en
 
 " Ruby
 let ruby_operators = 1
@@ -561,5 +622,7 @@ let g:rails_projections = {
 \    "test": "spec/models/%i_test.rb",
 \    "template": "FactoryGirl.define do\n  factory :%i do\n  end\nend",
 \    "keywords": "factory sequence"
-\  }
+\  },
+\  "spec/features/*_spec.rb": { "command": "feature" },
+\  "app/workers/*_worker.rb": { "command": "worker" }
 \ }
