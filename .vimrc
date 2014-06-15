@@ -17,7 +17,6 @@ Bundle 'Shougo/neosnippet.vim'
 Bundle 'Yggdroot/indentLine'
 Bundle 'kien/rainbow_parentheses.vim'
 Bundle 'danro/rename.vim'
-Bundle 'majutsushi/tagbar'
 Bundle 'Lokaltog/vim-powerline'
 Bundle 'tpope/vim-commentary'
 Bundle 'junegunn/vim-easy-align'
@@ -28,20 +27,21 @@ Bundle 'tpope/vim-repeat'
 Bundle 'duff/vim-scratch'
 Bundle 'tpope/vim-surround'
 Bundle 'szw/vim-tags'
+Bundle 'majutsushi/tagbar'
 Bundle 'milkypostman/vim-togglelist'
 Bundle 'tpope/vim-unimpaired'
 Bundle 'maxbrunsfeld/vim-yankstack'
-" Bundle 'zhaocai/GoldenView.Vim'
 Bundle 'chrisbra/NrrwRgn'
 Bundle 'vim-scripts/toggle_maximize.vim'
 Bundle 'michaeljsmith/vim-indent-object'
+Bundle 'vim-scripts/AutoClose'
+Bundle 'AndrewRadev/splitjoin.vim'
 
 Bundle 'tomtom/tlib_vim'
 Bundle 'Shougo/vimproc.vim'
 Bundle 'xolox/vim-misc'
 Bundle 'MarcWeber/vim-addon-mw-utils'
 Bundle 'vim-scripts/guicolorscheme.vim'
-Bundle 'endel/vim-github-colorscheme'
 
 Bundle 'rking/ag.vim'
 Bundle 'tpope/vim-fugitive'
@@ -60,6 +60,13 @@ Bundle 'pangloss/vim-javascript'
 Bundle 'kchmck/vim-coffee-script'
 Bundle 'nono/vim-handlebars'
 Bundle 'othree/javascript-libraries-syntax.vim'
+Bundle 'elixir-lang/vim-elixir'
+Bundle 'tpope/vim-markdown'
+Bundle 'tristen/vim-sparkup'
+Bundle 'vim-scripts/FormatComment.vim'
+
+Bundle 'junegunn/goyo.vim'
+Bundle 'amix/vim-zenroom2'
 
 filetype plugin indent on
 syntax on
@@ -93,7 +100,7 @@ set noswapfile
 
 set lazyredraw
 
-set scrolloff=5
+set scrolloff=1
 
 " taken from https://github.com/dduponchel/dotfiles/blob/master/vim/vimrc
 " Indicates a fast terminal connection.  More characters will be sent to
@@ -156,19 +163,14 @@ nnoremap k gk
 nnoremap J 10j
 nnoremap K 10k
 
-nnoremap <tab> %
-vnoremap <tab> %
-
 nnoremap <C-J> <C-d>
 nnoremap <C-K> <C-u>
 vnoremap <C-J> <C-d>
 vnoremap <C-K> <C-u>
 
 " move to beginning/end of line
-noremap B ^
-noremap E $
-noremap B ^
-noremap E $
+noremap H ^
+noremap L $
 
 " $/^ doesn't do anything
 noremap $ <nop>
@@ -176,8 +178,6 @@ noremap ^ <nop>
 noremap $ <nop>
 noremap ^ <nop>
 
-nnoremap ů g;
-nnoremap ; g;
 nnoremap <TAB> g;
 
 
@@ -232,9 +232,14 @@ set wildmode=longest:full,full
 
 set completefunc=syntaxcomplete#Complete
 
+
 " ABBREVIATIONS
 
+" Yes, I know :)
 iabbrev anno ##############################<Enter><Enter>#############################<C-O>k
+
+iabbrev edn end
+iabbrev GCI CGI
 
 
 " FORMATTING
@@ -268,7 +273,8 @@ set autoread
 
 " MODES
 
-inoremap jj <ESC>
+imap jj <ESC>
+imap ii <Esc>
 
 
 " BUFFERS
@@ -283,6 +289,7 @@ nmap <leader>D :only<CR>
 " SPLITS
 
 set winwidth=80
+
 " Open vertical split on right
 set splitright
 
@@ -408,12 +415,20 @@ highlight VertSplit guifg=#585858
 highlight SignColumn guibg=black
 
 
+" CONCEAL
+set conceallevel=2
+set concealcursor=nvi
+
+
 " CTAGS
 
 " map  <Leader>rt :!ctags * `bundle show --paths`
 " nmap <leader>t <C-]>
 " nmap <leader>r <C-t>
 
+set tags=./tags
+
+nnoremap <C-[> <C-T>
 
 " QUICKFIX
 
@@ -481,8 +496,6 @@ au Syntax * RainbowParenthesesLoadRound
 au Syntax * RainbowParenthesesLoadSquare
 au Syntax * RainbowParenthesesLoadBraces
 
-" Tagbar
-nnoremap <leader>t :TagbarToggle<CR>:echo<CR>
 
 " Syntastic
 let g:syntastic_enable_signs = 0
@@ -494,6 +507,8 @@ let g:acp_enableAtStartup = 0
 let g:neocomplete#enable_at_startup = 1
 let g:neocomplete#force_overwrite_completefunc = 1
 let g:neocomplete#enable_smart_case = 1
+
+let g:neocomplete#sources#tags#cache_limit_size = 5000000
 
 let g:neosnippet#enable_snipmate_compatibility = 1
 let g:neosnippet#snippets_directory='~/.vim/snippets'
@@ -554,8 +569,11 @@ nmap N <Plug>(easymotion-prev)
 let g:extradite_width = 80
 
 " Yankstack
-nmap <C-ú> <Plug>yankstack_substitute_older_paste
-nmap <C-)> <Plug>yankstack_substitute_newer_paste
+" nmap <C-ú> <Plug>yankstack_substitute_older_paste
+" nmap <C-)> <Plug>yankstack_substitute_newer_paste
+
+" FormatComment.vim
+map gqc :call FormatComment()
 
 
 " LANGUAGES
@@ -579,6 +597,9 @@ nmap <leader>h :%s/:\([^=,'"]*\) =>/\1:/gc<CR>
 
 
 "" Rails.vim
+
+" displays <% %> correctly
+autocmd User Rails let b:surround_{char2nr('-')} = "<% \r %>" 
 
 let g:rails_projections = {
 \  "app/serializers/*_serializer.rb": {
@@ -624,5 +645,6 @@ let g:rails_projections = {
 \    "keywords": "factory sequence"
 \  },
 \  "spec/features/*_spec.rb": { "command": "feature" },
-\  "app/workers/*_worker.rb": { "command": "worker" }
+\  "app/workers/*_worker.rb": { "command": "worker" },
+\  "app/policies/*_policy.rb": { "command": "policy" }
 \ }
