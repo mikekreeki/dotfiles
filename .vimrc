@@ -270,6 +270,7 @@ nnoremap <leader><leader> <c-^>
 " auto load files if vim detects they have been changed outside of Vim
 set autoread
 
+nmap <leader>s :only<CR>:AV<CR>
 
 " MODES
 
