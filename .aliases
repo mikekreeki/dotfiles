@@ -5,15 +5,10 @@ alias pwdc='pwd | pbcopy'
 alias bi='bundle install'
 
 # RAILS
-alias rs='clear && rails s'
-alias migrate='rake db:migrate'
-
-alias restart='touch tmp/restart.txt'
-# TESTS
-alias cu='clear && cucumber'
+alias restart='mkdir tmp && touch tmp/restart.txt'
 
 # GIT
-alias gs='git status'
+alias gs='git status -s'
 alias gss='git status -s'
 alias ga='git add'
 
@@ -23,6 +18,7 @@ alias gco='git checkout'
 
 alias gd='git diff'
 alias gdc='git diff --cached'
+alias gdm='git diff master..HEAD'
 
 alias gci='git commit'
 alias gme='git merge'

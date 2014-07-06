@@ -30,12 +30,15 @@ Bundle 'szw/vim-tags'
 Bundle 'majutsushi/tagbar'
 Bundle 'milkypostman/vim-togglelist'
 Bundle 'tpope/vim-unimpaired'
-Bundle 'maxbrunsfeld/vim-yankstack'
-Bundle 'chrisbra/NrrwRgn'
 Bundle 'vim-scripts/toggle_maximize.vim'
 Bundle 'michaeljsmith/vim-indent-object'
 Bundle 'vim-scripts/AutoClose'
 Bundle 'AndrewRadev/splitjoin.vim'
+Bundle 'airblade/vim-rooter'
+Bundle 'ntpeters/vim-better-whitespace'
+Bundle 'AndrewRadev/multichange.vim'
+Bundle 'rhysd/conflict-marker.vim'
+Bundle 'danchoi/virb'
 
 Bundle 'tomtom/tlib_vim'
 Bundle 'Shougo/vimproc.vim'
@@ -64,9 +67,7 @@ Bundle 'elixir-lang/vim-elixir'
 Bundle 'tpope/vim-markdown'
 Bundle 'tristen/vim-sparkup'
 Bundle 'vim-scripts/FormatComment.vim'
-
-Bundle 'junegunn/goyo.vim'
-Bundle 'amix/vim-zenroom2'
+Bundle 'inkarkat/argtextobj.vim'
 
 filetype plugin indent on
 syntax on
@@ -178,7 +179,8 @@ noremap ^ <nop>
 noremap $ <nop>
 noremap ^ <nop>
 
-nnoremap <TAB> g;
+" nnoremap <TAB> g;
+nnoremap ů g;
 
 
 " EDITING
@@ -286,6 +288,8 @@ map <left> <ESC>:bp<CR>
 nmap <leader>d :close<CR>
 nmap <leader>D :only<CR>
 
+nnoremap <leader><leader> <c-^>
+
 
 " SPLITS
 
@@ -296,6 +300,9 @@ set splitright
 
 " Open a new vertical split and switch over to it
 nnoremap <leader>w <C-w>v<C-w>
+nnoremap <leader>e :vnew<CR>
+nmap <TAB> <C-W>w
+
 
 " Alias for toggle_maximize.vim
 map <C-CR> <C-f>
@@ -308,6 +315,11 @@ map <C-j> <C-w>j
 map <C-k> <C-w>k
 map <C-l> <C-w>l
 
+" Simple way to turn off Gdiff splitscreen
+" works only when diff buffer is focused
+if !exists(":Gdiffoff")
+  command Gdiffoff diffoff | q | Gedit
+endif
 
 " UTILITIES
 
@@ -345,6 +357,7 @@ set timeoutlen=500
 " ALIASES
 
 :command! W w
+:command! Q q
 
 
 " GUI
@@ -420,6 +433,10 @@ highlight SignColumn guibg=black
 set conceallevel=2
 set concealcursor=nvi
 
+" MARKS
+
+nmap ga `a
+
 
 " CTAGS
 
@@ -473,6 +490,11 @@ if executable('ag')
   " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
   let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
 endif
+
+" CtrlP + NERDTree integration
+" When NERDTree CWD changes, CtrlP picks that up. Supec cool.
+let g:NERDTreeChDirMode       = 2
+let g:ctrlp_working_path_mode = 'rw'
 
 " Buffer Explorer
 let g:bufExplorerShowRelativePath=1
@@ -551,8 +573,9 @@ endif
 " EasyMotion
 let g:EasyMotion_smartcase = 1
 let g:EasyMotion_move_highlight = 0
+let g:EasyMotion_leader_key = '<leader>e'
 
-map <Leader>e <Plug>(easymotion-prefix)
+" map <Leader>e <Plug>(easymotion-prefix)
 
 nmap F <Plug>(easymotion-s)
 nmap s <Plug>(easymotion-s2)
@@ -575,6 +598,10 @@ let g:extradite_width = 80
 
 " FormatComment.vim
 map gqc :call FormatComment()
+
+" SplitJoin.vim
+nmap S :SplitjoinJoin<cr>
+nmap s :SplitjoinSplit<cr>
 
 
 " LANGUAGES
@@ -635,17 +662,16 @@ let g:rails_projections = {
 \    "test": "spec/jobs/%s_job_spec.rb"
 \   },
 \   "config/routes.rb": {"command": "routes"},
-\  
-\  "spec/factories/*.rb": {
-\    "command": "factory",
-\    "affinity": "collection",
-\    "alternate": "app/models/%i.rb",
-\    "related": "db/schema.rb#%s",
-\    "test": "spec/models/%i_test.rb",
-\    "template": "FactoryGirl.define do\n  factory :%i do\n  end\nend",
-\    "keywords": "factory sequence"
-\  },
-\  "spec/features/*_spec.rb": { "command": "feature" },
-\  "app/workers/*_worker.rb": { "command": "worker" },
-\  "app/policies/*_policy.rb": { "command": "policy" }
+\   "spec/factories/*.rb": {
+\     "command": "factory",
+\     "affinity": "collection",
+\     "alternate": "app/models/%i.rb",
+\     "related": "db/schema.rb#%s",
+\     "test": "spec/models/%i_test.rb",
+\     "template": "FactoryGirl.define do\n  factory :%i do\n  end\nend",
+\     "keywords": "factory sequence"
+\   },
+\   "spec/features/*_spec.rb": { "command": "feature" },
+\   "app/workers/*_worker.rb": { "command": "worker" },
+\   "app/policies/*_policy.rb": { "command": "policy" }
 \ }
