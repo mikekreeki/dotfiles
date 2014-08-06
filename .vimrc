@@ -321,6 +321,7 @@ if !exists(":Gdiffoff")
   command Gdiffoff diffoff | q | Gedit
 endif
 
+
 " UTILITIES
 
 function! Preserve(command)

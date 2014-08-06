@@ -2,4 +2,4 @@
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"
 
 # EDITOR
-export EDITOR=vim
+export EDITOR=mvim

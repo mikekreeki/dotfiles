@@ -5,7 +5,7 @@ alias pwdc='pwd | pbcopy'
 alias bi='bundle install'
 
 # RAILS
-alias restart='mkdir tmp && touch tmp/restart.txt'
+alias restart='mkdir -p tmp && touch tmp/restart.txt'
 
 # GIT
 alias gs='git status -s'
