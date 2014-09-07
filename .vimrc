@@ -39,17 +39,18 @@ Bundle 'ntpeters/vim-better-whitespace'
 Bundle 'AndrewRadev/multichange.vim'
 Bundle 'rhysd/conflict-marker.vim'
 Bundle 'danchoi/virb'
-
+Bundle 'rhysd/clever-f.vim'
 Bundle 'tomtom/tlib_vim'
 Bundle 'Shougo/vimproc.vim'
 Bundle 'xolox/vim-misc'
 Bundle 'MarcWeber/vim-addon-mw-utils'
 Bundle 'vim-scripts/guicolorscheme.vim'
+Bundle 'tacahiroy/ctrlp-funky'
 
 Bundle 'rking/ag.vim'
 Bundle 'tpope/vim-fugitive'
 Bundle 'int3/vim-extradite'
-Bundle 'skalnik/vim-vroom'
+Bundle 'mikekreeki/vim-vroom'
 Bundle 'tpope/vim-rvm'
 Bundle 'tpope/vim-bundler'
 
@@ -60,6 +61,7 @@ Bundle 'tpope/vim-haml'
 Bundle 'slim-template/vim-slim'
 Bundle 'othree/html5.vim'
 Bundle 'pangloss/vim-javascript'
+Bundle 'elzr/vim-json'
 Bundle 'kchmck/vim-coffee-script'
 Bundle 'nono/vim-handlebars'
 Bundle 'othree/javascript-libraries-syntax.vim'
@@ -68,6 +70,8 @@ Bundle 'tpope/vim-markdown'
 Bundle 'tristen/vim-sparkup'
 Bundle 'vim-scripts/FormatComment.vim'
 Bundle 'inkarkat/argtextobj.vim'
+Bundle 'chip/vim-fat-finger'
+Bundle 'rhysd/committia.vim'
 
 filetype plugin indent on
 syntax on
@@ -360,6 +364,8 @@ set timeoutlen=500
 :command! W w
 :command! Q q
 
+:command! Stop !spring stop
+
 
 " GUI
 
@@ -492,6 +498,15 @@ if executable('ag')
   let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
 endif
 
+
+let g:ctrlp_extensions = ['funky']
+
+nnoremap <Leader>Fu :CtrlPFunky<Cr>
+" narrow the list down with a word under cursor
+nnoremap <Leader>FU :execute 'CtrlPFunky ' . expand('<cword>')<Cr>
+let g:ctrlp_funky_syntax_highlight = 1
+
+
 " CtrlP + NERDTree integration
 " When NERDTree CWD changes, CtrlP picks that up. Supec cool.
 let g:NERDTreeChDirMode       = 2
@@ -578,7 +593,7 @@ let g:EasyMotion_leader_key = '<leader>e'
 
 " map <Leader>e <Plug>(easymotion-prefix)
 
-nmap F <Plug>(easymotion-s)
+" nmap F <Plug>(easymotion-s)
 nmap s <Plug>(easymotion-s2)
 nmap t <Plug>(easymotion-t2)
 
@@ -673,6 +688,7 @@ let g:rails_projections = {
 \     "keywords": "factory sequence"
 \   },
 \   "spec/features/*_spec.rb": { "command": "feature" },
+\   "spec/requests/*_spec.rb": { "command": "request" },
 \   "app/workers/*_worker.rb": { "command": "worker" },
 \   "app/policies/*_policy.rb": { "command": "policy" }
 \ }
