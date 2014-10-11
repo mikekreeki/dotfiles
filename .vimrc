@@ -6,6 +6,11 @@ filetype off
 set rtp+=~/.vim/bundle/vundle/
 call vundle#rc()
 
+if v:version >= 704 " Vim 7.4 and up
+  " Revert to the old regex engine, which is faster for ruby syntax highlighting
+  set re=1
+endif
+
 Bundle 'gmarik/vundle'
 
 Bundle 'corntrace/bufexplorer'
@@ -46,6 +51,7 @@ Bundle 'xolox/vim-misc'
 Bundle 'MarcWeber/vim-addon-mw-utils'
 Bundle 'vim-scripts/guicolorscheme.vim'
 Bundle 'tacahiroy/ctrlp-funky'
+Bundle 'idanarye/vim-merginal'
 
 Bundle 'rking/ag.vim'
 Bundle 'tpope/vim-fugitive'
@@ -72,6 +78,8 @@ Bundle 'vim-scripts/FormatComment.vim'
 Bundle 'inkarkat/argtextobj.vim'
 Bundle 'chip/vim-fat-finger'
 Bundle 'rhysd/committia.vim'
+Bundle 'alfredodeza/jacinto.vim'
+Bundle 'stefanoverna/vim-i18n'
 
 filetype plugin indent on
 syntax on
@@ -186,6 +194,12 @@ noremap ^ <nop>
 " nnoremap <TAB> g;
 nnoremap ů g;
 
+" Cursorline in active window only
+augroup CursorLine
+  au!
+  au VimEnter,WinEnter,BufWinEnter * setlocal cursorline
+  au WinLeave * setlocal nocursorline
+augroup END
 
 " EDITING
 
@@ -485,6 +499,8 @@ let NERDTreeMinimalUI = 1
 let g:NERDTreeWinSize = 40
 let NERDTreeAutoDeleteBuffer = 1
 
+" autocmd BufEnter * if &modifiable | NERDTreeFind | wincmd p | endif
+
 " CtrlP
 let g:ctrlp_map = '<c-p>'
 let g:ctrlp_cmd = 'CtrlP'
@@ -618,6 +634,9 @@ map gqc :call FormatComment()
 " SplitJoin.vim
 nmap S :SplitjoinJoin<cr>
 nmap s :SplitjoinSplit<cr>
+
+" vim-marginal
+nnoremap <leader>g :MerginalToggle<CR>
 
 
 " LANGUAGES

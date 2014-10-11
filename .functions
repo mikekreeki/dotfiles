@@ -15,6 +15,10 @@ function running(){
   ps ax | grep $1
 }
 
+pman() {
+  man -t "${1}" | open -f -a /Appllication/Preview.app/
+}
+
 function gpr() {
   git push && hub pull-request -b blueberryapps:$1 -h blueberryapps:$(git symbolic-ref --short HEAD)
 }
