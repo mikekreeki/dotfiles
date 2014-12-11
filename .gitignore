@@ -1,0 +1,34 @@
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Icon?
+ehthumbs.db
+Thumbs.db
+
+# BUNDLER
+vendor/bundle/
+
+# RVM
+.rvmrc
+.ruby-gemset
+
+# POW
+.powrc
+.powenv
+
+# GIT
+.git-wtfrc
+
+# VIM
+.swp
+*.swp
+tags
+
+# RAILS
+bin/
+.env
+config/mongoid.yml
+config/database.yml
