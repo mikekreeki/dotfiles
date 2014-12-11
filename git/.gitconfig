@@ -25,7 +25,7 @@
   restore = checkout --
 
   ci=commit
-  save = !git add -A && git commit -m 'SAVEPOINT'
+  save = !git add -A && git commit -m 'WIP'
   amend=commit --amend --reuse-message HEAD
 
   ff=merge --ff-only
@@ -46,8 +46,10 @@
 
   churn= "!f() { git log --all -M -C --name-only --format='format:' \"$@\" | sort | grep -v '^$' | uniq -c | sort | awk 'BEGIN {print \"count\tfile\"} {print $1 \"\t\" $2}' | sort -g; }; f"
 
-  pr = "!open \"$(git remote -v | grep origin | grep push | cut -f 2 | cut -d \" \" -f 1 | sed -e \"s|git@\\(.*\\):\\(.*\\).git|https://\\1/\\2|\")/pull/new/$(git rev-parse --abbrev-ref HEAD)\""
-  gh = "!open \"$(git remote -v | grep origin | grep push | cut -f 2 | cut -d \" \" -f 1 | sed -e \"s|git@\\(.*\\):\\(.*\\).git|https://\\1/\\2|\")/tree/$(git rev-parse --abbrev-ref HEAD)\""
+  pr = "!open \"$(git remote -v | grep origin | grep push | cut -f 2 | cut -d \" \" -f 1 | sed -e \"s|https://github.com/\\(.*\\)/\\(.*\\).git|https://github.com/\\1/\\2|\")/pull/new/$(git rev-parse --abbrev-ref HEAD)\""
+  gh = "!open \"$(git remote -v | grep origin | grep push | cut -f 2 | cut -d \" \" -f 1 | sed -e \"s|https://github.com/\\(.*\\)/\\(.*\\).git|https://github.com/\\1/\\2|\")/tree/$(git rev-parse --abbrev-ref HEAD)\""
+
+  aliases =  config --get-regexp '(alias.*)'
 
 [core]
   excludesfile = /Users/Kreeki/.gitignore
@@ -82,3 +84,5 @@
 
 [merge]
   stat = true
+[git-up "bundler"]
+	autoinstall = true

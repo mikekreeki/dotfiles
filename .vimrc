@@ -3,88 +3,93 @@
 set nocompatible
 filetype off
 
-set rtp+=~/.vim/bundle/vundle/
-call vundle#rc()
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
 
-if v:version >= 704 " Vim 7.4 and up
-  " Revert to the old regex engine, which is faster for ruby syntax highlighting
-  set re=1
-endif
+Plugin 'gmarik/Vundle.vim'
 
-Bundle 'gmarik/vundle'
+Plugin 'corntrace/bufexplorer'
+Plugin 'kien/ctrlp.vim'
+Plugin 'scrooloose/nerdtree'
+Plugin 'scrooloose/syntastic'
+Plugin 'Shougo/neocomplete.vim'
+Plugin 'Shougo/neosnippet.vim'
+Plugin 'Yggdroot/indentLine'
+Plugin 'kien/rainbow_parentheses.vim'
+Plugin 'danro/rename.vim'
+Plugin 'Lokaltog/vim-powerline'
+Plugin 'tpope/vim-commentary'
+Plugin 'junegunn/vim-easy-align'
+Plugin 'Lokaltog/vim-easymotion'
+Plugin 'tpope/vim-endwise'
+Plugin 'edsono/vim-matchit'
+Plugin 'tpope/vim-repeat'
+Plugin 'duff/vim-scratch'
+Plugin 'tpope/vim-surround'
+Plugin 'szw/vim-tags'
+Plugin 'majutsushi/tagbar'
+Plugin 'milkypostman/vim-togglelist'
+Plugin 'tpope/vim-unimpaired'
+Plugin 'vim-scripts/toggle_maximize.vim'
+Plugin 'michaeljsmith/vim-indent-object'
+Plugin 'vim-scripts/AutoClose'
+Plugin 'AndrewRadev/splitjoin.vim'
+Plugin 'airblade/vim-rooter'
+Plugin 'ntpeters/vim-better-whitespace'
+Plugin 'AndrewRadev/multichange.vim'
+Plugin 'rhysd/conflict-marker.vim'
+Plugin 'danchoi/virb'
+Plugin 'rhysd/clever-f.vim'
+Plugin 'tomtom/tlib_vim'
+Plugin 'Shougo/vimproc.vim'
+Plugin 'xolox/vim-misc'
+Plugin 'MarcWeber/vim-addon-mw-utils'
+Plugin 'vim-scripts/guicolorscheme.vim'
+Plugin 'tacahiroy/ctrlp-funky'
+Plugin 'idanarye/vim-merginal'
 
-Bundle 'corntrace/bufexplorer'
-Bundle 'kien/ctrlp.vim'
-Bundle 'scrooloose/nerdtree'
-Bundle 'scrooloose/syntastic'
-Bundle 'Shougo/neocomplete.vim'
-Bundle 'Shougo/neosnippet.vim'
-Bundle 'Yggdroot/indentLine'
-Bundle 'kien/rainbow_parentheses.vim'
-Bundle 'danro/rename.vim'
-Bundle 'Lokaltog/vim-powerline'
-Bundle 'tpope/vim-commentary'
-Bundle 'junegunn/vim-easy-align'
-Bundle 'Lokaltog/vim-easymotion'
-Bundle 'tpope/vim-endwise'
-Bundle 'edsono/vim-matchit'
-Bundle 'tpope/vim-repeat'
-Bundle 'duff/vim-scratch'
-Bundle 'tpope/vim-surround'
-Bundle 'szw/vim-tags'
-Bundle 'majutsushi/tagbar'
-Bundle 'milkypostman/vim-togglelist'
-Bundle 'tpope/vim-unimpaired'
-Bundle 'vim-scripts/toggle_maximize.vim'
-Bundle 'michaeljsmith/vim-indent-object'
-Bundle 'vim-scripts/AutoClose'
-Bundle 'AndrewRadev/splitjoin.vim'
-Bundle 'airblade/vim-rooter'
-Bundle 'ntpeters/vim-better-whitespace'
-Bundle 'AndrewRadev/multichange.vim'
-Bundle 'rhysd/conflict-marker.vim'
-Bundle 'danchoi/virb'
-Bundle 'rhysd/clever-f.vim'
-Bundle 'tomtom/tlib_vim'
-Bundle 'Shougo/vimproc.vim'
-Bundle 'xolox/vim-misc'
-Bundle 'MarcWeber/vim-addon-mw-utils'
-Bundle 'vim-scripts/guicolorscheme.vim'
-Bundle 'tacahiroy/ctrlp-funky'
-Bundle 'idanarye/vim-merginal'
+Plugin 'rking/ag.vim'
+Plugin 'tpope/vim-fugitive'
+Plugin 'int3/vim-extradite'
+Plugin 'mikekreeki/vim-vroom'
+Plugin 'tpope/vim-rvm'
+Plugin 'tpope/vim-bundler'
 
-Bundle 'rking/ag.vim'
-Bundle 'tpope/vim-fugitive'
-Bundle 'int3/vim-extradite'
-Bundle 'mikekreeki/vim-vroom'
-Bundle 'tpope/vim-rvm'
-Bundle 'tpope/vim-bundler'
+Plugin 'tpope/vim-rails'
+Plugin 'vim-ruby/vim-ruby'
+Plugin 'rking/vim-ruby-refactoring'
+Plugin 'tpope/vim-haml'
+Plugin 'slim-template/vim-slim'
+Plugin 'othree/html5.vim'
+Plugin 'pangloss/vim-javascript'
+Plugin 'elzr/vim-json'
+Plugin 'kchmck/vim-coffee-script'
+Plugin 'nono/vim-handlebars'
+Plugin 'othree/javascript-libraries-syntax.vim'
+Plugin 'elixir-lang/vim-elixir'
+Plugin 'tpope/vim-markdown'
+Plugin 'tristen/vim-sparkup'
+Plugin 'vim-scripts/FormatComment.vim'
+Plugin 'inkarkat/argtextobj.vim'
+Plugin 'chip/vim-fat-finger'
+Plugin 'rhysd/committia.vim'
+Plugin 'alfredodeza/jacinto.vim'
+Plugin 'stefanoverna/vim-i18n'
 
-Bundle 'tpope/vim-rails'
-Bundle 'vim-ruby/vim-ruby'
-Bundle 'rking/vim-ruby-refactoring'
-Bundle 'tpope/vim-haml'
-Bundle 'slim-template/vim-slim'
-Bundle 'othree/html5.vim'
-Bundle 'pangloss/vim-javascript'
-Bundle 'elzr/vim-json'
-Bundle 'kchmck/vim-coffee-script'
-Bundle 'nono/vim-handlebars'
-Bundle 'othree/javascript-libraries-syntax.vim'
-Bundle 'elixir-lang/vim-elixir'
-Bundle 'tpope/vim-markdown'
-Bundle 'tristen/vim-sparkup'
-Bundle 'vim-scripts/FormatComment.vim'
-Bundle 'inkarkat/argtextobj.vim'
-Bundle 'chip/vim-fat-finger'
-Bundle 'rhysd/committia.vim'
-Bundle 'alfredodeza/jacinto.vim'
-Bundle 'stefanoverna/vim-i18n'
+Plugin 'altercation/vim-colors-solarized'
+Plugin 'tomasr/molokai'
+
+call vundle#end()
 
 filetype plugin indent on
 syntax on
 
 set shell=/bin/sh
+
+if v:version >= 704 " Vim 7.4 and up
+  " Revert to the old regex engine, which is faster for ruby syntax highlighting
+  set re=1
+endif
 
 set encoding=utf-8
 set fileencoding=utf-8
@@ -125,6 +130,9 @@ set scrolloff=1
 " mouse in an xterm and other terminals.
 set ttyfast
 
+if $TERM == "xterm-256color" || $TERM == "screen-256color" || $COLORTERM == "gnome-terminal"
+  set t_Co=256
+endif
 
 " INDENTATION
 
@@ -449,6 +457,8 @@ highlight ColorColumn ctermbg=233 guibg=#1C1C1C
 highlight VertSplit guifg=#585858
 highlight SignColumn guibg=black
 
+hi MatchParen guibg=NONE guifg=green gui=bold
+
 
 " CONCEAL
 set conceallevel=2
@@ -506,25 +516,29 @@ let g:ctrlp_map = '<c-p>'
 let g:ctrlp_cmd = 'CtrlP'
 
 " Use The Silver Searcher https://github.com/ggreer/the_silver_searcher
-if executable('ag')
-  " Use Ag over Grep
-  set grepprg=ag\ --nogroup\ --nocolor
-
+" if executable('ag')
   " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
-  let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
-endif
-
+let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+" endif
 
 let g:ctrlp_extensions = ['funky']
 
-nnoremap <Leader>Fu :CtrlPFunky<Cr>
+nnoremap Z :CtrlPFunky<Cr>
 " narrow the list down with a word under cursor
-nnoremap <Leader>FU :execute 'CtrlPFunky ' . expand('<cword>')<Cr>
+nnoremap z :execute 'CtrlPFunky ' . expand('<cword>')<Cr>
+
+let g:ctrlp_match_window = 'bottom,order:ttb'
+
+let g:ctrlp_funky_matchtype = 'path'
 let g:ctrlp_funky_syntax_highlight = 1
+let g:ctrlp_funky_nolim = 1
+let g:ctrlp_funky_ruby_classes = 1
+let g:ctrlp_funky_ruby_modules = 1
+let g:ctrlp_funky_ruby_requires = 1
 
 
 " CtrlP + NERDTree integration
-" When NERDTree CWD changes, CtrlP picks that up. Supec cool.
+" When NERDTree CWD changes, CtrlP picks that up. Super cool.
 let g:NERDTreeChDirMode       = 2
 let g:ctrlp_working_path_mode = 'rw'
 
@@ -539,6 +553,7 @@ let g:bufExplorerSplitOutPathName=0
 
 let g:vroom_use_bundle_exec = 0
 let g:vroom_use_spring = 1
+let g:vroom_use_binstubs = 1
 
 " Tube
 let g:tube_terminal = "iterm"
