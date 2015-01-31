@@ -9,7 +9,6 @@ alias restart='mkdir -p tmp && touch tmp/restart.txt'
 
 # GIT
 alias gs='git status -s'
-alias gss='git status -s'
 alias ga='git add'
 
 alias gbr='git branch'

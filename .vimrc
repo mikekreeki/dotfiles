@@ -16,7 +16,7 @@ Plugin 'Shougo/neocomplete.vim'
 Plugin 'Shougo/neosnippet.vim'
 Plugin 'Yggdroot/indentLine'
 Plugin 'kien/rainbow_parentheses.vim'
-Plugin 'danro/rename.vim'
+" Plugin 'danro/rename.vim'
 Plugin 'Lokaltog/vim-powerline'
 Plugin 'tpope/vim-commentary'
 Plugin 'junegunn/vim-easy-align'
@@ -26,63 +26,85 @@ Plugin 'edsono/vim-matchit'
 Plugin 'tpope/vim-repeat'
 Plugin 'duff/vim-scratch'
 Plugin 'tpope/vim-surround'
-Plugin 'szw/vim-tags'
+" Plugin 'szw/vim-tags'
 Plugin 'majutsushi/tagbar'
 Plugin 'milkypostman/vim-togglelist'
 Plugin 'tpope/vim-unimpaired'
-Plugin 'vim-scripts/toggle_maximize.vim'
+" Plugin 'vim-scripts/toggle_maximize.vim'
 Plugin 'michaeljsmith/vim-indent-object'
-Plugin 'vim-scripts/AutoClose'
+" Plugin 'vim-scripts/AutoClose'
+Plugin 'darvelo/vim-autoclose'
 Plugin 'AndrewRadev/splitjoin.vim'
 Plugin 'airblade/vim-rooter'
 Plugin 'ntpeters/vim-better-whitespace'
 Plugin 'AndrewRadev/multichange.vim'
-Plugin 'rhysd/conflict-marker.vim'
-Plugin 'danchoi/virb'
-Plugin 'rhysd/clever-f.vim'
-Plugin 'tomtom/tlib_vim'
-Plugin 'Shougo/vimproc.vim'
-Plugin 'xolox/vim-misc'
-Plugin 'MarcWeber/vim-addon-mw-utils'
+" Plugin 'rhysd/conflict-marker.vim'
+" Plugin 'danchoi/virb'
+" Plugin 'rhysd/clever-f.vim'
+" Plugin 'tomtom/tlib_vim'
+" Plugin 'Shougo/vimproc.vim'
+" Plugin 'xolox/vim-misc'
+" Plugin 'MarcWeber/vim-addon-mw-utils'
 Plugin 'vim-scripts/guicolorscheme.vim'
-Plugin 'tacahiroy/ctrlp-funky'
+" Plugin 'tacahiroy/ctrlp-funky'
 Plugin 'idanarye/vim-merginal'
 
 Plugin 'rking/ag.vim'
 Plugin 'tpope/vim-fugitive'
 Plugin 'int3/vim-extradite'
-Plugin 'mikekreeki/vim-vroom'
+" Plugin 'mikekreeki/vim-vroom'
 Plugin 'tpope/vim-rvm'
-Plugin 'tpope/vim-bundler'
+" Plugin 'tpope/vim-bundler'
 
 Plugin 'tpope/vim-rails'
 Plugin 'vim-ruby/vim-ruby'
 Plugin 'rking/vim-ruby-refactoring'
-Plugin 'tpope/vim-haml'
+" Plugin 'tpope/vim-haml'
 Plugin 'slim-template/vim-slim'
 Plugin 'othree/html5.vim'
 Plugin 'pangloss/vim-javascript'
-Plugin 'elzr/vim-json'
+" Plugin 'elzr/vim-json'
 Plugin 'kchmck/vim-coffee-script'
-Plugin 'nono/vim-handlebars'
+" Plugin 'nono/vim-handlebars'
 Plugin 'othree/javascript-libraries-syntax.vim'
-Plugin 'elixir-lang/vim-elixir'
-Plugin 'tpope/vim-markdown'
-Plugin 'tristen/vim-sparkup'
-Plugin 'vim-scripts/FormatComment.vim'
+" Plugin 'elixir-lang/vim-elixir'
+" Plugin 'tpope/vim-markdown'
+" Plugin 'tristen/vim-sparkup'
+" Plugin 'vim-scripts/FormatComment.vim'
 Plugin 'inkarkat/argtextobj.vim'
-Plugin 'chip/vim-fat-finger'
-Plugin 'rhysd/committia.vim'
-Plugin 'alfredodeza/jacinto.vim'
-Plugin 'stefanoverna/vim-i18n'
+" Plugin 'chip/vim-fat-finger'
+" Plugin 'rhysd/committia.vim'
+" Plugin 'alfredodeza/jacinto.vim'
+" Plugin 'stefanoverna/vim-i18n'
 
-Plugin 'altercation/vim-colors-solarized'
+" Plugin 'altercation/vim-colors-solarized'
 Plugin 'tomasr/molokai'
+" Plugin 'jgdavey/vim-railscasts'
+
+Plugin 'airblade/vim-gitgutter'
+Plugin 'janko-m/vim-test'
+Plugin 'gorkunov/smartpairs.vim'
+Plugin 'Wolfy87/vim-enmasse'
+Plugin 'gorkunov/smartgf.vim'
+Plugin 'gregsexton/gitv'
+Plugin 'sjl/badwolf'
+Plugin 'zaiste/Atom'
+Plugin 'mattdbridges/bufkill.vim'
+Plugin 'derekwyatt/vim-scala'
+Plugin 'ktvoelker/sbt-vim'
+Plugin 'mhinz/vim-startify'
+Plugin 'mattn/gist-vim'
+Plugin 'mattn/webapi-vim'
+Plugin 'junegunn/vim-github-dashboard'
+Plugin 'mxw/vim-jsx'
+Plugin 'EinfachToll/DidYouMean'
 
 call vundle#end()
 
 filetype plugin indent on
 syntax on
+
+" let g:syntastic_ruby_checkers = ['rubocop', 'mri']
 
 set shell=/bin/sh
 
@@ -203,11 +225,11 @@ noremap ^ <nop>
 nnoremap ů g;
 
 " Cursorline in active window only
-augroup CursorLine
-  au!
-  au VimEnter,WinEnter,BufWinEnter * setlocal cursorline
-  au WinLeave * setlocal nocursorline
-augroup END
+" augroup CursorLine
+"   au!
+"   au VimEnter,WinEnter,BufWinEnter * setlocal cursorline
+"   au WinLeave * setlocal nocursorline
+" augroup END
 
 " EDITING
 
@@ -272,11 +294,11 @@ iabbrev GCI CGI
 
 " FORMATTING
 
-" set colorcolumn=80 
+" set colorcolumn=80
 execute "set colorcolumn=" . join(range(81,335), ',')
 
 " When at 3 spaces and I hit >>, go to 4, not 5.
-set shiftround 
+set shiftround
 
 
 " HISTORY
@@ -311,8 +333,9 @@ imap ii <Esc>
 map <right> <ESC>:bn<CR>
 map <left> <ESC>:bp<CR>
 
-nmap <leader>d :close<CR>
-nmap <leader>D :only<CR>
+nmap <leader>d :BD<CR>
+" nmap <leader>D :only<CR>
+nmap <leader>D :close<CR>
 
 nnoremap <leader><leader> <c-^>
 
@@ -341,6 +364,8 @@ map <C-j> <C-w>j
 map <C-k> <C-w>k
 map <C-l> <C-w>l
 
+" DIFF
+
 " Simple way to turn off Gdiff splitscreen
 " works only when diff buffer is focused
 if !exists(":Gdiffoff")
@@ -365,7 +390,7 @@ function! Preserve(command)
   nmap _= :call Preserve("normal gg=G")<CR>
 
 " Remove trailing whitespace before save
-autocmd BufWritePre *.rb,*.js,*.coffee,*.css,*.sass,*.scss :call Preserve("%s/\\s\\+$//e")
+autocmd BufWritePre *.rb,*.js,*.coffee,*.css,*.sass,*.scss,*.slim :call Preserve("%s/\\s\\+$//e")
 
 
 command! Path :call EchoPath()
@@ -451,13 +476,24 @@ set guicursor+=i:ver10
 au InsertLeave * hi Cursor guifg=white guibg=steelblue
 au InsertEnter * hi Cursor guibg=grey
 
-highlight CursorLine guibg=#1C1C1C
-highlight CursorLineNr guibg=#1C1C1C guifg=NONE
+" highlight CursorLine guibg=#1C1C1C
+" highlight CursorLineNr guibg=#1C1C1C guifg=NONE
 highlight ColorColumn ctermbg=233 guibg=#1C1C1C
 highlight VertSplit guifg=#585858
 highlight SignColumn guibg=black
 
 hi MatchParen guibg=NONE guifg=green gui=bold
+
+" highlight DiffAdd    cterm=bold ctermfg=10 ctermbg=17 gui=none guifg=bg guibg=Green
+" highlight DiffDelete cterm=bold ctermfg=10 ctermbg=17 gui=none guifg=bg guibg=Green
+" highlight DiffChange cterm=bold ctermfg=10 ctermbg=17 gui=none guifg=bg guibg=Red
+highlight DiffText   cterm=bold ctermfg=10 ctermbg=88 gui=none guifg=Red guibg=NONE
+
+" highlight! link DiffText MatchParen
+
+highlight! link DiffAdd GitGutterAdd
+highlight! link DiffDelete GitGutterDelete
+highlight! link DiffChange GitGutterChange
 
 
 " CONCEAL
@@ -475,7 +511,7 @@ nmap ga `a
 " nmap <leader>t <C-]>
 " nmap <leader>r <C-t>
 
-set tags=./tags
+" set tags=./tags
 
 nnoremap <C-[> <C-T>
 
@@ -521,20 +557,20 @@ let g:ctrlp_cmd = 'CtrlP'
 let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
 " endif
 
-let g:ctrlp_extensions = ['funky']
+" let g:ctrlp_extensions = ['funky']
 
-nnoremap Z :CtrlPFunky<Cr>
+" nnoremap Z :CtrlPFunky<Cr>
 " narrow the list down with a word under cursor
-nnoremap z :execute 'CtrlPFunky ' . expand('<cword>')<Cr>
+" nnoremap z :execute 'CtrlPFunky ' . expand('<cword>')<Cr>
 
 let g:ctrlp_match_window = 'bottom,order:ttb'
 
-let g:ctrlp_funky_matchtype = 'path'
-let g:ctrlp_funky_syntax_highlight = 1
-let g:ctrlp_funky_nolim = 1
-let g:ctrlp_funky_ruby_classes = 1
-let g:ctrlp_funky_ruby_modules = 1
-let g:ctrlp_funky_ruby_requires = 1
+" let g:ctrlp_funky_matchtype = 'path'
+" let g:ctrlp_funky_syntax_highlight = 1
+" let g:ctrlp_funky_nolim = 1
+" let g:ctrlp_funky_ruby_classes = 1
+" let g:ctrlp_funky_ruby_modules = 1
+" let g:ctrlp_funky_ruby_requires = 1
 
 
 " CtrlP + NERDTree integration
@@ -551,9 +587,18 @@ let g:bufExplorerSplitOutPathName=0
 
 " Vroom
 
-let g:vroom_use_bundle_exec = 0
-let g:vroom_use_spring = 1
-let g:vroom_use_binstubs = 1
+" let g:vroom_use_bundle_exec = 0
+" let g:vroom_use_spring = 1
+" let g:vroom_use_binstubs = 1
+
+" vim-test
+
+nmap <silent> <leader>R :TestNearest<CR>
+nmap <silent> <leader>r :TestFile<CR>
+" nmap <silent> <leader>a :TestSuite<CR>
+" nmap <silent> <leader>l :TestLast<CR>
+
+let g:test#rspec#options = '--no-color'
 
 " Tube
 let g:tube_terminal = "iterm"
@@ -636,8 +681,14 @@ nmap N <Plug>(easymotion-prev)
 " GoldenView
 " let g:goldenview__enable_default_mapping = 0
 
+" Fugitive.vim
+:command! G Gstatus
+
 " Extradite
 let g:extradite_width = 80
+
+" vim-gitgutter
+let g:gitgutter_sign_column_always = 1
 
 " Yankstack
 " nmap <C-ú> <Plug>yankstack_substitute_older_paste
@@ -673,6 +724,11 @@ autocmd FileType ruby,eruby set omnifunc=rubycomplete#Complete
 " Convert hashes to 1.9 syntax
 nmap <leader>h :%s/:\([^=,'"]*\) =>/\1:/gc<CR>
 
+" Smartgf
+let g:smartgf_key = 'z'
+
+" vim-github-dashboard
+let g:github_dashboard = { 'username': 'mikekreeki', 'password': $GITHUB_TOKEN }
 
 "" Rails.vim
 
@@ -724,5 +780,6 @@ let g:rails_projections = {
 \   "spec/features/*_spec.rb": { "command": "feature" },
 \   "spec/requests/*_spec.rb": { "command": "request" },
 \   "app/workers/*_worker.rb": { "command": "worker" },
-\   "app/policies/*_policy.rb": { "command": "policy" }
+\   "app/policies/*_policy.rb": { "command": "policy" },
+\   "app/paths/*_path.rb": { "command": "path" }
 \ }

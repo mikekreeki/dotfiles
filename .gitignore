@@ -26,9 +26,10 @@ vendor/bundle/
 .swp
 *.swp
 tags
+.smartgf_tags
+.smartgf_tags_date
 
 # RAILS
-bin/
 .env
 config/mongoid.yml
 config/database.yml
