@@ -16,7 +16,6 @@ Plugin 'Shougo/neocomplete.vim'
 Plugin 'Shougo/neosnippet.vim'
 Plugin 'Yggdroot/indentLine'
 Plugin 'kien/rainbow_parentheses.vim'
-" Plugin 'danro/rename.vim'
 Plugin 'Lokaltog/vim-powerline'
 Plugin 'tpope/vim-commentary'
 Plugin 'junegunn/vim-easy-align'
@@ -26,60 +25,36 @@ Plugin 'edsono/vim-matchit'
 Plugin 'tpope/vim-repeat'
 Plugin 'duff/vim-scratch'
 Plugin 'tpope/vim-surround'
-" Plugin 'szw/vim-tags'
 Plugin 'majutsushi/tagbar'
 Plugin 'milkypostman/vim-togglelist'
 Plugin 'tpope/vim-unimpaired'
-" Plugin 'vim-scripts/toggle_maximize.vim'
 Plugin 'michaeljsmith/vim-indent-object'
-" Plugin 'vim-scripts/AutoClose'
 Plugin 'darvelo/vim-autoclose'
 Plugin 'AndrewRadev/splitjoin.vim'
 Plugin 'airblade/vim-rooter'
 Plugin 'ntpeters/vim-better-whitespace'
 Plugin 'AndrewRadev/multichange.vim'
-" Plugin 'rhysd/conflict-marker.vim'
-" Plugin 'danchoi/virb'
+Plugin 'rhysd/conflict-marker.vim'
 " Plugin 'rhysd/clever-f.vim'
-" Plugin 'tomtom/tlib_vim'
-" Plugin 'Shougo/vimproc.vim'
-" Plugin 'xolox/vim-misc'
-" Plugin 'MarcWeber/vim-addon-mw-utils'
-Plugin 'vim-scripts/guicolorscheme.vim'
-" Plugin 'tacahiroy/ctrlp-funky'
 Plugin 'idanarye/vim-merginal'
 
 Plugin 'rking/ag.vim'
 Plugin 'tpope/vim-fugitive'
 Plugin 'int3/vim-extradite'
-" Plugin 'mikekreeki/vim-vroom'
 Plugin 'tpope/vim-rvm'
 " Plugin 'tpope/vim-bundler'
 
 Plugin 'tpope/vim-rails'
 Plugin 'vim-ruby/vim-ruby'
 Plugin 'rking/vim-ruby-refactoring'
-" Plugin 'tpope/vim-haml'
 Plugin 'slim-template/vim-slim'
 Plugin 'othree/html5.vim'
 Plugin 'pangloss/vim-javascript'
-" Plugin 'elzr/vim-json'
 Plugin 'kchmck/vim-coffee-script'
-" Plugin 'nono/vim-handlebars'
 Plugin 'othree/javascript-libraries-syntax.vim'
-" Plugin 'elixir-lang/vim-elixir'
-" Plugin 'tpope/vim-markdown'
-" Plugin 'tristen/vim-sparkup'
 " Plugin 'vim-scripts/FormatComment.vim'
 Plugin 'inkarkat/argtextobj.vim'
-" Plugin 'chip/vim-fat-finger'
-" Plugin 'rhysd/committia.vim'
-" Plugin 'alfredodeza/jacinto.vim'
-" Plugin 'stefanoverna/vim-i18n'
-
-" Plugin 'altercation/vim-colors-solarized'
-Plugin 'tomasr/molokai'
-" Plugin 'jgdavey/vim-railscasts'
+Plugin 'rhysd/committia.vim'
 
 Plugin 'airblade/vim-gitgutter'
 Plugin 'janko-m/vim-test'
@@ -87,8 +62,6 @@ Plugin 'gorkunov/smartpairs.vim'
 Plugin 'Wolfy87/vim-enmasse'
 Plugin 'gorkunov/smartgf.vim'
 Plugin 'gregsexton/gitv'
-Plugin 'sjl/badwolf'
-Plugin 'zaiste/Atom'
 Plugin 'mattdbridges/bufkill.vim'
 Plugin 'derekwyatt/vim-scala'
 Plugin 'ktvoelker/sbt-vim'
@@ -104,23 +77,17 @@ call vundle#end()
 filetype plugin indent on
 syntax on
 
-" let g:syntastic_ruby_checkers = ['rubocop', 'mri']
-
 set shell=/bin/sh
 
 if v:version >= 704 " Vim 7.4 and up
-  " Revert to the old regex engine, which is faster for ruby syntax highlighting
+  " Revert to the old regex engine, which is faster for Ruby syntax highlighting
   set re=1
 endif
 
 set encoding=utf-8
 set fileencoding=utf-8
 
-" execute pathogen#infect()
-
 let mapleader = ","
-
-" set macmeta
 
 set hidden
 set number
@@ -138,23 +105,15 @@ set mouse=
 set nobackup
 set noswapfile
 
+set ttyfast
 set lazyredraw
 
 set scrolloff=1
 
-" taken from https://github.com/dduponchel/dotfiles/blob/master/vim/vimrc
-" Indicates a fast terminal connection.  More characters will be sent to
-" the screen for redrawing, instead of using insert/delete line
-" commands. Improves smoothness of redrawing when there are multiple
-" windows and the terminal does not support a scrolling region.
-" Also enables the extra writing of characters at the end of each screen
-" line for lines that wrap.  This helps when using copy/paste with the
-" mouse in an xterm and other terminals.
-set ttyfast
-
 if $TERM == "xterm-256color" || $TERM == "screen-256color" || $COLORTERM == "gnome-terminal"
   set t_Co=256
 endif
+
 
 " INDENTATION
 
@@ -230,6 +189,7 @@ nnoremap ů g;
 "   au VimEnter,WinEnter,BufWinEnter * setlocal cursorline
 "   au WinLeave * setlocal nocursorline
 " augroup END
+
 
 " EDITING
 
@@ -352,10 +312,6 @@ nnoremap <leader>w <C-w>v<C-w>
 nnoremap <leader>e :vnew<CR>
 nmap <TAB> <C-W>w
 
-
-" Alias for toggle_maximize.vim
-map <C-CR> <C-f>
-
 " Resize splits when the window is resized
 au VimResized * exe "normal! \<c-w>="
 
@@ -416,7 +372,6 @@ set timeoutlen=500
 
 " GUI
 
-
 " Set the vertical split character to a space 
 set fillchars+=vert:\ " there is a single space after '\ '
 
@@ -453,6 +408,9 @@ end
 " endfunc
 " nnoremap <F2> :call NumberToggle()<cr>
 
+autocmd WinEnter,FocusGained * :setlocal number relativenumber
+autocmd WinLeave,FocusLost   * :setlocal number norelativenumber
+
 
 " THEME AND COLORS
 
@@ -477,17 +435,14 @@ au InsertLeave * hi Cursor guifg=white guibg=steelblue
 au InsertEnter * hi Cursor guibg=grey
 
 " highlight CursorLine guibg=#1C1C1C
-" highlight CursorLineNr guibg=#1C1C1C guifg=NONE
+highlight CursorLineNr guibg=NONE guifg=#444444
 highlight ColorColumn ctermbg=233 guibg=#1C1C1C
 highlight VertSplit guifg=#585858
 highlight SignColumn guibg=black
 
 hi MatchParen guibg=NONE guifg=green gui=bold
 
-" highlight DiffAdd    cterm=bold ctermfg=10 ctermbg=17 gui=none guifg=bg guibg=Green
-" highlight DiffDelete cterm=bold ctermfg=10 ctermbg=17 gui=none guifg=bg guibg=Green
-" highlight DiffChange cterm=bold ctermfg=10 ctermbg=17 gui=none guifg=bg guibg=Red
-highlight DiffText   cterm=bold ctermfg=10 ctermbg=88 gui=none guifg=Red guibg=NONE
+highlight DiffText cterm=bold ctermfg=10 ctermbg=88 gui=none guifg=Red guibg=NONE
 
 " highlight! link DiffText MatchParen
 
@@ -500,20 +455,11 @@ highlight! link DiffChange GitGutterChange
 set conceallevel=2
 set concealcursor=nvi
 
+
 " MARKS
 
 nmap ga `a
 
-
-" CTAGS
-
-" map  <Leader>rt :!ctags * `bundle show --paths`
-" nmap <leader>t <C-]>
-" nmap <leader>r <C-t>
-
-" set tags=./tags
-
-nnoremap <C-[> <C-T>
 
 " QUICKFIX
 
@@ -541,6 +487,7 @@ function! OpenNERDTree()
 endfunction
 
 nnoremap <Leader>n :call OpenNERDTree()<CR>
+
 let NERDTreeMinimalUI = 1
 let g:NERDTreeWinSize = 40
 let NERDTreeAutoDeleteBuffer = 1
@@ -551,27 +498,11 @@ let NERDTreeAutoDeleteBuffer = 1
 let g:ctrlp_map = '<c-p>'
 let g:ctrlp_cmd = 'CtrlP'
 
-" Use The Silver Searcher https://github.com/ggreer/the_silver_searcher
-" if executable('ag')
-  " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
-let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
-" endif
-
-" let g:ctrlp_extensions = ['funky']
-
-" nnoremap Z :CtrlPFunky<Cr>
-" narrow the list down with a word under cursor
-" nnoremap z :execute 'CtrlPFunky ' . expand('<cword>')<Cr>
+if executable('ag')
+  let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+endif
 
 let g:ctrlp_match_window = 'bottom,order:ttb'
-
-" let g:ctrlp_funky_matchtype = 'path'
-" let g:ctrlp_funky_syntax_highlight = 1
-" let g:ctrlp_funky_nolim = 1
-" let g:ctrlp_funky_ruby_classes = 1
-" let g:ctrlp_funky_ruby_modules = 1
-" let g:ctrlp_funky_ruby_requires = 1
-
 
 " CtrlP + NERDTree integration
 " When NERDTree CWD changes, CtrlP picks that up. Super cool.
@@ -585,12 +516,6 @@ let g:bufExplorerSplitOutPathName=0
 " Scratch
   nnoremap <silent> <leader><TAB> :Scratch<CR>
 
-" Vroom
-
-" let g:vroom_use_bundle_exec = 0
-" let g:vroom_use_spring = 1
-" let g:vroom_use_binstubs = 1
-
 " vim-test
 
 nmap <silent> <leader>R :TestNearest<CR>
@@ -599,9 +524,6 @@ nmap <silent> <leader>r :TestFile<CR>
 " nmap <silent> <leader>l :TestLast<CR>
 
 let g:test#rspec#options = '--no-color'
-
-" Tube
-let g:tube_terminal = "iterm"
 
 " Rainbow Parenstheses
 nnoremap <leader>p :RainbowParenthesesToggle<CR>
@@ -665,21 +587,16 @@ endif
 " EasyMotion
 let g:EasyMotion_smartcase = 1
 let g:EasyMotion_move_highlight = 0
-let g:EasyMotion_leader_key = '<leader>e'
+" let g:EasyMotion_leader_key = '<leader>e'
 
 " map <Leader>e <Plug>(easymotion-prefix)
 
 " nmap F <Plug>(easymotion-s)
-nmap s <Plug>(easymotion-s2)
-nmap t <Plug>(easymotion-t2)
 
 nmap / <Plug>(easymotion-sn)
 omap / <Plug>(easymotion-tn)
 nmap n <Plug>(easymotion-next)
 nmap N <Plug>(easymotion-prev)
-
-" GoldenView
-" let g:goldenview__enable_default_mapping = 0
 
 " Fugitive.vim
 :command! G Gstatus
@@ -707,7 +624,7 @@ nnoremap <leader>g :MerginalToggle<CR>
 
 " LANGUAGES
 
-" force spell when doing a git commit 
+" force spell when doing a git commit
 autocmd FileType gitcommit setlocal spell
 autocmd FileType gitcommit setlocal spelllang=en
 
