@@ -1,5 +1,9 @@
-source ~/.dotfiles/.oh-my-zsh
-source ~/.dotfiles/.aliases
-source ~/.dotfiles/.functions
-source ~/.dotfiles/.path
-source ~/.dotfiles/.custom
+source ~/.dotfiles/.oh-my-zsh.zsh
+source ~/.dotfiles/.aliases.zsh
+source ~/.dotfiles/.colors.zsh
+source ~/.dotfiles/.completion.zsh
+source ~/.dotfiles/.functions.zsh
+source ~/.dotfiles/.exports.zsh
+source ~/.dotfiles/.setopt.zsh
+source ~/.dotfiles/.custom.zsh
+source ~/.dotfiles/mikekreeki.zsh-theme

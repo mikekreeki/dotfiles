@@ -71,7 +71,7 @@
   autocorrect = 1
 
 [credential]
-	helper = osxkeychain
+  helper = osxkeychain
 
 [filter "media"]
   clean = git-media-clean %f
@@ -86,5 +86,6 @@
 
 [merge]
   stat = true
+
 [git-up "bundler"]
-	autoinstall = true
+  autoinstall = true

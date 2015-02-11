@@ -1,4 +1,5 @@
 # GENERAL
+export PATH="/Users/mikekreeki/.dotfiles/bin:$PATH"
 
 # HOMEBREW
 export PATH="/usr/local/bin:$PATH"
@@ -18,3 +19,10 @@ PATH=".git/safe/../../bin:$PATH"
 # Android SDK
 export PATH="/Users/Kreeki/Development/adt-bundle/sdk/platform-tools:$PATH"
 export PATH="/Users/Kreeki/Development/adt-bundle/sdk/tools:$PATH"
+
+# Preferred editor for local and remote sessions
+if [[ -n $SSH_CONNECTION ]]; then
+  export EDITOR='vim'
+else
+  export EDITOR='mvim'
+fi

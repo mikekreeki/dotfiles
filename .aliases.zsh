@@ -1,11 +1,15 @@
 # SHELL
 alias pwdc='pwd | pbcopy'
 
+alias ll='ls -GFhl'
+# alias ls='ls -GFhl'
+
 # BUNDLER
 alias bi='bundle install'
 
 # RAILS
 alias restart='mkdir -p tmp && touch tmp/restart.txt'
+alias stop='spring stop'
 
 # GIT
 alias gs='git status -s'
