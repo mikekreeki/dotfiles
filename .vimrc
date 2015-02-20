@@ -55,7 +55,7 @@
   Plugin 'pangloss/vim-javascript'
   Plugin 'kchmck/vim-coffee-script'
   Plugin 'othree/javascript-libraries-syntax.vim'
-  " Plugin 'vim-scripts/FormatComment.vim'
+  Plugin 'vim-scripts/FormatComment.vim'
   Plugin 'inkarkat/argtextobj.vim'
   Plugin 'rhysd/committia.vim'
 
@@ -79,6 +79,10 @@
   Plugin 'kana/vim-textobj-user'
   Plugin 'nelstrom/vim-textobj-rubyblock'
   Plugin 'ngmy/vim-rubocop'
+  Plugin 'plasticboy/vim-markdown'
+  Plugin 'KurtPreston/vim-autoformat-rails'
+  Plugin 'pelodelfuego/vim-swoop'
+  Plugin 'terryma/vim-multiple-cursors'
 
   call vundle#end()
 
@@ -345,18 +349,18 @@
 " UTILITIES
 
   function! Preserve(command)
-      " Preparation: save last search, and cursor position.
-      let _s=@/
-      let l = line(".")
-      let c = col(".")
-      " Do the business:
-      execute a:command
-      " Clean up: restore previous search history, and cursor position
-      let @/=_s
-      call cursor(l, c)
-    endfunction
-    nmap _$ :call Preserve("%s/\\s\\+$//e")<CR>
-    nmap _= :call Preserve("normal gg=G")<CR>
+    " Preparation: save last search, and cursor position.
+    let _s=@/
+    let l = line(".")
+    let c = col(".")
+    " Do the business:
+    execute a:command
+    " Clean up: restore previous search history, and cursor position
+    let @/=_s
+    call cursor(l, c)
+  endfunction
+  nmap _$ :call Preserve("%s/\\s\\+$//e")<CR>
+  nmap _= :call Preserve("normal gg=G")<CR>
 
   " Remove trailing whitespace before save
   autocmd BufWritePre * :call Preserve("%s/\\s\\+$//e")
@@ -522,6 +526,19 @@
   let g:ctrlp_working_path_mode = 'rw'
 
   let g:ctrlp_show_hidden = 1
+  let g:ctrlp_use_caching=0
+
+  " Note that other CtrlP options related to which files get included in the
+  " index (g:ctrlp_show_hidden, wildignore, g:ctrlp_custom_ignore,
+  " g:ctrlp_max_files, g:ctrlp_max_depth, g:ctrlp_follow_symlinks) do not
+  " apply when using g:ctrlp_user_command.
+  let g:ctrlp_user_command = 'ag %s -i --nocolor --nogroup --hidden
+        \ --ignore .git
+        \ --ignore .svn
+        \ --ignore .hg
+        \ --ignore .DS_Store
+        \ --ignore "**/*.pyc"
+        \ -g ""'
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Buffer Explorer
@@ -641,7 +658,7 @@
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " FormatComment.vim
 
-  map gqc :call FormatComment()
+  map gqc :call FormatComment()<CR>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " SplitJoin.vim
@@ -659,83 +676,105 @@
 
   let g:smartgf_key = 'z'
 
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" vim-multiple-cursors
+
+  " Called once right before you start selecting multiple cursors
+  function! Multiple_cursors_before()
+    if exists(':NeoCompleteLock')==2
+      exe 'NeoCompleteLock'
+    endif
+  endfunction
+
+  " Called once only when the multiple selection is canceled (default <Esc>)
+  function! Multiple_cursors_after()
+    if exists(':NeoCompleteUnlock')==2
+      exe 'NeoCompleteUnlock'
+    endif
+  endfunction
+
+  highlight link multiple_cursors_visual Visual
+  highlight link multiple_cursors_cursor Visual
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " LANGUAGES
 
-" force spell when doing a git commit
-autocmd FileType gitcommit setlocal spell
-autocmd FileType gitcommit setlocal spelllang=en
+  " force spell when doing a git commit
+  autocmd FileType gitcommit setlocal spell
+  autocmd FileType gitcommit setlocal spelllang=en
 
-" Ruby
-let ruby_operators = 1
-let ruby_no_expensive = 1
-let ruby_minlines = 100
+  " Vim-markdown
+  let g:vim_markdown_folding_disabled=1
 
-let g:rubycomplete_buffer_loading = 1
-let g:rubycomplete_classes_in_global = 1
+  " Ruby
+  let ruby_operators = 1
+  let ruby_no_expensive = 1
+  let ruby_minlines = 100
 
-autocmd FileType ruby,eruby set omnifunc=rubycomplete#Complete
+  let g:rubycomplete_buffer_loading = 1
+  let g:rubycomplete_classes_in_global = 1
 
-" Convert hashes to 1.9 syntax
-nmap <leader>h :%s/:\([^=,'"]*\) =>/\1:/gc<CR>
+  autocmd FileType ruby,eruby set omnifunc=rubycomplete#Complete
+
+  " Convert hashes to 1.9 syntax
+  nmap <leader>h :%s/:\([^=,'"]*\) =>/\1:/gc<CR>
 
 
-" vim-github-dashboard
-let g:github_dashboard = { 'username': 'mikekreeki', 'password': $GITHUB_TOKEN }
+  " vim-github-dashboard
+  let g:github_dashboard = { 'username': 'mikekreeki', 'password': $GITHUB_TOKEN }
 
-au BufRead,BufNewFile Rakefile,Capfile,Gemfile set ft=ruby syntax=ruby
+  au BufRead,BufNewFile Rakefile,Capfile,Gemfile set ft=ruby syntax=ruby
 
-"" Rails.vim
+  "" Rails.vim
 
-" displays <% %> correctly
-autocmd User Rails let b:surround_{char2nr('-')} = "<% \r %>"
+  " displays <% %> correctly
+  autocmd User Rails let b:surround_{char2nr('-')} = "<% \r %>"
 
-let g:rails_projections = {
-\  "app/serializers/*_serializer.rb": {
-\    "command": "serializer",
-\    "test": "spec/serializers/%s_spec.rb",
-\    "related": "app/models/%s.rb",
-\     "affinity": "model",
-\    "template": "class %SSerializer < ActiveModel::Serializer\nend"
-\  },
-\  "app/decorators/*_decorator.rb": {
-\    "command": "decorator",
-\    "related": "app/models/%s.rb",
-\    "affinity": "model",
-\    "template": "class %SDecorator < Draper::Decorator\nend",
-\    "test": "spec/decorators/%s_decorator_spec.rb"
-\  },
-\  "app/services/*_service.rb": {
-\    "command": "service",
-\    "template": "class %SService\nend",
-\    "test": "spec/services/%s_service_spec.rb"
-\  },
-\  "app/listeners/*_listener.rb": {
-\    "command": "listener",
-\    "template": "class %SListener\nend",
-\    "test": "spec/listeners/%s_listener_spec.rb"
-\  },
-\  "app/jobs/*_job.rb": {
-\    "command": "job",
-\    "related": "app/models/%s.rb",
-\    "affinity": "model",
-\    "template": "class %SJob\nend",
-\    "test": "spec/jobs/%s_job_spec.rb"
-\   },
-\   "config/routes.rb": {"command": "routes"},
-\   "spec/factories/*.rb": {
-\     "command": "factory",
-\     "affinity": "collection",
-\     "alternate": "app/models/%i.rb",
-\     "related": "db/schema.rb#%s",
-\     "test": "spec/models/%i_test.rb",
-\     "template": "FactoryGirl.define do\n  factory :%i do\n  end\nend",
-\     "keywords": "factory sequence"
-\   },
-\   "spec/features/*_spec.rb": { "command": "feature" },
-\   "spec/requests/*_spec.rb": { "command": "request" },
-\   "app/workers/*_worker.rb": { "command": "worker" },
-\   "app/policies/*_policy.rb": { "command": "policy" },
-\   "app/paths/*_path.rb": { "command": "path" }
-\ }
+  let g:rails_projections = {
+        \  "app/serializers/*_serializer.rb": {
+        \    "command": "serializer",
+        \    "test": "spec/serializers/%s_spec.rb",
+        \    "related": "app/models/%s.rb",
+        \     "affinity": "model",
+        \    "template": "class %SSerializer < ActiveModel::Serializer\nend"
+        \  },
+        \  "app/decorators/*_decorator.rb": {
+        \    "command": "decorator",
+        \    "related": "app/models/%s.rb",
+        \    "affinity": "model",
+        \    "template": "class %SDecorator < Draper::Decorator\nend",
+        \    "test": "spec/decorators/%s_decorator_spec.rb"
+        \  },
+        \  "app/services/*_service.rb": {
+        \    "command": "service",
+        \    "template": "class %SService\nend",
+        \    "test": "spec/services/%s_service_spec.rb"
+        \  },
+        \  "app/listeners/*_listener.rb": {
+        \    "command": "listener",
+        \    "template": "class %SListener\nend",
+        \    "test": "spec/listeners/%s_listener_spec.rb"
+        \  },
+        \  "app/jobs/*_job.rb": {
+        \    "command": "job",
+        \    "related": "app/models/%s.rb",
+        \    "affinity": "model",
+        \    "template": "class %SJob\nend",
+        \    "test": "spec/jobs/%s_job_spec.rb"
+        \   },
+        \   "config/routes.rb": {"command": "routes"},
+        \   "spec/factories/*.rb": {
+        \     "command": "factory",
+        \     "affinity": "collection",
+        \     "alternate": "app/models/%i.rb",
+        \     "related": "db/schema.rb#%s",
+        \     "test": "spec/models/%i_test.rb",
+        \     "template": "FactoryGirl.define do\n  factory :%i do\n  end\nend",
+        \     "keywords": "factory sequence"
+        \   },
+        \   "spec/features/*_spec.rb": { "command": "feature" },
+        \   "spec/requests/*_spec.rb": { "command": "request" },
+        \   "app/workers/*_worker.rb": { "command": "worker" },
+        \   "app/policies/*_policy.rb": { "command": "policy" },
+        \   "app/paths/*_path.rb": { "command": "path" }
+        \ }
