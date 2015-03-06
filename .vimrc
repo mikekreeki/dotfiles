@@ -52,12 +52,17 @@
   Plugin 'rking/vim-ruby-refactoring'
   Plugin 'slim-template/vim-slim'
   Plugin 'othree/html5.vim'
+  Plugin 'derekwyatt/vim-scala'
   Plugin 'pangloss/vim-javascript'
   Plugin 'kchmck/vim-coffee-script'
   Plugin 'othree/javascript-libraries-syntax.vim'
   Plugin 'vim-scripts/FormatComment.vim'
   Plugin 'inkarkat/argtextobj.vim'
   Plugin 'rhysd/committia.vim'
+  Plugin 'mxw/vim-jsx'
+  Plugin 'groenewege/vim-less'
+  Plugin 'justinj/vim-react-snippets'
+  Plugin 'depuracao/vim-rdoc'
 
   Plugin 'airblade/vim-gitgutter'
   Plugin 'janko-m/vim-test'
@@ -66,13 +71,11 @@
   Plugin 'gorkunov/smartgf.vim'
   Plugin 'gregsexton/gitv'
   Plugin 'mattdbridges/bufkill.vim'
-  Plugin 'derekwyatt/vim-scala'
   Plugin 'ktvoelker/sbt-vim'
   " Plugin 'mhinz/vim-startify'
   Plugin 'mattn/gist-vim'
   Plugin 'mattn/webapi-vim'
   Plugin 'junegunn/vim-github-dashboard'
-  Plugin 'mxw/vim-jsx'
   Plugin 'EinfachToll/DidYouMean'
   Plugin 'Shougo/vimproc'
   Plugin 'Shougo/vimshell.vim'
@@ -83,6 +86,11 @@
   Plugin 'KurtPreston/vim-autoformat-rails'
   Plugin 'pelodelfuego/vim-swoop'
   Plugin 'terryma/vim-multiple-cursors'
+  Plugin 'regedarek/ZoomWin'
+  Plugin 'Shougo/unite.vim'
+  Plugin 'kmnk/vim-unite-giti'
+  Plugin 'Shougo/neomru.vim'
+  Plugin 'mattn/ctrlp-launcher'
 
   call vundle#end()
 
@@ -514,6 +522,9 @@
   let g:ctrlp_map = '<c-p>'
   let g:ctrlp_cmd = 'CtrlP'
 
+  let g:ctrlp_max_files = 0
+  let g:ctrlp_extensions = ['buffertag', 'tag', 'line', 'dir']
+
   if executable('ag')
     let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
   endif
@@ -532,13 +543,23 @@
   " index (g:ctrlp_show_hidden, wildignore, g:ctrlp_custom_ignore,
   " g:ctrlp_max_files, g:ctrlp_max_depth, g:ctrlp_follow_symlinks) do not
   " apply when using g:ctrlp_user_command.
-  let g:ctrlp_user_command = 'ag %s -i --nocolor --nogroup --hidden
-        \ --ignore .git
-        \ --ignore .svn
-        \ --ignore .hg
-        \ --ignore .DS_Store
-        \ --ignore "**/*.pyc"
-        \ -g ""'
+  " let g:ctrlp_user_command = 'ag %s -i --nocolor --nogroup --hidden
+  "       \ --ignore .git
+  "       \ --ignore .svn
+  "       \ --ignore .hg
+  "       \ --ignore .DS_Store
+  "       \ --ignore "**/*.pyc"
+  "       \ -g ""'
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" CtrlPLauncher
+
+  map <c-e> :<c-u>CtrlPLauncher<cr>
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Ag.vim
+
+  let g:ag_highlight=1
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Buffer Explorer
@@ -559,7 +580,11 @@
   " nmap <silent> <leader>a :TestSuite<CR>
   " nmap <silent> <leader>l :TestLast<CR>
 
+  let g:test#ruby#rspec#executable = 'bundle exec rspec'
   let g:test#ruby#rspec#options = '--no-color'
+
+  " Not vim-test related
+  map <leader>s :cg quickfix.out \| :call ToggleQuickfixList()<CR>:echo<CR>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Rainbow Parenstheses
@@ -612,6 +637,15 @@
   inoremap <expr><BS>   neocomplete#smart_close_popup()."\<C-h>"
   inoremap <expr><C-y>  neocomplete#close_popup()
   inoremap <expr><C-e>  neocomplete#cancel_popup()
+
+  " let g:neocomplete#enable_auto_select = 1
+
+  " Enable omni completion.
+  autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+  autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+  autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+  autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+  autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " EasyMotion
@@ -697,7 +731,17 @@
   highlight link multiple_cursors_cursor Visual
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" ZoomWin
+
+  nmap <S-Enter> :ZoomWin<CR>
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Unite
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " LANGUAGES
+
+  let g:used_javascript_libs = 'jquery,react,requirejs'
 
   " force spell when doing a git commit
   autocmd FileType gitcommit setlocal spell
