@@ -10,6 +10,7 @@ Thumbs.db
 
 # RVM
 .rvmrc
+.ruby-gemset
 
 # POW
 .powrc
@@ -22,8 +23,12 @@ Thumbs.db
 .swp
 *.swp
 tags
+.smartgf_tags
+.smartgf_tags_date
 
 # RAILS
 .env
 config/mongoid.yml
 config/database.yml
+quickfix.out
+spec/vim_formatter.rb

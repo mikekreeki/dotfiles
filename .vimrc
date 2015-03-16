@@ -17,6 +17,7 @@
   Plugin 'scrooloose/syntastic'
   Plugin 'Shougo/neocomplete.vim'
   Plugin 'Shougo/neosnippet.vim'
+  Bundle 'Shougo/neosnippet-snippets'
   Plugin 'Yggdroot/indentLine'
   Plugin 'kien/rainbow_parentheses.vim'
   Plugin 'Lokaltog/vim-powerline'
@@ -38,14 +39,13 @@
   Plugin 'ntpeters/vim-better-whitespace'
   Plugin 'AndrewRadev/multichange.vim'
   Plugin 'rhysd/conflict-marker.vim'
-  " Plugin 'rhysd/clever-f.vim'
   Plugin 'idanarye/vim-merginal'
 
   Plugin 'rking/ag.vim'
   Plugin 'tpope/vim-fugitive'
   Plugin 'int3/vim-extradite'
   Plugin 'tpope/vim-rvm'
-  " Plugin 'tpope/vim-bundler'
+  Plugin 'tpope/vim-bundler'
 
   Plugin 'tpope/vim-rails'
   Plugin 'vim-ruby/vim-ruby'
@@ -63,6 +63,7 @@
   Plugin 'groenewege/vim-less'
   Plugin 'justinj/vim-react-snippets'
   Plugin 'depuracao/vim-rdoc'
+  Plugin 'mtscout6/vim-cjsx'
 
   Plugin 'airblade/vim-gitgutter'
   Plugin 'janko-m/vim-test'
@@ -91,6 +92,8 @@
   Plugin 'kmnk/vim-unite-giti'
   Plugin 'Shougo/neomru.vim'
   Plugin 'mattn/ctrlp-launcher'
+  Plugin 'tpope/vim-rsi'
+  Plugin 'skwp/greplace.vim'
 
   call vundle#end()
 
@@ -133,9 +136,27 @@
 
   set scrolloff=1
 
+  " Syntax coloring lines that are too long just slows down the world
+  set synmaxcol=300
+
+  " Use only 1 space after "." when joining lines instead of 2
+  set nojoinspaces
+
+  " Don't reset cursor to start of line when moving around
+  set nostartofline
+
+  " show completion on the mode-line
+  set wildmenu
+
+  " Auto-reload buffers when files are changed on disk
+  set autoread
+
   if $TERM == "xterm-256color" || $TERM == "screen-256color" || $COLORTERM == "gnome-terminal"
     set t_Co=256
   endif
+
+  au BufWritePost .vimrc so $MYVIMRC
+  nnoremap <leader>V :e $MYVIMRC<cr>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " INDENTATION
@@ -293,6 +314,10 @@
   set history=250
 
   set updatetime=750
+  set undofile                    " Save undo's after file closes
+  set undodir=~/.vim/undo         " where to save undo histories
+  set undolevels=1000             " How many undos
+  set undoreload=10000            " number of lines to save for undo
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " MOVING BETWEEN FILES
@@ -304,6 +329,8 @@
   set autoread
 
   nmap <leader>s :only<CR>:AV<CR>
+
+  let g:netrw_liststyle = 0
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " MODES
@@ -383,8 +410,8 @@
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " ALIASES
 
-  :command! W w
-  :command! Q q
+  cnoreabbrev W w
+  cnoreabbrev Q q
 
   :command! Stop !spring stop
 
@@ -468,6 +495,10 @@
   highlight! link DiffAdd GitGutterAdd
   highlight! link DiffDelete GitGutterDelete
   highlight! link DiffChange GitGutterChange
+
+  " Make those debugger statements painfully obvious
+  au BufEnter *.rb syn match error contained "\<binding.pry\>"
+  au BufEnter *.rb syn match error contained "\<debugger\>"
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " CONCEAL
@@ -577,10 +608,7 @@
 
   nmap <silent> <leader>R :TestNearest<CR>
   nmap <silent> <leader>r :TestFile<CR>
-  " nmap <silent> <leader>a :TestSuite<CR>
-  " nmap <silent> <leader>l :TestLast<CR>
 
-  let g:test#ruby#rspec#executable = 'bundle exec rspec'
   let g:test#ruby#rspec#options = '--no-color'
 
   " Not vim-test related
@@ -615,7 +643,7 @@
   let g:neocomplete#sources#tags#cache_limit_size = 5000000
 
   let g:neosnippet#enable_snipmate_compatibility = 1
-  let g:neosnippet#snippets_directory='~/.vim/snippets'
+  let g:neosnippet#snippets_directory='~/.vim/bundle/vim-react-snippets/snippets'
 
   imap <C-k>     <Plug>(neosnippet_expand_or_jump)
   smap <C-k>     <Plug>(neosnippet_expand_or_jump)
@@ -736,6 +764,13 @@
   nmap <S-Enter> :ZoomWin<CR>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" greplace.vim
+
+  set grepprg=ag
+
+  let g:grep_cmd_opts = '--line-numbers --noheading'
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Unite
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -763,6 +798,11 @@
   " Convert hashes to 1.9 syntax
   nmap <leader>h :%s/:\([^=,'"]*\) =>/\1:/gc<CR>
 
+  " Treat JSON files like JavaScript
+  au BufNewFile,BufRead *.json setf javascript
+
+  " Make sure all markdown files have the correct filetype
+  au BufRead,BufNewFile *.{md,markdown,mdown,mkd,mkdn,txt} setf markdown
 
   " vim-github-dashboard
   let g:github_dashboard = { 'username': 'mikekreeki', 'password': $GITHUB_TOKEN }

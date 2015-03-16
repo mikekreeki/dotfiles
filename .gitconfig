@@ -54,7 +54,7 @@
   aliases =  config --get-regexp '(alias.*)'
 
 [core]
-	excludesfile = /Users/mikekreeki/.gitignore
+  excludesfile = /Users/mikekreeki/.dotfiles/git/.gitignore
   editor = "mvim -f"
 
 ; [merge]

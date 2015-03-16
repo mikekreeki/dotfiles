@@ -5,7 +5,7 @@ alias ll='ls -GFhl'
 # alias ls='ls -GFhl'
 
 # BUNDLER
-alias bi='bundle install'
+alias bi='bundle install && spring stop'
 
 # RAILS
 alias restart='mkdir -p tmp && touch tmp/restart.txt'
@@ -16,6 +16,7 @@ alias gs='git status -s'
 alias ga='git add'
 
 alias gbr='git branch'
+alias gbf='git branch | cut -c3- | fzf | xargs git checkout'
 alias gcl='git clone'
 alias gco='git checkout'
 
@@ -41,5 +42,6 @@ alias vim="mvim -v"
 
 # NOCORRECT
 
+alias rspec='bin/rspec --format VimFormatter --out quickfix.out --format progress'
 alias mvim='nocorrect mvim'
 alias spring='nocorrect spring'
