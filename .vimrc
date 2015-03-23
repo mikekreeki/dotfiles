@@ -11,89 +11,100 @@
 
   Plugin 'gmarik/Vundle.vim'
 
+  " Navigation plugins
   Plugin 'corntrace/bufexplorer'
-  Plugin 'kien/ctrlp.vim'
   Plugin 'scrooloose/nerdtree'
-  Plugin 'scrooloose/syntastic'
+  Plugin 'kien/ctrlp.vim'
+  Plugin 'mattn/ctrlp-launcher'
+  Plugin 'majutsushi/tagbar'
+  Plugin 'gorkunov/smartgf.vim'
+
+  " Code editing plugins
   Plugin 'Shougo/neocomplete.vim'
   Plugin 'Shougo/neosnippet.vim'
   Bundle 'Shougo/neosnippet-snippets'
   Plugin 'Yggdroot/indentLine'
   Plugin 'kien/rainbow_parentheses.vim'
-  Plugin 'Lokaltog/vim-powerline'
   Plugin 'tpope/vim-commentary'
-  Plugin 'junegunn/vim-easy-align'
-  Plugin 'Lokaltog/vim-easymotion'
   Plugin 'tpope/vim-endwise'
   Plugin 'edsono/vim-matchit'
   Plugin 'tpope/vim-repeat'
-  Plugin 'duff/vim-scratch'
   Plugin 'tpope/vim-surround'
-  Plugin 'majutsushi/tagbar'
-  Plugin 'milkypostman/vim-togglelist'
+  Plugin 'junegunn/vim-easy-align'
   Plugin 'tpope/vim-unimpaired'
   Plugin 'michaeljsmith/vim-indent-object'
   Plugin 'darvelo/vim-autoclose'
   Plugin 'AndrewRadev/splitjoin.vim'
-  Plugin 'airblade/vim-rooter'
-  Plugin 'ntpeters/vim-better-whitespace'
   Plugin 'AndrewRadev/multichange.vim'
-  Plugin 'rhysd/conflict-marker.vim'
-  Plugin 'idanarye/vim-merginal'
+  Plugin 'vim-scripts/FormatComment.vim'
+  Plugin 'inkarkat/argtextobj.vim'
+  Plugin 'gorkunov/smartpairs.vim'
+  Plugin 'kana/vim-textobj-user'
+  Plugin 'nelstrom/vim-textobj-rubyblock'
+  Plugin 'terryma/vim-multiple-cursors'
 
-  Plugin 'rking/ag.vim'
-  Plugin 'tpope/vim-fugitive'
-  Plugin 'int3/vim-extradite'
-  Plugin 'tpope/vim-rvm'
-  Plugin 'tpope/vim-bundler'
+  " Window/buffer management plugins"
+  Plugin 'duff/vim-scratch'
+  Plugin 'milkypostman/vim-togglelist'
+  Plugin 'airblade/vim-rooter'
+  Plugin 'mattdbridges/bufkill.vim'
 
-  Plugin 'tpope/vim-rails'
+  " Code checkers
+  Plugin 'scrooloose/syntastic'
+  Plugin 'ngmy/vim-rubocop'
+
+  " Syntaxes
   Plugin 'vim-ruby/vim-ruby'
-  Plugin 'rking/vim-ruby-refactoring'
   Plugin 'slim-template/vim-slim'
   Plugin 'othree/html5.vim'
   Plugin 'derekwyatt/vim-scala'
   Plugin 'pangloss/vim-javascript'
-  Plugin 'kchmck/vim-coffee-script'
   Plugin 'othree/javascript-libraries-syntax.vim'
-  Plugin 'vim-scripts/FormatComment.vim'
-  Plugin 'inkarkat/argtextobj.vim'
-  Plugin 'rhysd/committia.vim'
+  Plugin 'kchmck/vim-coffee-script'
   Plugin 'mxw/vim-jsx'
   Plugin 'groenewege/vim-less'
   Plugin 'justinj/vim-react-snippets'
   Plugin 'depuracao/vim-rdoc'
   Plugin 'mtscout6/vim-cjsx'
-
-  Plugin 'airblade/vim-gitgutter'
-  Plugin 'janko-m/vim-test'
-  Plugin 'gorkunov/smartpairs.vim'
-  Plugin 'Wolfy87/vim-enmasse'
-  Plugin 'gorkunov/smartgf.vim'
-  Plugin 'gregsexton/gitv'
-  Plugin 'mattdbridges/bufkill.vim'
   Plugin 'ktvoelker/sbt-vim'
-  " Plugin 'mhinz/vim-startify'
+  Plugin 'plasticboy/vim-markdown'
+  Plugin 'rhysd/conflict-marker.vim'
+
+  " Versioning plugins
+  Plugin 'tpope/vim-fugitive'
+  Plugin 'idanarye/vim-merginal'
+  Plugin 'int3/vim-extradite'
+  Plugin 'rhysd/committia.vim'
+  Plugin 'airblade/vim-gitgutter'
+  Plugin 'gregsexton/gitv'
   Plugin 'mattn/gist-vim'
-  Plugin 'mattn/webapi-vim'
-  Plugin 'junegunn/vim-github-dashboard'
-  Plugin 'EinfachToll/DidYouMean'
+
+  " Search plugins
+  Plugin 'Lokaltog/vim-easymotion'
+  Plugin 'rking/ag.vim'
+  Plugin 'skwp/greplace.vim'
+  Plugin 'Wolfy87/vim-enmasse'
+  Plugin 'pelodelfuego/vim-swoop'
+
+  " Interface plugins
+  Plugin 'Lokaltog/vim-powerline'
+  Plugin 'ntpeters/vim-better-whitespace'
+  Plugin 'regedarek/ZoomWin'
+  Plugin 'tpope/vim-rsi'
+
+  " Ruby/Rails environment plugins
+  Plugin 'tpope/vim-rails'
+  Plugin 'tpope/vim-rvm'
+  Plugin 'tpope/vim-bundler'
+  Plugin 'tpope/vim-rake'
+  Plugin 'rking/vim-ruby-refactoring'
+  Plugin 'janko-m/vim-test'
+  Plugin 'KurtPreston/vim-autoformat-rails'
+
+  " Utilities/support plugins
   Plugin 'Shougo/vimproc'
   Plugin 'Shougo/vimshell.vim'
-  Plugin 'kana/vim-textobj-user'
-  Plugin 'nelstrom/vim-textobj-rubyblock'
-  Plugin 'ngmy/vim-rubocop'
-  Plugin 'plasticboy/vim-markdown'
-  Plugin 'KurtPreston/vim-autoformat-rails'
-  Plugin 'pelodelfuego/vim-swoop'
-  Plugin 'terryma/vim-multiple-cursors'
-  Plugin 'regedarek/ZoomWin'
-  Plugin 'Shougo/unite.vim'
-  Plugin 'kmnk/vim-unite-giti'
-  Plugin 'Shougo/neomru.vim'
-  Plugin 'mattn/ctrlp-launcher'
-  Plugin 'tpope/vim-rsi'
-  Plugin 'skwp/greplace.vim'
+  Plugin 'mattn/webapi-vim'
 
   call vundle#end()
 
@@ -627,7 +638,7 @@
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Syntastic
 
-  let g:syntastic_enable_signs = 0
+  let g:syntastic_enable_signs = 1
   let g:syntastic_auto_loc_list = 1
   let g:syntastic_ruby_checkers = ['mri']
 
@@ -803,9 +814,6 @@
 
   " Make sure all markdown files have the correct filetype
   au BufRead,BufNewFile *.{md,markdown,mdown,mkd,mkdn,txt} setf markdown
-
-  " vim-github-dashboard
-  let g:github_dashboard = { 'username': 'mikekreeki', 'password': $GITHUB_TOKEN }
 
   au BufRead,BufNewFile Rakefile,Capfile,Gemfile set ft=ruby syntax=ruby
 
