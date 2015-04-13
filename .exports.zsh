@@ -26,3 +26,5 @@ if [[ -n $SSH_CONNECTION ]]; then
 else
   export EDITOR='mvim'
 fi
+
+# export VIMRUNTIME=/Applications/MacVim.app/Contents/Resources/vim/runtime/nvim

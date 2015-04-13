@@ -48,6 +48,7 @@
   Plugin 'milkypostman/vim-togglelist'
   Plugin 'airblade/vim-rooter'
   Plugin 'mattdbridges/bufkill.vim'
+  Plugin 'fmoralesc/vim-pad'
 
   " Code checkers
   Plugin 'scrooloose/syntastic'
@@ -69,6 +70,7 @@
   Plugin 'ktvoelker/sbt-vim'
   Plugin 'plasticboy/vim-markdown'
   Plugin 'rhysd/conflict-marker.vim'
+  Plugin 'wavded/vim-stylus'
 
   " Versioning plugins
   Plugin 'tpope/vim-fugitive'
@@ -85,6 +87,7 @@
   Plugin 'skwp/greplace.vim'
   Plugin 'Wolfy87/vim-enmasse'
   Plugin 'pelodelfuego/vim-swoop'
+  Plugin 'gabesoft/vim-ags'
 
   " Interface plugins
   Plugin 'Lokaltog/vim-powerline'
@@ -100,6 +103,7 @@
   Plugin 'rking/vim-ruby-refactoring'
   Plugin 'janko-m/vim-test'
   Plugin 'KurtPreston/vim-autoformat-rails'
+  Plugin 'osyo-manga/vim-monster'
 
   " Utilities/support plugins
   Plugin 'Shougo/vimproc'
@@ -201,6 +205,9 @@
 
   " Project search using Ag
   nnoremap <leader>f :Ag!
+
+  " Project search using Ags
+  nnoremap <leader>F :Ags
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " MOVEMENT
@@ -604,6 +611,11 @@
   let g:ag_highlight=1
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Ags
+
+ let g:ags_agexe = 'ag --nocolor'
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Buffer Explorer
 
   let g:bufExplorerShowRelativePath=1
@@ -677,6 +689,9 @@
   inoremap <expr><C-y>  neocomplete#close_popup()
   inoremap <expr><C-e>  neocomplete#cancel_popup()
 
+  let g:neocomplete#sources#omni#input_patterns = {
+  \   "ruby" : '[^. *\t]\.\w*\|\h\w*::',
+  \}
   " let g:neocomplete#enable_auto_select = 1
 
   " Enable omni completion.
@@ -782,7 +797,14 @@
   let g:grep_cmd_opts = '--line-numbers --noheading'
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Unite
+" Pad
+
+  let g:pad#dir = "~/notes/"
+  let g:pad#window_height = 16
+  " let g:pad#position["list"] = 'right'
+  " let g:pad#position["pads"] = 'right'
+  let g:pad#title_first_line = 1
+  let g:pad#open_in_split = 0
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " LANGUAGES
