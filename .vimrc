@@ -90,7 +90,8 @@
   Plugin 'gabesoft/vim-ags'
 
   " Interface plugins
-  Plugin 'Lokaltog/vim-powerline'
+  Plugin 'bling/vim-airline'
+  Plugin 'bling/vim-bufferline'
   Plugin 'ntpeters/vim-better-whitespace'
   Plugin 'regedarek/ZoomWin'
   Plugin 'tpope/vim-rsi'
@@ -169,6 +170,10 @@
   if $TERM == "xterm-256color" || $TERM == "screen-256color" || $COLORTERM == "gnome-terminal"
     set t_Co=256
   endif
+
+  " let &t_8f="\e[38;2;%ld;%ld;%ldm"
+  " let &t_8b="\e[48;2;%ld;%ld;%ldm"
+  " set guicolors
 
   au BufWritePost .vimrc so $MYVIMRC
   nnoremap <leader>V :e $MYVIMRC<cr>
@@ -443,7 +448,6 @@
   set showcmd
 
   set laststatus=2
-  set statusline=[%02n]\ %f\ %(\[%M%R%H]%)%=\ %4l,%02c%2V\ %P%*
 
   " Hide tollbars, scrollbars and other bars
   set shortmess+=I
@@ -613,7 +617,9 @@
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Ags
 
- let g:ags_agexe = 'ag --nocolor'
+  let g:ags_agexe = 'ag --nocolor'
+
+  autocmd BufWinEnter {*.agsv} syntax on
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Buffer Explorer
@@ -805,6 +811,30 @@
   " let g:pad#position["pads"] = 'right'
   let g:pad#title_first_line = 1
   let g:pad#open_in_split = 0
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Airline
+
+  let g:airline_left_sep=''
+  let g:airline_right_sep=''
+  let g:airline_theme='powerlineish'
+  let g:airline#extensions#hunks#non_zero_only = 1
+  let g:airline_section_y=''
+  let g:airline_section_z=''
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Tagbar
+
+  let g:tagbar_type_ruby = {
+      \ 'kinds' : [
+          \ 'm:modules',
+          \ 'c:classes',
+          \ 'd:describes',
+          \ 'C:contexts',
+          \ 'f:methods',
+          \ 'F:singleton methods'
+      \ ]
+  \ }
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " LANGUAGES

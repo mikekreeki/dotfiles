@@ -5,7 +5,7 @@ alias ll='ls -GFhl'
 # alias ls='ls -GFhl'
 
 # BUNDLER
-alias bi='bundle install && spring stop'
+alias bi='bundle install && restart && stop'
 
 # RAILS
 alias restart='mkdir -p tmp && touch tmp/restart.txt'
@@ -35,6 +35,9 @@ alias gsh='git show'
 
 alias gwtf='git wtf'
 alias gwtfa="git branch | sed 's/^..//' | grep '^\d' | xargs git wtf"
+
+# SNX
+alias snxs='echo druSEqE3 | snx'
 
 # VIM
 

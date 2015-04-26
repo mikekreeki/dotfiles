@@ -17,8 +17,7 @@ export PATH="/usr/local/heroku/bin:$PATH"
 PATH=".git/safe/../../bin:$PATH"
 
 # Android SDK
-export PATH="/Users/Kreeki/Development/adt-bundle/sdk/platform-tools:$PATH"
-export PATH="/Users/Kreeki/Development/adt-bundle/sdk/tools:$PATH"
+export ANDROID_HOME=/usr/local/opt/android-sdk
 
 # Preferred editor for local and remote sessions
 if [[ -n $SSH_CONNECTION ]]; then
