@@ -1,5 +1,4 @@
 " GENERAL
-
   set nocompatible
   filetype off
 
@@ -52,6 +51,7 @@
 
   " Code checkers
   Plugin 'scrooloose/syntastic'
+  Plugin 'jaxbot/syntastic-react'
   Plugin 'ngmy/vim-rubocop'
 
   " Syntaxes
@@ -62,15 +62,21 @@
   Plugin 'pangloss/vim-javascript'
   Plugin 'othree/javascript-libraries-syntax.vim'
   Plugin 'kchmck/vim-coffee-script'
-  Plugin 'mxw/vim-jsx'
+  " Plugin 'mxw/vim-jsx'
+  Plugin 'othree/vim-jsx'
   Plugin 'groenewege/vim-less'
-  Plugin 'justinj/vim-react-snippets'
+  " Plugin 'justinj/vim-react-snippets'
+  Plugin 'bentayloruk/vim-react-es6-snippets'
   Plugin 'depuracao/vim-rdoc'
   Plugin 'mtscout6/vim-cjsx'
-  Plugin 'ktvoelker/sbt-vim'
+  " Plugin 'ktvoelker/sbt-vim'
   Plugin 'plasticboy/vim-markdown'
   Plugin 'rhysd/conflict-marker.vim'
   Plugin 'wavded/vim-stylus'
+  Plugin 'othree/yajs.vim'
+  Plugin 'moll/vim-node'
+  " Plugin 'ahayman/vim-nodejs-complete'
+  " Plugin 'isRuslan/vim-es6'
 
   " Versioning plugins
   Plugin 'tpope/vim-fugitive'
@@ -91,7 +97,7 @@
 
   " Interface plugins
   Plugin 'bling/vim-airline'
-  Plugin 'bling/vim-bufferline'
+  " Plugin 'bling/vim-bufferline'
   Plugin 'ntpeters/vim-better-whitespace'
   Plugin 'regedarek/ZoomWin'
   Plugin 'tpope/vim-rsi'
@@ -110,6 +116,14 @@
   Plugin 'Shougo/vimproc'
   Plugin 'Shougo/vimshell.vim'
   Plugin 'mattn/webapi-vim'
+
+  " Colors
+  Plugin 'altercation/vim-colors-solarized'
+  Plugin 'tomasr/molokai'
+  Plugin 'yosiat/oceanic-next-vim'
+  Plugin '29decibel/codeschool-vim-theme'
+  Plugin 'nanotech/jellybeans.vim'
+  Plugin 'inkarkat/SyntaxAttr.vim'
 
   call vundle#end()
 
@@ -330,9 +344,9 @@
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " HISTORY
 
-  set undolevels=1000
-  set nobackup
-  set nowritebackup
+  " set undolevels=1000
+  " set nobackup
+  " set nowritebackup
 
   set history=250
 
@@ -347,9 +361,6 @@
 
   " Switch between the last two files
   nnoremap <leader><leader> <c-^>
-
-  " auto load files if vim detects they have been changed outside of Vim
-  set autoread
 
   nmap <leader>s :only<CR>:AV<CR>
 
@@ -484,35 +495,16 @@
 
   " Theme
   colorscheme railscasts
+  " colorscheme jellybeans
 
   " Font
   set guifont=Monaco:h12
-
-  " Status line
-
-  " Search hightlighting
-  hi Search guibg=#585858 guifg=NONE
-
-  " Cursors
-  highlight Cursor guifg=white guibg=steelblue
 
   set guicursor+=a:blinkon0
   set guicursor+=i:ver10
 
   au InsertLeave * hi Cursor guifg=white guibg=steelblue
   au InsertEnter * hi Cursor guibg=grey
-
-  " highlight CursorLine guibg=#1C1C1C
-  highlight CursorLineNr guibg=NONE guifg=#444444
-  highlight ColorColumn ctermbg=233 guibg=#1C1C1C
-  highlight VertSplit guifg=#585858
-  highlight SignColumn guibg=black
-
-  hi MatchParen guibg=NONE guifg=green gui=bold
-
-  highlight DiffText cterm=bold ctermfg=10 ctermbg=88 gui=none guifg=Red guibg=NONE
-
-  " highlight! link DiffText MatchParen
 
   highlight! link DiffAdd GitGutterAdd
   highlight! link DiffDelete GitGutterDelete
@@ -656,9 +648,18 @@
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Syntastic
 
+  " 4.13. Q. The error window is closed automatically when I :quit the current
+  " buffer but not when I :bdelete it?
+  nnoremap <silent> <C-d> :lclose<CR>:bdelete<CR>
+  cabbrev <silent> bd lclose\|bdelete
+
   let g:syntastic_enable_signs = 1
-  let g:syntastic_auto_loc_list = 1
+  let g:syntastic_always_populate_loc_list = 1
+  let g:syntastic_auto_loc_list = 0
+  let g:syntastic_check_on_open = 1
+  let g:syntastic_check_on_wq = 0
   let g:syntastic_ruby_checkers = ['mri']
+  let g:syntastic_javascript_checkers = ['eslint']
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Neocomplete
@@ -672,11 +673,11 @@
   let g:neocomplete#sources#tags#cache_limit_size = 5000000
 
   let g:neosnippet#enable_snipmate_compatibility = 1
-  let g:neosnippet#snippets_directory='~/.vim/bundle/vim-react-snippets/snippets'
+  let g:neosnippet#snippets_directory='~/.vim/bundle/vim-react-es6-snippets/snippets'
 
-  imap <C-k>     <Plug>(neosnippet_expand_or_jump)
-  smap <C-k>     <Plug>(neosnippet_expand_or_jump)
-  xmap <C-k>     <Plug>(neosnippet_expand_target)
+  imap <C-k> <Plug>(neosnippet_expand_or_jump)
+  smap <C-k> <Plug>(neosnippet_expand_or_jump)
+  xmap <C-k> <Plug>(neosnippet_expand_target)
 
   inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
   function! s:my_cr_function()
@@ -838,6 +839,8 @@
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " LANGUAGES
+
+  map <leader>x	:call SyntaxAttr()<CR>
 
   let g:used_javascript_libs = 'jquery,react,requirejs'
 
