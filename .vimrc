@@ -23,6 +23,7 @@
   Plugin 'Shougo/neosnippet.vim'
   Bundle 'Shougo/neosnippet-snippets'
   Plugin 'Yggdroot/indentLine'
+  Plugin 'nathanaelkane/vim-indent-guides'
   Plugin 'kien/rainbow_parentheses.vim'
   Plugin 'tpope/vim-commentary'
   Plugin 'tpope/vim-endwise'
@@ -41,6 +42,8 @@
   Plugin 'kana/vim-textobj-user'
   Plugin 'nelstrom/vim-textobj-rubyblock'
   Plugin 'terryma/vim-multiple-cursors'
+  Plugin 'vim-scripts/xml.vim'
+  Plugin 'maxbrunsfeld/vim-yankstack'
 
   " Window/buffer management plugins"
   Plugin 'duff/vim-scratch'
@@ -60,23 +63,19 @@
   Plugin 'othree/html5.vim'
   Plugin 'derekwyatt/vim-scala'
   Plugin 'pangloss/vim-javascript'
-  Plugin 'othree/javascript-libraries-syntax.vim'
   Plugin 'kchmck/vim-coffee-script'
-  " Plugin 'mxw/vim-jsx'
-  Plugin 'othree/vim-jsx'
+  Plugin 'mxw/vim-jsx'
   Plugin 'groenewege/vim-less'
-  " Plugin 'justinj/vim-react-snippets'
-  Plugin 'bentayloruk/vim-react-es6-snippets'
+  Plugin 'mikekreeki/vim-react-es6-snippets'
   Plugin 'depuracao/vim-rdoc'
-  Plugin 'mtscout6/vim-cjsx'
-  " Plugin 'ktvoelker/sbt-vim'
   Plugin 'plasticboy/vim-markdown'
   Plugin 'rhysd/conflict-marker.vim'
   Plugin 'wavded/vim-stylus'
   Plugin 'othree/yajs.vim'
   Plugin 'moll/vim-node'
-  " Plugin 'ahayman/vim-nodejs-complete'
-  " Plugin 'isRuslan/vim-es6'
+  Plugin 'millermedeiros/vim-esformatter'
+  Plugin 'mattn/emmet-vim'
+  Plugin 'elzr/vim-json'
 
   " Versioning plugins
   Plugin 'tpope/vim-fugitive'
@@ -94,10 +93,12 @@
   Plugin 'Wolfy87/vim-enmasse'
   Plugin 'pelodelfuego/vim-swoop'
   Plugin 'gabesoft/vim-ags'
+  Plugin 'dyng/ctrlsf.vim'
+  Plugin 'wincent/ferret'
+  Plugin 'osyo-manga/vim-over'
 
   " Interface plugins
   Plugin 'bling/vim-airline'
-  " Plugin 'bling/vim-bufferline'
   Plugin 'ntpeters/vim-better-whitespace'
   Plugin 'regedarek/ZoomWin'
   Plugin 'tpope/vim-rsi'
@@ -135,10 +136,10 @@
 
   set shell=/bin/sh
 
-  if v:version >= 704 " Vim 7.4 and up
-    " Revert to the old regex engine, which is faster for Ruby syntax highlighting
-    set re=1
-  endif
+  " if v:version >= 704 " Vim 7.4 and up
+  "   " Revert to the old regex engine, which is faster for Ruby syntax highlighting
+  "   set re=1
+  " endif
 
   set encoding=utf-8
   set fileencoding=utf-8
@@ -185,10 +186,6 @@
     set t_Co=256
   endif
 
-  " let &t_8f="\e[38;2;%ld;%ld;%ldm"
-  " let &t_8b="\e[48;2;%ld;%ld;%ldm"
-  " set guicolors
-
   au BufWritePost .vimrc so $MYVIMRC
   nnoremap <leader>V :e $MYVIMRC<cr>
 
@@ -225,8 +222,15 @@
   " Project search using Ag
   nnoremap <leader>f :Ag!
 
-  " Project search using Ags
-  nnoremap <leader>F :Ags
+  " Project search using CtrlSF
+  nnoremap <leader>F :CtrlSF
+
+  let g:ctrlsf_auto_close = 0
+  let g:ctrlsf_indent = 0
+  let g:ctrlsf_mapping = {
+    \ "next": "n",
+    \ "prev": "N",
+    \ }
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " MOVEMENT
@@ -265,11 +269,11 @@
   nnoremap ů g;
 
   " Cursorline in active window only
-  " augroup CursorLine
-  "   au!
-  "   au VimEnter,WinEnter,BufWinEnter * setlocal cursorline
-  "   au WinLeave * setlocal nocursorline
-  " augroup END
+  augroup CursorLine
+    au!
+    au VimEnter,WinEnter,BufWinEnter * setlocal cursorline
+    au WinLeave * setlocal nocursorline
+  augroup END
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " EDITING
@@ -379,7 +383,6 @@
   map <left> <ESC>:bp<CR>
 
   nmap <leader>d :BD<CR>
-  " nmap <leader>D :only<CR>
   nmap <leader>D :close<CR>
 
   nnoremap <leader><leader> <c-^>
@@ -474,22 +477,6 @@
     set fu
   end
 
-  " set number
-  " set relativenumber
-  " function! NumberToggle()
-  "   if(&relativenumber == 1)
-  "     set norelativenumber
-  "     set number
-  "   else
-  "     set number
-  "     set relativenumber
-  "   endif
-  " endfunc
-  " nnoremap <F2> :call NumberToggle()<cr>
-
-  " autocmd WinEnter,FocusGained * :setlocal number relativenumber
-  " autocmd WinLeave,FocusLost   * :setlocal number norelativenumber
-
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " THEME AND COLORS
 
@@ -531,6 +518,17 @@
   nnoremap ) :cnext<CR>
   nnoremap ú :cprevious<CR>
 
+  function! GrepQuickFix(pat)
+    let all = getqflist()
+    for d in all
+      if bufname(d['bufnr']) !~ a:pat && d['text'] !~ a:pat
+          call remove(all, index(all,d))
+      endif
+    endfor
+    call setqflist(all)
+  endfunction
+  command! -nargs=* GrepQF call GrepQuickFix(<q-args>)
+
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " NERDTree
 
@@ -559,7 +557,6 @@
   let NERDTreeMinimalUI = 1
   let g:NERDTreeWinSize = 40
   let NERDTreeAutoDeleteBuffer = 1
-
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " CtrlP
@@ -661,6 +658,9 @@
   let g:syntastic_ruby_checkers = ['mri']
   let g:syntastic_javascript_checkers = ['eslint']
 
+  au BufRead,BufNewFile *.json set filetype=json
+  let g:syntastic_json_checkers=['jsonlint']
+
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Neocomplete
 
@@ -671,7 +671,6 @@
   let g:neocomplete#enable_smart_case = 1
 
   let g:neocomplete#sources#tags#cache_limit_size = 5000000
-
   let g:neosnippet#enable_snipmate_compatibility = 1
   let g:neosnippet#snippets_directory='~/.vim/bundle/vim-react-es6-snippets/snippets'
 
@@ -704,7 +703,6 @@
   " Enable omni completion.
   autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
   autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
-  autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
   autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
   autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
 
@@ -713,11 +711,8 @@
 
   let g:EasyMotion_smartcase = 1
   let g:EasyMotion_move_highlight = 0
-  " let g:EasyMotion_leader_key = '<leader>e'
 
   map <Leader>y <Plug>(easymotion-prefix)
-
-  " nmap F <Plug>(easymotion-s)
 
   nmap / <Plug>(easymotion-sn)
   omap / <Plug>(easymotion-tn)
@@ -864,8 +859,9 @@
   " Convert hashes to 1.9 syntax
   nmap <leader>h :%s/:\([^=,'"]*\) =>/\1:/gc<CR>
 
-  " Treat JSON files like JavaScript
-  au BufNewFile,BufRead *.json setf javascript
+  let g:vim_json_syntax_conceal = 0
+
+  let g:jsx_ext_required = 0
 
   " Make sure all markdown files have the correct filetype
   au BufRead,BufNewFile *.{md,markdown,mdown,mkd,mkdn,txt} setf markdown

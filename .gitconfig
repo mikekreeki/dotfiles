@@ -28,8 +28,8 @@
   save = !git add -A && git commit -m 'WIP'
   amend=commit --amend --reuse-message HEAD
 
-  ff=merge --ff-only
-  noff=merge --no-ff
+  ff = merge --ff-only
+  noff = merge --no-ff
 
   r = reset
   r1 = reset HEAD^
@@ -46,7 +46,7 @@
 
   blame = brame -w
 
-  churn= "!f() { git log --all -M -C --name-only --format='format:' \"$@\" | sort | grep -v '^$' | uniq -c | sort | awk 'BEGIN {print \"count\tfile\"} {print $1 \"\t\" $2}' | sort -g; }; f"
+  churn = "!f() { git log --all -M -C --name-only --format='format:' \"$@\" | sort | grep -v '^$' | uniq -c | sort | awk 'BEGIN {print \"count\tfile\"} {print $1 \"\t\" $2}' | sort -g; }; f"
 
   pr = "!open \"$(git remote -v | grep origin | grep push | cut -f 2 | cut -d \" \" -f 1 | sed -e \"s|https://github.com/\\(.*\\)/\\(.*\\).git|https://github.com/\\1/\\2|\")/pull/new/$(git rev-parse --abbrev-ref HEAD)\""
   gh = "!open \"$(git remote -v | grep origin | grep push | cut -f 2 | cut -d \" \" -f 1 | sed -e \"s|https://github.com/\\(.*\\)/\\(.*\\).git|https://github.com/\\1/\\2|\")/tree/$(git rev-parse --abbrev-ref HEAD)\""
