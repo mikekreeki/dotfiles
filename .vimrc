@@ -44,6 +44,7 @@
   Plugin 'terryma/vim-multiple-cursors'
   Plugin 'vim-scripts/xml.vim'
   Plugin 'maxbrunsfeld/vim-yankstack'
+  Plugin 'marijnh/tern_for_vim'
 
   " Window/buffer management plugins"
   Plugin 'duff/vim-scratch'
@@ -401,7 +402,7 @@
   nmap <TAB> <C-W>w
 
   " Resize splits when the window is resized
-  au VimResized * exe "normal! \<c-w>="
+  autocmd VimResized * wincmd =
 
   map <C-h> <C-w>h
   map <C-j> <C-w>j
@@ -862,6 +863,10 @@
   let g:vim_json_syntax_conceal = 0
 
   let g:jsx_ext_required = 0
+
+  set omnifunc=syntaxcomplete#Complete
+  let g:tern_show_argument_hints='no'
+  let g:tern_map_keys=0
 
   " Make sure all markdown files have the correct filetype
   au BufRead,BufNewFile *.{md,markdown,mdown,mkd,mkdn,txt} setf markdown
