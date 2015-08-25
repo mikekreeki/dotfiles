@@ -44,7 +44,8 @@
   Plugin 'terryma/vim-multiple-cursors'
   Plugin 'vim-scripts/xml.vim'
   Plugin 'maxbrunsfeld/vim-yankstack'
-  Plugin 'marijnh/tern_for_vim'
+  Plugin 'grassdog/tagman.vim'
+  Plugin 'alvan/vim-closetag'
 
   " Window/buffer management plugins"
   Plugin 'duff/vim-scratch'
@@ -52,6 +53,7 @@
   Plugin 'airblade/vim-rooter'
   Plugin 'mattdbridges/bufkill.vim'
   Plugin 'fmoralesc/vim-pad'
+  Plugin 'romainl/vim-qlist'
 
   " Code checkers
   Plugin 'scrooloose/syntastic'
@@ -120,11 +122,6 @@
   Plugin 'mattn/webapi-vim'
 
   " Colors
-  Plugin 'altercation/vim-colors-solarized'
-  Plugin 'tomasr/molokai'
-  Plugin 'yosiat/oceanic-next-vim'
-  Plugin '29decibel/codeschool-vim-theme'
-  Plugin 'nanotech/jellybeans.vim'
   Plugin 'inkarkat/SyntaxAttr.vim'
 
   call vundle#end()
@@ -438,6 +435,10 @@
   " Remove trailing whitespace before save
   autocmd BufWritePre * :call Preserve("%s/\\s\\+$//e")
 
+  function! DoubleQuotes()
+    s/\'\(.*\)\'/\"\1\"
+  endfunction
+
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " MAPPINGS
 
@@ -483,7 +484,6 @@
 
   " Theme
   colorscheme railscasts
-  " colorscheme jellybeans
 
   " Font
   set guifont=Monaco:h12
@@ -577,7 +577,8 @@
   " CtrlP + NERDTree integration
   " When NERDTree CWD changes, CtrlP picks that up. Super cool.
   let g:NERDTreeChDirMode       = 2
-  let g:ctrlp_working_path_mode = 'rw'
+  " let g:ctrlp_working_path_mode = 'rw'
+  let g:ctrlp_working_path_mode = 0
 
   let g:ctrlp_show_hidden = 1
   let g:ctrlp_use_caching=0
@@ -832,6 +833,16 @@
           \ 'F:singleton methods'
       \ ]
   \ }
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" vim-rooter
+
+  let g:rooter_patterns = ['gulpfile.js', '.git/']
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" vim-closetag
+
+  let g:closetag_filenames = "*.html,*.xhtml,*.phtml,*.xml,*.jsx"
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " LANGUAGES

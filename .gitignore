@@ -33,3 +33,6 @@ tags
 .env
 config/mongoid.yml
 config/database.yml
+
+# JS
+.tern-project
