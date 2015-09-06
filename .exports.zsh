@@ -26,4 +26,7 @@ else
   export EDITOR='mvim'
 fi
 
+# Nvim
+export NVIM_TUI_ENABLE_TRUE_COLOR=1
+
 # export VIMRUNTIME=/Applications/MacVim.app/Contents/Resources/vim/runtime/nvim

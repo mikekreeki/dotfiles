@@ -75,6 +75,7 @@
   Plugin 'rhysd/conflict-marker.vim'
   Plugin 'wavded/vim-stylus'
   Plugin 'othree/yajs.vim'
+  Plugin 'othree/es.next.syntax.vim'
   Plugin 'moll/vim-node'
   Plugin 'millermedeiros/vim-esformatter'
   Plugin 'mattn/emmet-vim'
