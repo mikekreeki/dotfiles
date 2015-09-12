@@ -7,3 +7,5 @@ source ~/.dotfiles/.exports.zsh
 source ~/.dotfiles/.setopt.zsh
 source ~/.dotfiles/.custom.zsh
 source ~/.dotfiles/mikekreeki.zsh-theme
+
+test -e ${HOME}/.iterm2_shell_integration.zsh && source ${HOME}/.iterm2_shell_integration.zsh

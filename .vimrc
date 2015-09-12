@@ -65,7 +65,7 @@
   Plugin 'slim-template/vim-slim'
   Plugin 'othree/html5.vim'
   Plugin 'derekwyatt/vim-scala'
-  Plugin 'pangloss/vim-javascript'
+  " Plugin 'pangloss/vim-javascript'
   Plugin 'kchmck/vim-coffee-script'
   Plugin 'mxw/vim-jsx'
   Plugin 'groenewege/vim-less'
@@ -838,12 +838,18 @@
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " vim-rooter
 
-  let g:rooter_patterns = ['gulpfile.js', '.git/']
+  let g:rooter_patterns = ['gulpfile.js', 'gulpfile.babel.js', '.git/']
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " vim-closetag
 
   let g:closetag_filenames = "*.html,*.xhtml,*.phtml,*.xml,*.jsx"
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" vim-closetag
+
+  let tern_show_argument_hints = 'on_hold'
+  let tern_show_signature_in_pum = 1
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " LANGUAGES
