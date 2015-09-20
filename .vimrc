@@ -67,7 +67,7 @@
   Plugin 'derekwyatt/vim-scala'
   " Plugin 'pangloss/vim-javascript'
   Plugin 'kchmck/vim-coffee-script'
-  Plugin 'mxw/vim-jsx'
+  Plugin 'othree/vim-jsx'
   Plugin 'groenewege/vim-less'
   Plugin 'mikekreeki/vim-react-es6-snippets'
   Plugin 'depuracao/vim-rdoc'
@@ -106,6 +106,7 @@
   Plugin 'ntpeters/vim-better-whitespace'
   Plugin 'regedarek/ZoomWin'
   Plugin 'tpope/vim-rsi'
+  Plugin 'sjl/vitality.vim'
 
   " Ruby/Rails environment plugins
   Plugin 'tpope/vim-rails'
@@ -124,6 +125,7 @@
 
   " Colors
   Plugin 'inkarkat/SyntaxAttr.vim'
+  Plugin 'yosiat/oceanic-next-vim'
 
   call vundle#end()
 
@@ -495,10 +497,6 @@
   au InsertLeave * hi Cursor guifg=white guibg=steelblue
   au InsertEnter * hi Cursor guibg=grey
 
-  highlight! link DiffAdd GitGutterAdd
-  highlight! link DiffDelete GitGutterDelete
-  highlight! link DiffChange GitGutterChange
-
   " Make those debugger statements painfully obvious
   au BufEnter *.rb syn match error contained "\<binding.pry\>"
   au BufEnter *.rb syn match error contained "\<debugger\>"
@@ -785,9 +783,6 @@
       exe 'NeoCompleteUnlock'
     endif
   endfunction
-
-  highlight link multiple_cursors_visual Visual
-  highlight link multiple_cursors_cursor Visual
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " ZoomWin
