@@ -24,7 +24,7 @@
   Bundle 'Shougo/neosnippet-snippets'
   Plugin 'Yggdroot/indentLine'
   Plugin 'nathanaelkane/vim-indent-guides'
-  Plugin 'kien/rainbow_parentheses.vim'
+  " Plugin 'kien/rainbow_parentheses.vim'
   Plugin 'tpope/vim-commentary'
   Plugin 'tpope/vim-endwise'
   Plugin 'edsono/vim-matchit'
@@ -42,7 +42,7 @@
   Plugin 'kana/vim-textobj-user'
   Plugin 'nelstrom/vim-textobj-rubyblock'
   Plugin 'terryma/vim-multiple-cursors'
-  Plugin 'vim-scripts/xml.vim'
+  " Plugin 'vim-scripts/xml.vim'
   Plugin 'maxbrunsfeld/vim-yankstack'
   Plugin 'grassdog/tagman.vim'
   Plugin 'alvan/vim-closetag'
@@ -65,9 +65,8 @@
   Plugin 'slim-template/vim-slim'
   Plugin 'othree/html5.vim'
   Plugin 'derekwyatt/vim-scala'
-  " Plugin 'pangloss/vim-javascript'
+  Plugin 'pangloss/vim-javascript'
   Plugin 'kchmck/vim-coffee-script'
-  Plugin 'othree/vim-jsx'
   Plugin 'groenewege/vim-less'
   Plugin 'mikekreeki/vim-react-es6-snippets'
   Plugin 'depuracao/vim-rdoc'
@@ -76,10 +75,11 @@
   Plugin 'wavded/vim-stylus'
   Plugin 'othree/yajs.vim'
   Plugin 'othree/es.next.syntax.vim'
-  Plugin 'moll/vim-node'
-  Plugin 'millermedeiros/vim-esformatter'
+  Plugin 'mxv/vim-jsx'
+  " Plugin 'moll/vim-node'
+  " Plugin 'millermedeiros/vim-esformatter'
   Plugin 'mattn/emmet-vim'
-  Plugin 'elzr/vim-json'
+  " Plugin 'elzr/vim-json'
 
   " Versioning plugins
   Plugin 'tpope/vim-fugitive'
@@ -636,12 +636,12 @@
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Rainbow Parenstheses
 
-  nnoremap <leader>p :RainbowParenthesesToggle<CR>
+  " nnoremap <leader>p :RainbowParenthesesToggle<CR>
 
-  " au VimEnter * RainbowParenthesesToggle
-  au Syntax * RainbowParenthesesLoadRound
-  au Syntax * RainbowParenthesesLoadSquare
-  au Syntax * RainbowParenthesesLoadBraces
+  " " au VimEnter * RainbowParenthesesToggle
+  " au Syntax * RainbowParenthesesLoadRound
+  " au Syntax * RainbowParenthesesLoadSquare
+  " au Syntax * RainbowParenthesesLoadBraces
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Syntastic
@@ -653,11 +653,13 @@
 
   let g:syntastic_enable_signs = 1
   let g:syntastic_always_populate_loc_list = 1
-  let g:syntastic_auto_loc_list = 0
   let g:syntastic_check_on_open = 1
   let g:syntastic_check_on_wq = 0
   let g:syntastic_ruby_checkers = ['mri']
   let g:syntastic_javascript_checkers = ['eslint']
+
+  let g:syntastic_auto_loc_list = 0
+  let g:syntastic_loc_list_height = 3
 
   au BufRead,BufNewFile *.json set filetype=json
   let g:syntastic_json_checkers=['jsonlint']
@@ -833,7 +835,7 @@
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " vim-rooter
 
-  let g:rooter_patterns = ['gulpfile.js', 'gulpfile.babel.js', '.git/']
+  let g:rooter_patterns = ['package.json', '.git/']
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " vim-closetag

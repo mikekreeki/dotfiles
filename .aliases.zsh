@@ -4,6 +4,11 @@ alias pwdc='pwd | pbcopy'
 alias ll='ls -GFhl'
 # alias ls='ls -GFhl'
 
+# RUBYGEMS
+alias gi='gem install'
+alias gu='gem update'
+alias gx='gem uninstall'
+
 # BUNDLER
 alias bi='bundle install && restart && stop'
 

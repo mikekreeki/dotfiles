@@ -12,6 +12,9 @@ Thumbs.db
 .rvmrc
 .ruby-gemset
 
+# NVM
+.node-version
+
 # POW
 .powrc
 .powenv
