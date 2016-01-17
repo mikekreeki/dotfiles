@@ -23,7 +23,7 @@ export ANDROID_HOME=/usr/local/opt/android-sdk
 if [[ -n $SSH_CONNECTION ]]; then
   export EDITOR='vim'
 else
-  export EDITOR='mvim'
+  export EDITOR='nvim'
 fi
 
 # Nvim

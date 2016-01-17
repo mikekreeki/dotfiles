@@ -12,9 +12,12 @@ alias gx='gem uninstall'
 # BUNDLER
 alias bi='bundle install && restart && stop'
 
+# RSPEC
+alias rspec='bin/rspec --format VimFormatter --out quickfix.out --format progress'
+
 # RAILS
 alias restart='mkdir -p tmp && touch tmp/restart.txt'
-alias stop='spring stop'
+alias stop='spring stop 2>/dev/null'
 
 # GIT
 alias gs='git status -s'
@@ -47,11 +50,8 @@ alias gh='git gh'
 alias snxs='echo druSEqE3 | snx'
 
 # VIM
-
-alias vim="mvim -v"
+alias vim='nvim'
+alias mvim='nvim'
 
 # NOCORRECT
-
-alias rspec='bin/rspec --format VimFormatter --out quickfix.out --format progress'
-alias mvim='nocorrect mvim'
 alias spring='nocorrect spring'

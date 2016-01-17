@@ -55,7 +55,7 @@
 
 [core]
   excludesfile = /Users/mikekreeki/.dotfiles/git/.gitignore
-  editor = "mvim -f"
+  editor = "vim"
 
 ; [merge]
 ;   conflictstyle = diff3
