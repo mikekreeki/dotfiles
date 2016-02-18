@@ -6,12 +6,14 @@ Plug 'gorkunov/smartgf.vim'
 Plug 'kien/ctrlp.vim'
 Plug 'scrooloose/nerdtree'
 Plug 'tpope/vim-unimpaired'
+" Plug 'fholgado/minibufexpl.vim'
 
 " Interface
 Plug 'bling/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 Plug 'inkarkat/SyntaxAttr.vim'
 Plug 'milkypostman/vim-togglelist'
-Plug 'nathanaelkane/vim-indent-guides'
+" Plug 'nathanaelkane/vim-indent-guides'
 Plug 'regedarek/ZoomWin'
 Plug 'tpope/vim-rsi'
 
@@ -78,13 +80,17 @@ Plug 'mustache/vim-mustache-handlebars'
 Plug 'mxw/vim-jsx'
 Plug 'othree/es.next.syntax.vim'
 Plug 'othree/yajs.vim'
-Plug 'pangloss/vim-javascript'
+" Plug 'pangloss/vim-javascript'
 Plug 'ternjs/tern_for_vim', { 'do': 'npm install' }
 Plug 'othree/jspc.vim'
 " Plug 'bigfish/vim-js-context-coloring', { 'do': 'npm install' }
+Plug 'mephux/vim-jsfmt'
 
 " CoffeeScript Integration
 Plug 'kchmck/vim-coffee-script'
+
+" Elm Integration
+Plug 'lambdatoast/elm.vim'
 
 " CSS Integration
 Plug 'wavded/vim-stylus'
@@ -100,8 +106,12 @@ Plug 'xolox/vim-notes'
 " Terminal Integration
 Plug 'kassio/neoterm'
 
+" Documentation
+Plug 'rhysd/devdocs.vim'
+
 " Colorschemes
-Plug 'mikekreeki/mikekreeki.vim'
+" Plug 'mikekreeki/mikekreeki-colors.vim', { 'branch': 'refactoring' }
+Plug '~/Projects/mikekreeki-colors.vim'
 
 call plug#end()
 
@@ -224,7 +234,7 @@ nnoremap <silent> <Space> :nohlsearch<Bar>:redraw<Bar>:echo<CR>
 
 " Project search using Ag
 " nnoremap <leader>f :Ag!
-nnoremap <leader>f :Grepper! -tool ag -open -switch<CR>
+nnoremap <leader>f :Grepper -tool ag -open -switch<CR>
 
 " Cursorline in active window only
 augroup CursorLine
@@ -395,8 +405,8 @@ let g:neomake_error_sign = {
   \ }
 
 let g:neomake_warning_sign = {
-    \ 'text': '•',
-    \ 'texthl': 'WarningMsg',
+    \ 'text': '✖',
+    \ 'texthl': 'Special',
     \ }
 
 :command! G Gstatus
@@ -410,14 +420,17 @@ let g:deoplete#enable_at_startup = 1
 let g:deoplete#enable_smart_case = 1
 let g:deoplete#auto_completion_start_length = 0
 
-inoremap <silent><expr><Tab>
-		\ pumvisible() ? "\<C-n>" :
-		\ deoplete#mappings#manual_complete()
+" inoremap <silent><expr><Tab>
+" 		\ pumvisible() ? "\<C-n>" :
+" 		\ deoplete#mappings#manual_complete()
 
-inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
+inoremap <silent><expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
+inoremap <silent><expr><s-tab> pumvisible() ? "\<c-p>" : "\<s-tab>"
+
 function! s:my_cr_function()
-  return deoplete#mappings#close_popup() . "\<CR>"
+  return pumvisible() ? deoplete#mappings#close_popup() : "\<CR>"
 endfunction
+inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
 
 tnoremap <Esc> <C-\><C-n>
 
@@ -507,4 +520,21 @@ let g:smartgf_key = 'Z'
 let g:tern_show_argument_hints='on_hold'
 let g:tern_show_signature_in_pum = 1
 
-" nnoremap <CR> za
+" nnoremap <Left> :MBEbb<CR>
+" nnoremap <Right> :MBEbf<CR>
+
+nmap D <Plug>(devdocs-under-cursor)
+
+if has('nvim')
+  nnoremap <leader>t  :vsplit +terminal<cr>
+  tnoremap <esc>      <c-\><c-n>
+  tnoremap <a-h>      <c-\><c-n><c-w>h
+  tnoremap <a-j>      <c-\><c-n><c-w>j
+  tnoremap <a-k>      <c-\><c-n><c-w>k
+  tnoremap <a-l>      <c-\><c-n><c-w>l
+  autocmd BufEnter term://* startinsert
+  let $NVIM_TUI_ENABLE_CURSOR_SHAPE = 1
+endif
+
+autocmd BufEnter * :echo
+

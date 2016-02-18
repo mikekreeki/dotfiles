@@ -35,3 +35,9 @@ config/mongoid.yml
 config/database.yml
 quickfix.out
 spec/vim_formatter.rb
+
+# JS
+.tern-project
+
+# git_stats
+git_stats/
