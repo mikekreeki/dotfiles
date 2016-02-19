@@ -28,8 +28,8 @@ alias gbf='git branch | cut -c3- | fzf | xargs git checkout'
 alias gcl='git clone'
 alias gco='git checkout'
 
-alias gd='git diff'
-alias gdc='git diff --cached'
+alias gd='git diff --color $@ | diff-so-fancy | less --tabs=1,5 -RFX'
+alias gdc='git diff --cached --color $@ | diff-so-fancy | less --tabs=1,5 -RFX'
 alias gdm='git diff master..HEAD'
 
 alias gci='git commit'

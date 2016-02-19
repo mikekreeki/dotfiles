@@ -61,6 +61,7 @@ Plug 'tpope/vim-git'
 
 " Building, Linters, Test Runners
 Plug 'benekastah/neomake'
+Plug 'benjie/neomake-local-eslint.vim'
 Plug 'janko-m/vim-test'
 
 " Ruby Integration
@@ -81,7 +82,7 @@ Plug 'mxw/vim-jsx'
 Plug 'othree/es.next.syntax.vim'
 Plug 'othree/yajs.vim'
 " Plug 'pangloss/vim-javascript'
-Plug 'ternjs/tern_for_vim', { 'do': 'npm install' }
+" Plug 'ternjs/tern_for_vim', { 'do': 'npm install' }
 Plug 'othree/jspc.vim'
 " Plug 'bigfish/vim-js-context-coloring', { 'do': 'npm install' }
 Plug 'mephux/vim-jsfmt'
@@ -396,6 +397,7 @@ au BufRead,BufNewFile Rakefile,Capfile,Gemfile set ft=ruby syntax=ruby
 au BufRead,BufNewFile .eslintrc set ft=json syntax=json
 
 let g:neomake_javascript_enabled_makers = ['eslint']
+let g:neomake_jsx_enabled_makers = ['eslint']
 let g:neomake_ruby_enabled_makers = ['mri', 'rubocop']
 
 autocmd! BufWinEnter,BufWritePost * Neomake
@@ -517,8 +519,8 @@ let g:neomake_verbose=0
 
 let g:smartgf_key = 'Z'
 
-let g:tern_show_argument_hints='on_hold'
-let g:tern_show_signature_in_pum = 1
+" let g:tern_show_argument_hints='on_hold'
+" let g:tern_show_signature_in_pum = 1
 
 " nnoremap <Left> :MBEbb<CR>
 " nnoremap <Right> :MBEbf<CR>
