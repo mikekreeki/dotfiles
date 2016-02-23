@@ -28,8 +28,8 @@
   save = !git add -A && git commit -m 'WIP'
   amend=commit --amend --reuse-message HEAD
 
-  ff = merge --ff-only
-  noff = merge --no-ff
+  ff=merge --ff-only
+  noff=merge --no-ff
 
   r = reset
   r1 = reset HEAD^
@@ -44,21 +44,19 @@
   ls= log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate
   ld= log --pretty=format:"%C(yellow)%h\\ %ad%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --date=short
 
-  blame = brame -w
-
-  churn = "!f() { git log --all -M -C --name-only --format='format:' \"$@\" | sort | grep -v '^$' | uniq -c | sort | awk 'BEGIN {print \"count\tfile\"} {print $1 \"\t\" $2}' | sort -g; }; f"
+  churn= "!f() { git log --all -M -C --name-only --format='format:' \"$@\" | sort | grep -v '^$' | uniq -c | sort | awk 'BEGIN {print \"count\tfile\"} {print $1 \"\t\" $2}' | sort -g; }; f"
 
   pr = "!open \"$(git remote -v | grep origin | grep push | cut -f 2 | cut -d \" \" -f 1 | sed -e \"s|https://github.com/\\(.*\\)/\\(.*\\).git|https://github.com/\\1/\\2|\")/pull/new/$(git rev-parse --abbrev-ref HEAD)\""
   gh = "!open \"$(git remote -v | grep origin | grep push | cut -f 2 | cut -d \" \" -f 1 | sed -e \"s|https://github.com/\\(.*\\)/\\(.*\\).git|https://github.com/\\1/\\2|\")/tree/$(git rev-parse --abbrev-ref HEAD)\""
 
   aliases =  config --get-regexp '(alias.*)'
 
-[core]
-  excludesfile = /Users/mikekreeki/.dotfiles/git/.gitignore
-  editor = "vim"
+  wip = "!f() { git add -A; git ls-files --deleted -z | xargs -0 git rm; git commit -m \"--wip--\";}; f"
+  unwip = "!f() { gunwip; }; f"
+	conflicts = !git ls-files -u | cut -f 2 | sort -u
 
-; [merge]
-;   conflictstyle = diff3
+[core]
+  excludesfile = ~/.dotfiles/git/.gitignore
 
 [branch]
   autosetuprebase = always
@@ -74,8 +72,19 @@
   helper = osxkeychain
 
 [filter "media"]
-  clean = git-media-clean %f
-  smudge = git-media-smudge %f
+  required = true
+  clean = git media clean %f
+  smudge = git media smudge %f
+
+[filter "hawser"]
+  required = true
+  clean = git hawser clean %f
+  smudge = git hawser smudge %f
+
+[filter "lfs"]
+  required = true
+  clean = git-lfs clean %f
+  smudge = git-lfs smudge %f
 
 [diff]
   renames = copies
@@ -89,3 +98,27 @@
 
 [git-up "bundler"]
   autoinstall = true
+  check = true
+
+[github]
+  user = mikekreeki
+
+[pre-commit]
+  ruby = rvm-auto-ruby
+
+[status]
+  showUntrackedFiles = all
+
+[color "diff-highlight"]
+  oldNormal = red bold
+  oldHighlight = red bold 52
+  newNormal = green bold
+  newHighlight = green bold 22
+
+[color "diff"]
+  meta = yellow bold
+  commit = green bold
+  frag = magenta bold
+  old = red bold
+  new = green bold
+  whitespace = red reverse

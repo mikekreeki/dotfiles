@@ -539,4 +539,4 @@ if has('nvim')
 endif
 
 autocmd BufEnter * :echo
-
+autocmd BufWritePost * :echo
