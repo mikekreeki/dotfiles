@@ -13,6 +13,9 @@ export PATH="/usr/local/share/npm/bin:$PATH"
 # Heroku Toolbelt
 export PATH="/usr/local/heroku/bin:$PATH"
 
+# Coreutils from Homebrew
+export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
+
 # Bundler Binstubs
 PATH=".git/safe/../../bin:$PATH"
 

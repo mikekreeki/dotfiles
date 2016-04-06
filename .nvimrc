@@ -7,6 +7,7 @@ Plug 'kien/ctrlp.vim'
 Plug 'scrooloose/nerdtree'
 Plug 'tpope/vim-unimpaired'
 " Plug 'fholgado/minibufexpl.vim'
+Plug 'tpope/vim-projectionist'
 
 " Interface
 Plug 'bling/vim-airline'
@@ -86,6 +87,7 @@ Plug 'othree/yajs.vim'
 Plug 'othree/jspc.vim'
 " Plug 'bigfish/vim-js-context-coloring', { 'do': 'npm install' }
 Plug 'mephux/vim-jsfmt'
+Plug 'jparise/vim-graphql'
 
 " CoffeeScript Integration
 Plug 'kchmck/vim-coffee-script'
@@ -107,12 +109,14 @@ Plug 'xolox/vim-notes'
 " Terminal Integration
 Plug 'kassio/neoterm'
 
-" Documentation
-Plug 'rhysd/devdocs.vim'
-
 " Colorschemes
 " Plug 'mikekreeki/mikekreeki-colors.vim', { 'branch': 'refactoring' }
 Plug '~/Projects/mikekreeki-colors.vim'
+
+" Experiments
+Plug 'joonty/vdebug'
+Plug 'blindFS/vim-taskwarrior'
+Plug 'rhysd/devdocs.vim'
 
 call plug#end()
 
