@@ -425,6 +425,7 @@ let g:UltiSnipsExpandTrigger="<c-k>"
 let g:deoplete#enable_at_startup = 1
 let g:deoplete#enable_smart_case = 1
 let g:deoplete#auto_completion_start_length = 0
+let g:deoplete#file#enable_buffer_path = 1
 
 " inoremap <silent><expr><Tab>
 " 		\ pumvisible() ? "\<C-n>" :
