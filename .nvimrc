@@ -1,12 +1,11 @@
 call plug#begin('~/.nvim/plugged')
 
-" Buffer, File Navigation
+" Buffer/File Navigation
 Plug 'corntrace/bufexplorer'
 Plug 'gorkunov/smartgf.vim'
 Plug 'kien/ctrlp.vim'
 Plug 'scrooloose/nerdtree'
 Plug 'tpope/vim-unimpaired'
-" Plug 'fholgado/minibufexpl.vim'
 Plug 'tpope/vim-projectionist'
 
 " Interface
@@ -14,7 +13,6 @@ Plug 'bling/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'inkarkat/SyntaxAttr.vim'
 Plug 'milkypostman/vim-togglelist'
-" Plug 'nathanaelkane/vim-indent-guides'
 Plug 'regedarek/ZoomWin'
 Plug 'tpope/vim-rsi'
 
@@ -34,7 +32,8 @@ Plug 'Shougo/neopairs.vim'
 " Code Editing
 Plug 'Yggdroot/indentLine'
 Plug 'alvan/vim-closetag'
-Plug 'darvelo/vim-autoclose'
+" Plug 'darvelo/vim-autoclose'
+Plug 'jiangmiao/auto-pairs'
 Plug 'edsono/vim-matchit'
 Plug 'gorkunov/smartpairs.vim'
 Plug 'junegunn/vim-easy-align'
@@ -44,8 +43,6 @@ Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-endwise'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
-
-" Snippets
 Plug 'SirVer/ultisnips'
 
 " Project Management
@@ -53,7 +50,6 @@ Plug 'airblade/vim-rooter'
 
 " Git Integration
 Plug 'airblade/vim-gitgutter'
-Plug 'idanarye/vim-merginal'
 Plug 'int3/vim-extradite'
 Plug 'rhysd/committia.vim'
 Plug 'rhysd/conflict-marker.vim'
@@ -62,7 +58,7 @@ Plug 'tpope/vim-git'
 
 " Building, Linters, Test Runners
 Plug 'benekastah/neomake'
-Plug 'benjie/neomake-local-eslint.vim'
+Plug 'jaawerth/neomake-local-eslint-first'
 Plug 'janko-m/vim-test'
 
 " Ruby Integration
@@ -82,12 +78,9 @@ Plug 'mustache/vim-mustache-handlebars'
 Plug 'mxw/vim-jsx'
 Plug 'othree/es.next.syntax.vim'
 Plug 'othree/yajs.vim'
-" Plug 'pangloss/vim-javascript'
-" Plug 'ternjs/tern_for_vim', { 'do': 'npm install' }
 Plug 'othree/jspc.vim'
-" Plug 'bigfish/vim-js-context-coloring', { 'do': 'npm install' }
-Plug 'mephux/vim-jsfmt'
 Plug 'jparise/vim-graphql'
+Plug 'heavenshell/vim-jsdoc'
 
 " CoffeeScript Integration
 Plug 'kchmck/vim-coffee-script'
@@ -110,13 +103,9 @@ Plug 'xolox/vim-notes'
 Plug 'kassio/neoterm'
 
 " Colorschemes
-" Plug 'mikekreeki/mikekreeki-colors.vim', { 'branch': 'refactoring' }
-Plug '~/Projects/mikekreeki-colors.vim'
+Plug 'mikekreeki/mikekreeki-colors.vim'
+" Plug '~/Projects/mikekreeki-colors.vim'
 
-" Experiments
-Plug 'joonty/vdebug'
-Plug 'blindFS/vim-taskwarrior'
-Plug 'rhysd/devdocs.vim'
 
 call plug#end()
 
@@ -238,7 +227,6 @@ nnoremap <leader>V :e $MYVIMRC<CR>
 nnoremap <silent> <Space> :nohlsearch<Bar>:redraw<Bar>:echo<CR>
 
 " Project search using Ag
-" nnoremap <leader>f :Ag!
 nnoremap <leader>f :Grepper -tool ag -open -switch<CR>
 
 " Cursorline in active window only
@@ -400,21 +388,6 @@ let g:jsx_ext_required = 0
 au BufRead,BufNewFile Rakefile,Capfile,Gemfile set ft=ruby syntax=ruby
 au BufRead,BufNewFile .eslintrc set ft=json syntax=json
 
-let g:neomake_javascript_enabled_makers = ['eslint']
-let g:neomake_jsx_enabled_makers = ['eslint']
-let g:neomake_ruby_enabled_makers = ['mri', 'rubocop']
-
-autocmd! BufWinEnter,BufWritePost * Neomake
-
-let g:neomake_error_sign = {
-  \ 'texthl': 'WarningMsg',
-  \ }
-
-let g:neomake_warning_sign = {
-    \ 'text': '✖',
-    \ 'texthl': 'Special',
-    \ }
-
 :command! G Gstatus
 
 "Always open help files in a rightward vertical split
@@ -426,10 +399,6 @@ let g:deoplete#enable_at_startup = 1
 let g:deoplete#enable_smart_case = 1
 let g:deoplete#auto_completion_start_length = 0
 let g:deoplete#file#enable_buffer_path = 1
-
-" inoremap <silent><expr><Tab>
-" 		\ pumvisible() ? "\<C-n>" :
-" 		\ deoplete#mappings#manual_complete()
 
 inoremap <silent><expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
 inoremap <silent><expr><s-tab> pumvisible() ? "\<c-p>" : "\<s-tab>"
@@ -488,14 +457,6 @@ nmap <silent> <leader>g :TestVisit<CR>
 " let test#strategy = "neoterm"
 let test#base#no_colors = 0
 
-" function! MyFoldText()
-"   let nl = v:foldend - v:foldstart + 1
-"   let comment = substitute(getline(v:foldstart),"^ *","",1)
-"   let linetext = substitute(getline(v:foldstart+1),"^ *","",1)
-"   let txt = '+ ' . linetext . ' : "' . comment . '" : length ' . nl
-"   return txt
-" endfunction
-
 function! MyFoldText()
   let nl = v:foldend - v:foldstart + 1
   let comment = substitute(getline(v:foldstart),"^ *","",1)
@@ -509,9 +470,6 @@ set foldenable
 set foldlevel=1
 set foldtext=MyFoldText()
 
-" autocmd BufWrite * mkview
-" autocmd BufRead * silent loadview
-
 let g:indentLine_fileTypeExclude = ['notes']
 autocmd FileType notes setlocal wrap
 autocmd FileType notes setlocal colorcolumn=
@@ -520,17 +478,7 @@ com! FormatJSON %!python -m json.tool
 
 au Filetype notes setlocal nonumber
 
-let g:neomake_verbose=0
-
 let g:smartgf_key = 'Z'
-
-" let g:tern_show_argument_hints='on_hold'
-" let g:tern_show_signature_in_pum = 1
-
-" nnoremap <Left> :MBEbb<CR>
-" nnoremap <Right> :MBEbf<CR>
-
-nmap D <Plug>(devdocs-under-cursor)
 
 if has('nvim')
   nnoremap <leader>t  :vsplit +terminal<cr>
@@ -545,3 +493,24 @@ endif
 
 autocmd BufEnter * :echo
 autocmd BufWritePost * :echo
+
+nmap <silent> <C-l> ?function<cr>:noh<cr><Plug>(jsdoc)
+
+autocmd! BufEnter,BufWritePost * Neomake
+
+let g:neomake_javascript_enabled_makers = ['eslint']
+let g:neomake_jsx_enabled_makers = ['eslint']
+let g:neomake_open_list = 0
+let g:neomake_verbose = 0
+
+let g:neomake_error_sign = {
+  \ 'texthl': 'WarningMsg',
+  \ }
+
+let g:neomake_warning_sign = {
+  \ 'text': '✖',
+  \ 'texthl': 'Special',
+  \ }
+
+" Fix autoread in neovim
+autocmd BufEnter,FocusGained * checktime

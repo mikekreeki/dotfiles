@@ -54,6 +54,7 @@
   wip = "!f() { git add -A; git ls-files --deleted -z | xargs -0 git rm; git commit -m \"--wip--\";}; f"
   unwip = "!f() { gunwip; }; f"
 	conflicts = !git ls-files -u | cut -f 2 | sort -u
+	up = !git fetch && git rebase --autostash FETCH_HEAD
 
 [core]
   excludesfile = ~/.dotfiles/git/.gitignore
