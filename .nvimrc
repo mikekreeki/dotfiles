@@ -23,6 +23,10 @@ Plug 'mhinz/vim-grepper'
 
 " Autocomplete
 Plug 'Shougo/context_filetype.vim'
+function! DoRemote(arg)
+  UpdateRemotePlugins
+endfunction
+Plug 'Shougo/deoplete.nvim', { 'do': function('DoRemote') }
 Plug 'Shougo/deoplete.nvim'
 Plug 'Shougo/echodoc.vim'
 Plug 'Shougo/neco-syntax'
@@ -44,6 +48,9 @@ Plug 'tpope/vim-endwise'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
 Plug 'SirVer/ultisnips'
+Plug 'Shougo/neosnippet'
+Plug 'Shougo/neosnippet-snippets'
+Plug 'honza/vim-snippets'
 
 " Project Management
 Plug 'airblade/vim-rooter'
@@ -57,7 +64,8 @@ Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-git'
 
 " Building, Linters, Test Runners
-Plug 'benekastah/neomake'
+" Plug 'benekastah/neomake'
+Plug '~/Projects/neomake'
 Plug 'jaawerth/neomake-local-eslint-first'
 Plug 'janko-m/vim-test'
 
@@ -69,6 +77,7 @@ Plug 'slim-template/vim-slim'
 Plug 'tpope/vim-bundler'
 Plug 'tpope/vim-rails'
 Plug 'vim-ruby/vim-ruby'
+Plug 'tpope/vim-rvm'
 
 " JavaScript Integration
 Plug 'elzr/vim-json'
@@ -81,6 +90,7 @@ Plug 'othree/yajs.vim'
 Plug 'othree/jspc.vim'
 Plug 'jparise/vim-graphql'
 Plug 'heavenshell/vim-jsdoc'
+Plug 'marijnh/tern_for_vim', { 'do': 'npm install' }
 
 " CoffeeScript Integration
 Plug 'kchmck/vim-coffee-script'
@@ -90,6 +100,7 @@ Plug 'lambdatoast/elm.vim'
 
 " CSS Integration
 Plug 'wavded/vim-stylus'
+Plug 'gorodinskiy/vim-coloresque'
 
 " Other Languages
 Plug 'sheerun/vim-polyglot'
@@ -106,7 +117,7 @@ Plug 'kassio/neoterm'
 Plug 'mikekreeki/mikekreeki-colors.vim'
 " Plug '~/Projects/mikekreeki-colors.vim'
 
-
+Plug 'vimyum/viske'
 call plug#end()
 
 filetype plugin indent on
@@ -131,6 +142,7 @@ set mouse=
 set nobackup
 set noswapfile
 set lazyredraw
+set ttyfast
 set scrolloff=1
 set synmaxcol=300
 set nojoinspaces
@@ -371,7 +383,7 @@ let g:airline_section_z=''
 
 let g:rooter_patterns = ['package.json', '.git/']
 
-let g:closetag_filenames = "*.html,*.xhtml,*.phtml,*.xml,*.jsx,*.react.js"
+let g:closetag_filenames = "*.html,*.xhtml,*.phtml,*.xml,*.jsx,*.react.js,*.js"
 
 map <leader>x :call SyntaxAttr()<CR>
 
@@ -500,6 +512,7 @@ autocmd! BufEnter,BufWritePost * Neomake
 
 let g:neomake_javascript_enabled_makers = ['eslint']
 let g:neomake_jsx_enabled_makers = ['eslint']
+let g:neomake_ruby_enabled_makers = []
 let g:neomake_open_list = 0
 let g:neomake_verbose = 0
 
@@ -514,3 +527,76 @@ let g:neomake_warning_sign = {
 
 " Fix autoread in neovim
 autocmd BufEnter,FocusGained * checktime
+
+" Disable line numbers and colorcolumn in quickfix
+autocmd FileType qf setlocal colorcolumn=0
+autocmd FileType qf setlocal nonumber
+
+vnoremap <silent> s :sort ui<CR>
+
+" " show existing tab with 4 spaces width
+" set tabstop=4
+" " when indenting with '>', use 4 spaces width
+" set shiftwidth=4
+" " On pressing tab, insert 4 spaces
+" set expandtab
+
+hi NonText guifg=black ctermfg=black
+
+function ToggleTreeAndTagsPanes()
+    let breakpoint = 200
+
+    if &columns == 0
+      return
+    endif
+
+    if &columns > breakpoint
+      silent! NERDTree
+      wincmd p
+      silent! TagbarOpen
+    endif
+
+    if &columns < breakpoint
+      silent! NERDTreeClose
+      silent! TagbarClose
+    endif
+
+    redraw!
+endfunction
+autocmd VimEnter * call ToggleTreeAndTagsPanes()
+autocmd VimResized * call ToggleTreeAndTagsPanes()
+
+autocmd WinEnter * call s:CloseIfOnlyNerdTreeLeft()
+
+" Close all open buffers on entering a window if the only
+" buffer that's left is the NERDTree buffer
+function! s:CloseIfOnlyNerdTreeLeft()
+  if exists("t:NERDTreeBufName")
+    if bufwinnr(t:NERDTreeBufName) != -1
+      if winnr("$") == 1
+        q
+      endif
+    endif
+  endif
+endfunction
+
+imap <C-K>     <Plug>(neosnippet_expand_or_jump)
+smap <C-K>     <Plug>(neosnippet_expand_or_jump)
+xmap <C-K>     <Plug>(neosnippet_expand_target)
+
+smap <expr><Space> neosnippet#expandable_or_jumpable() ?
+\ "\<Plug>(neosnippet_expand_or_jump)" : "\<Space>"
+
+" Called once right before you start selecting multiple cursors
+function! Multiple_cursors_before()
+  if exists(':NeoCompleteLock')==2
+    let b:deoplete_disable_auto_complete=1
+  endif
+endfunction
+
+" Called once only when the multiple selection is canceled (default <Esc>)
+function! Multiple_cursors_after()
+  if exists(':NeoCompleteUnlock')==2
+    let b:deoplete_disable_auto_complete=0
+  endif
+endfunction
