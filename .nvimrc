@@ -27,7 +27,6 @@ function! DoRemote(arg)
   UpdateRemotePlugins
 endfunction
 Plug 'Shougo/deoplete.nvim', { 'do': function('DoRemote') }
-Plug 'Shougo/deoplete.nvim'
 Plug 'Shougo/echodoc.vim'
 Plug 'Shougo/neco-syntax'
 Plug 'Shougo/neoinclude.vim'
@@ -51,6 +50,7 @@ Plug 'SirVer/ultisnips'
 Plug 'Shougo/neosnippet'
 Plug 'Shougo/neosnippet-snippets'
 Plug 'honza/vim-snippets'
+" Plug 'xolox/vim-easytags'
 
 " Project Management
 Plug 'airblade/vim-rooter'
@@ -91,6 +91,7 @@ Plug 'othree/jspc.vim'
 Plug 'jparise/vim-graphql'
 Plug 'heavenshell/vim-jsdoc'
 Plug 'marijnh/tern_for_vim', { 'do': 'npm install' }
+" Plug 'carlitux/deoplete-ternjs'
 
 " CoffeeScript Integration
 Plug 'kchmck/vim-coffee-script'
@@ -114,8 +115,8 @@ Plug 'xolox/vim-notes'
 Plug 'kassio/neoterm'
 
 " Colorschemes
-Plug 'mikekreeki/mikekreeki-colors.vim'
-" Plug '~/Projects/mikekreeki-colors.vim'
+" Plug 'mikekreeki/mikekreeki-colors.vim'
+Plug '~/Projects/mikekreeki-colors.vim'
 
 Plug 'vimyum/viske'
 call plug#end()
@@ -142,7 +143,6 @@ set mouse=
 set nobackup
 set noswapfile
 set lazyredraw
-set ttyfast
 set scrolloff=1
 set synmaxcol=300
 set nojoinspaces
@@ -238,16 +238,6 @@ nnoremap <leader>V :e $MYVIMRC<CR>
 " Press Space to turn off highlighting and clear any message already displayed.
 nnoremap <silent> <Space> :nohlsearch<Bar>:redraw<Bar>:echo<CR>
 
-" Project search using Ag
-nnoremap <leader>f :Grepper -tool ag -open -switch<CR>
-
-" Cursorline in active window only
-augroup CursorLine
-  au!
-  au VimEnter,WinEnter,BufWinEnter * setlocal cursorline
-  au WinLeave * setlocal nocursorline
-augroup END
-
 " Visually select the text that was last edited/pasted
 nnoremap gV `[v`]
 
@@ -270,22 +260,6 @@ nmap <TAB> <C-W>w
 " Resize splits when the window is resized
 autocmd VimResized * wincmd =
 
-" Remove trailing whitespace before save
-function! Preserve(command)
-  " Preparation: save last search, and cursor position.
-  let _s=@/
-  let l = line(".")
-  let c = col(".")
-  " Do the business:
-  execute a:command
-  " Clean up: restore previous search history, and cursor position
-  let @/=_s
-  call cursor(l, c)
-endfunction
-nmap _$ :call Preserve("%s/\\s\\+$//e")<CR>
-nmap _= :call Preserve("normal gg=G")<CR>
-autocmd BufWritePre * :call Preserve("%s/\\s\\+$//e")
-
 cnoreabbrev W w
 cnoreabbrev Q q
 
@@ -299,304 +273,478 @@ set guicursor+=i:ver10
 " au InsertLeave * hi Cursor guifg=white guibg=steelblue
 " au InsertEnter * hi Cursor guibg=grey
 
-" Shortcuts for navigating between quickfix results
-nnoremap ) :cnext<CR>
-nnoremap ú :cprevious<CR>
-
-function! OpenNERDTree()
-  "" Check if NERDTree is open
-  if exists("t:NERDTreeBufName")
-    let s:ntree = bufwinnr(t:NERDTreeBufName)
-  else
-    let s:ntree = -1
-  endif
-
-  if (s:ntree != -1)
-    "" If NERDTree is open, close it.
-    :NERDTreeClose
-  else
-    :NERDTreeFind
-  endif
-endfunction
-
-" Toggle NERDTree
-nnoremap <silent> q :call OpenNERDTree()<CR>
-
-" Focus file in current buffer in NERDTree
-nnoremap <silent> Q :NERDTreeFind<CR>
-
-let NERDTreeMinimalUI = 1
-let g:NERDTreeWinSize = 40
-let NERDTreeAutoDeleteBuffer = 1
-
-let g:ctrlp_map = '<c-p>'
-let g:ctrlp_cmd = 'CtrlP'
-
-let g:ctrlp_max_files = 0
-let g:ctrlp_extensions = ['buffertag', 'tag', 'line', 'dir']
-
-if executable('ag')
-  let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
-endif
-
-let g:ctrlp_match_window = 'bottom,order:ttb'
-let g:ctrlp_reuse_window = 'netrw'
-
-" When NERDTree CWD changes, CtrlP picks that up. Super cool.
-let g:NERDTreeChDirMode       = 2
-let g:ctrlp_working_path_mode = 0
-
-let g:ctrlp_show_hidden = 1
-let g:ctrlp_use_caching=0
-
 let g:ag_highlight=1
-
-let g:bufExplorerShowRelativePath=1
-let g:bufExplorerSplitOutPathName=0
-
-nnoremap <silent> <leader><TAB> :Scratch<CR>
-
-let g:EasyMotion_smartcase = 1
-let g:EasyMotion_move_highlight = 0
-
-map <Leader>y <Plug>(easymotion-prefix)
-
-nmap / <Plug>(easymotion-sn)
-omap / <Plug>(easymotion-tn)
-nmap n <Plug>(easymotion-next)
-nmap N <Plug>(easymotion-prev)
-
-vmap <Enter> <Plug>(EasyAlign)
-
-let g:extradite_width = 80
-
-let g:gitgutter_sign_column_always = 1
-
-nmap <S-Enter> :ZoomWin<CR>
-
-let g:airline_left_sep=''
-let g:airline_right_sep=''
-let g:airline_theme='powerlineish'
-let g:airline#extensions#hunks#non_zero_only = 1
-let g:airline_section_y=''
-let g:airline_section_z=''
-
-let g:rooter_patterns = ['package.json', '.git/']
-
-let g:closetag_filenames = "*.html,*.xhtml,*.phtml,*.xml,*.jsx,*.react.js,*.js"
-
-map <leader>x :call SyntaxAttr()<CR>
-
-let ruby_operators = 1
-let ruby_no_expensive = 1
-let ruby_minlines = 100
-
-let g:rubycomplete_buffer_loading = 1
-let g:rubycomplete_classes_in_global = 1
-
-let g:vim_json_syntax_conceal = 0
-let g:jsx_ext_required = 0
-
-au BufRead,BufNewFile Rakefile,Capfile,Gemfile set ft=ruby syntax=ruby
-au BufRead,BufNewFile .eslintrc set ft=json syntax=json
-
-:command! G Gstatus
 
 "Always open help files in a rightward vertical split
 autocmd FileType help,gitcommit wincmd L
-
-let g:UltiSnipsExpandTrigger="<c-k>"
-
-let g:deoplete#enable_at_startup = 1
-let g:deoplete#enable_smart_case = 1
-let g:deoplete#auto_completion_start_length = 0
-let g:deoplete#file#enable_buffer_path = 1
-
-inoremap <silent><expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
-inoremap <silent><expr><s-tab> pumvisible() ? "\<c-p>" : "\<s-tab>"
-
-function! s:my_cr_function()
-  return pumvisible() ? deoplete#mappings#close_popup() : "\<CR>"
-endfunction
-inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
-
-tnoremap <Esc> <C-\><C-n>
-
-let g:indent_guides_exclude_filetypes = ['help', 'nerdtree', 'terminal']
-
-let g:neoterm_position = 'vertical'
-
-autocmd TermOpen * set number
-autocmd TermOpen * set wfw
-
-function! OpenTerminal()
-  :80vs
-  :terminal
-  " :lw
-  " :copen
-  " :bnext
-endfunction
-:command! TT call OpenTerminal()
-
-let g:echodoc_enable_at_startup = 1
-
-vnoremap ' <esc>:call QuickWrap("'")<cr>
-vnoremap " <esc>:call QuickWrap('"')<cr>
-
-function! QuickWrap(wrapper)
-  let l:w = a:wrapper
-  let l:inside_or_around = (&selection == 'exclusive') ? ('i') : ('a')
-  normal `>
-  execute "normal " . inside_or_around . escape(w, '\')
-  normal `<
-  execute "normal i" . escape(w, '\')
-  normal `<
-endfunction
-
-let g:smartgf_key = 'z'
-
-nnoremap S :SplitjoinJoin<cr>
-nnoremap s :SplitjoinSplit<cr>
-
-nmap T :TagbarToggle<CR>:echo<CR>
-
-nmap <silent> <leader>R :TestNearest<CR>
-nmap <silent> <leader>r :TestFile<CR>
-nmap <silent> <leader>a :TestSuite<CR>
-nmap <silent> <leader>l :TestLast<CR>
-nmap <silent> <leader>g :TestVisit<CR>
-
-" let test#strategy = "neoterm"
-let test#base#no_colors = 0
-
-function! MyFoldText()
-  let nl = v:foldend - v:foldstart + 1
-  let comment = substitute(getline(v:foldstart),"^ *","",1)
-  let txt = comment . ' (' . nl . ' lines)'
-  return txt
-endfunction
-
-set foldmethod=manual
-set foldnestmax=10
-set foldenable
-set foldlevel=1
-set foldtext=MyFoldText()
-
-let g:indentLine_fileTypeExclude = ['notes']
-autocmd FileType notes setlocal wrap
-autocmd FileType notes setlocal colorcolumn=
-
-com! FormatJSON %!python -m json.tool
-
-au Filetype notes setlocal nonumber
-
-let g:smartgf_key = 'Z'
-
-if has('nvim')
-  nnoremap <leader>t  :vsplit +terminal<cr>
-  tnoremap <esc>      <c-\><c-n>
-  tnoremap <a-h>      <c-\><c-n><c-w>h
-  tnoremap <a-j>      <c-\><c-n><c-w>j
-  tnoremap <a-k>      <c-\><c-n><c-w>k
-  tnoremap <a-l>      <c-\><c-n><c-w>l
-  autocmd BufEnter term://* startinsert
-  let $NVIM_TUI_ENABLE_CURSOR_SHAPE = 1
-endif
 
 autocmd BufEnter * :echo
 autocmd BufWritePost * :echo
 
 nmap <silent> <C-l> ?function<cr>:noh<cr><Plug>(jsdoc)
 
-autocmd! BufEnter,BufWritePost * Neomake
-
-let g:neomake_javascript_enabled_makers = ['eslint']
-let g:neomake_jsx_enabled_makers = ['eslint']
-let g:neomake_ruby_enabled_makers = []
-let g:neomake_open_list = 0
-let g:neomake_verbose = 0
-
-let g:neomake_error_sign = {
-  \ 'texthl': 'WarningMsg',
-  \ }
-
-let g:neomake_warning_sign = {
-  \ 'text': '✖',
-  \ 'texthl': 'Special',
-  \ }
-
-" Fix autoread in neovim
-autocmd BufEnter,FocusGained * checktime
-
-" Disable line numbers and colorcolumn in quickfix
-autocmd FileType qf setlocal colorcolumn=0
-autocmd FileType qf setlocal nonumber
-
 vnoremap <silent> s :sort ui<CR>
-
-" " show existing tab with 4 spaces width
-" set tabstop=4
-" " when indenting with '>', use 4 spaces width
-" set shiftwidth=4
-" " On pressing tab, insert 4 spaces
-" set expandtab
 
 hi NonText guifg=black ctermfg=black
 
-function ToggleTreeAndTagsPanes()
-    let breakpoint = 200
+" Faster split resizing
+if bufwinnr(1)
+  map + <C-W>>
+  map - <C-W><
+endif
 
-    if &columns == 0
-      return
+augroup easymotion_config
+  autocmd!
+
+  let g:EasyMotion_smartcase = 1
+  let g:EasyMotion_move_highlight = 0
+
+  map <Leader>y <Plug>(easymotion-prefix)
+
+  nmap / <Plug>(easymotion-sn)
+  omap / <Plug>(easymotion-tn)
+  nmap n <Plug>(easymotion-next)
+  nmap N <Plug>(easymotion-prev)
+augroup END
+
+augroup neomake_config
+  autocmd!
+
+  autocmd! BufEnter,BufWritePost * Neomake
+
+  " let g:neomake_javascript_enabled_makers = ['eslint']
+  " let g:neomake_jsx_enabled_makers = ['eslint']
+  let g:neomake_ruby_enabled_makers = []
+  let g:neomake_open_list = 0
+  let g:neomake_verbose = 0
+
+  let g:neomake_error_sign = {
+    \ 'texthl': 'WarningMsg',
+    \ }
+
+  let g:neomake_warning_sign = {
+    \ 'text': '✖',
+    \ 'texthl': 'Special',
+    \ }
+augroup END
+
+augroup easytags_config
+  let g:easytags_cmd = '/Users/mikekreeki/.nvm/versions/node/v5.5.0/bin/jsctags'
+  let g:easytags_file = '~/.vimtags'
+  let g:easytags_updatetime_warn = 0
+  let g:easytags_events = ['BufReadPost', 'BufWritePost']
+  let g:tagbar_compact = 1
+  let g:tagbar_iconchars = ['▸', '▾']
+
+  let g:easytags_languages = {
+        \   'javascript': {
+        \       'cmd': g:easytags_cmd,
+        \       'args': [],
+        \       'fileoutput_opt': '-f',
+        \       'stdout_opt': '-f-',
+        \       'recurse_flag': '-R'
+        \   }
+    \}
+augroup END
+
+augroup nerdtree_config
+  autocmd!
+
+  function! OpenNERDTree()
+    "" Check if NERDTree is open
+    if exists("t:NERDTreeBufName")
+      let s:ntree = bufwinnr(t:NERDTreeBufName)
+    else
+      let s:ntree = -1
     endif
 
-    if &columns > breakpoint
-      silent! NERDTree
-      wincmd p
-      silent! TagbarOpen
+    if (s:ntree != -1)
+      "" If NERDTree is open, close it.
+      :NERDTreeClose
+    else
+      :NERDTreeFind
     endif
+  endfunction
 
-    if &columns < breakpoint
-      silent! NERDTreeClose
-      silent! TagbarClose
-    endif
+  " Toggle NERDTree
+  nnoremap <silent> q :call OpenNERDTree()<CR>
 
-    redraw!
-endfunction
-autocmd VimEnter * call ToggleTreeAndTagsPanes()
-autocmd VimResized * call ToggleTreeAndTagsPanes()
+  " Focus file in current buffer in NERDTree
+  nnoremap <silent> Q :NERDTreeFind<CR>
 
-autocmd WinEnter * call s:CloseIfOnlyNerdTreeLeft()
+  let NERDTreeMinimalUI = 1
+  let g:NERDTreeWinSize = 40
+  let NERDTreeAutoDeleteBuffer = 1
 
-" Close all open buffers on entering a window if the only
-" buffer that's left is the NERDTree buffer
-function! s:CloseIfOnlyNerdTreeLeft()
-  if exists("t:NERDTreeBufName")
-    if bufwinnr(t:NERDTreeBufName) != -1
-      if winnr("$") == 1
-        q
+  " When NERDTree CWD changes, CtrlP picks that up. Super cool.
+  let g:NERDTreeChDirMode = 2
+
+  " Close vim when NERDTree is the last open buffer
+  function! s:CloseIfOnlyNerdTreeLeft()
+    if exists("t:NERDTreeBufName")
+      if bufwinnr(t:NERDTreeBufName) != -1
+        if winnr("$") == 1
+          qa
+        endif
       endif
     endif
+  endfunction
+  autocmd WinEnter * call s:CloseIfOnlyNerdTreeLeft()
+
+  " Hide NERDTree on small screen
+  function ToggleNERDTreeOnSmallScreen()
+      let breakpoint = 200
+
+      if &columns == 0
+        return
+      endif
+
+      if &columns > breakpoint
+        if exists("t:NERDTreeBufName")
+          if bufwinnr(t:NERDTreeBufName) == -1
+            silent! NERDTree
+            wincmd p
+          endif
+        endif
+      endif
+
+      if &columns < breakpoint
+        if exists("t:NERDTreeBufName")
+          if bufwinnr(t:NERDTreeBufName) != -1
+            silent! NERDTreeClose
+            wincmd p
+          endif
+        endif
+      endif
+
+      redraw!
+  endfunction
+  autocmd VimEnter * call ToggleNERDTreeOnSmallScreen()
+  autocmd VimResized * call ToggleNERDTreeOnSmallScreen()
+augroup END
+
+augroup ctrlp_config
+  autocmd!
+
+  let g:ctrlp_map = '<c-p>'
+  let g:ctrlp_cmd = 'CtrlP'
+
+  let g:ctrlp_max_files = 0
+  let g:ctrlp_extensions = ['buffertag', 'tag', 'line', 'dir']
+
+  if executable('ag')
+    let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
   endif
-endfunction
 
-imap <C-K>     <Plug>(neosnippet_expand_or_jump)
-smap <C-K>     <Plug>(neosnippet_expand_or_jump)
-xmap <C-K>     <Plug>(neosnippet_expand_target)
+  let g:ctrlp_match_window = 'bottom,order:ttb'
+  let g:ctrlp_reuse_window = 'netrw'
 
-smap <expr><Space> neosnippet#expandable_or_jumpable() ?
-\ "\<Plug>(neosnippet_expand_or_jump)" : "\<Space>"
+  let g:ctrlp_working_path_mode = 0
 
-" Called once right before you start selecting multiple cursors
-function! Multiple_cursors_before()
-  if exists(':NeoCompleteLock')==2
-    let b:deoplete_disable_auto_complete=1
+  let g:ctrlp_show_hidden = 1
+  let g:ctrlp_use_caching=0
+augroup END
+
+augroup airline_config
+  autocmd!
+
+  let g:airline_left_sep=''
+  let g:airline_right_sep=''
+  let g:airline_theme='powerlineish'
+  let g:airline#extensions#hunks#non_zero_only = 1
+  let g:airline_section_y=''
+  let g:airline_section_z=''
+augroup END
+
+augroup neosnippet_config
+  autocmd!
+
+  imap <C-K> <Plug>(neosnippet_expand_or_jump)
+  smap <C-K> <Plug>(neosnippet_expand_or_jump)
+  xmap <C-K> <Plug>(neosnippet_expand_target)
+
+  smap <expr><Space> neosnippet#expandable_or_jumpable() ?
+  \ "\<Plug>(neosnippet_expand_or_jump)" : "\<Space>"
+augroup END
+
+augroup neovim_config
+  autocmd!
+
+  if has('nvim')
+    " Fix autoread in neovim
+    autocmd BufEnter,FocusGained * checktime
+
+    nnoremap <leader>t :vsplit +terminal<cr>
+    tnoremap <esc> <c-\><c-n>
+    tnoremap <a-h> <c-\><c-n><c-w>h
+    tnoremap <a-j> <c-\><c-n><c-w>j
+    tnoremap <a-k> <c-\><c-n><c-w>k
+    tnoremap <a-l> <c-\><c-n><c-w>l
+    tnoremap <Esc> <C-\><C-n>
+    autocmd BufEnter term://* startinsert
+
+    let $NVIM_TUI_ENABLE_CURSOR_SHAPE = 1
   endif
-endfunction
+augroup END
 
-" Called once only when the multiple selection is canceled (default <Esc>)
-function! Multiple_cursors_after()
-  if exists(':NeoCompleteUnlock')==2
-    let b:deoplete_disable_auto_complete=0
+augroup quickfix_config
+  autocmd!
+
+  " Disable line numbers and colorcolumn in quickfix
+  autocmd FileType qf setlocal colorcolumn=0
+  autocmd FileType qf setlocal nonumber
+
+  " Shortcuts for navigating between quickfix results
+  nnoremap ) :cnext<CR>
+  nnoremap ú :cprevious<CR>
+augroup END
+
+augroup cursorline_config
+  autocmd!
+
+  " Cursorline in active window only
+  au VimEnter,WinEnter,BufWinEnter * setlocal cursorline
+  au WinLeave * setlocal nocursorline
+augroup END
+
+augroup indentLine_config
+  autocmd!
+
+  let g:indentLine_fileTypeExclude = ['notes']
+augroup END
+
+augroup notes_config
+  autocmd!
+
+  autocmd FileType notes setlocal wrap
+  autocmd FileType notes setlocal colorcolumn=
+  autocmd Filetype notes setlocal nonumber
+
+  let g:notes_directories = ['~/Dropbox/Notes']
+augroup END
+
+augroup test_config
+  autocmd!
+
+  nmap <silent> <leader>R :TestNearest<CR>
+  nmap <silent> <leader>r :TestFile<CR>
+  nmap <silent> <leader>a :TestSuite<CR>
+  nmap <silent> <leader>l :TestLast<CR>
+  nmap <silent> <leader>g :TestVisit<CR>
+
+  let test#base#no_colors = 0
+augroup END
+
+augroup trailing_whitespace_config
+  autocmd!
+
+  " Remove trailing whitespace before save
+  function! Preserve(command)
+    " Preparation: save last search, and cursor position.
+    let _s=@/
+    let l = line(".")
+    let c = col(".")
+    " Do the business:
+    execute a:command
+    " Clean up: restore previous search history, and cursor position
+    let @/=_s
+    call cursor(l, c)
+  endfunction
+  nmap _$ :call Preserve("%s/\\s\\+$//e")<CR>
+  nmap _= :call Preserve("normal gg=G")<CR>
+  autocmd BufWritePre * :call Preserve("%s/\\s\\+$//e")
+augroup END
+
+augroup deoplete_config
+  autocmd!
+
+  if has('nvim')
+    let g:deoplete#enable_at_startup = 1
+    let g:deoplete#enable_smart_case = 1
+    let g:deoplete#auto_completion_start_length = 0
+    let g:deoplete#file#enable_buffer_path = 1
+
+    inoremap <silent><expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
+    inoremap <silent><expr><s-tab> pumvisible() ? "\<c-p>" : "\<s-tab>"
+
+    function! s:my_cr_function()
+      return pumvisible() ? deoplete#mappings#close_popup() : "\<CR>"
+    endfunction
+    inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
   endif
-endfunction
+augroup END
+
+augroup splitjoin_config
+  autocmd!
+
+  nnoremap S :SplitjoinJoin<cr>
+  nnoremap s :SplitjoinSplit<cr>
+augroup END
+
+augroup folding_config
+  autocmd!
+
+  function! MyFoldText()
+    let nl = v:foldend - v:foldstart + 1
+    let comment = substitute(getline(v:foldstart),"^ *","",1)
+    let txt = comment . ' (' . nl . ' lines)'
+    return txt
+  endfunction
+
+  set foldmethod=manual
+  set foldnestmax=10
+  set foldenable
+  set foldlevel=1
+  set foldtext=MyFoldText()
+augroup END
+
+augroup grepper_config
+  autocmd!
+
+  " Project search using Ag
+  nnoremap <leader>f :Grepper -tool ag -open -switch<CR>
+augroup END
+
+augroup bufexplorer_config
+  autocmd!
+
+  let g:bufExplorerShowRelativePath=1
+  let g:bufExplorerSplitOutPathName=0
+augroup END
+
+augroup easyalign_config
+  autocmd!
+
+  vmap <Enter> <Plug>(EasyAlign)
+augroup END
+
+augroup ruby_config
+  autocmd!
+
+  let ruby_operators = 1
+  let ruby_no_expensive = 1
+  let ruby_minlines = 100
+  let g:rubycomplete_buffer_loading = 1
+  let g:rubycomplete_classes_in_global = 1
+  au BufRead,BufNewFile Rakefile,Capfile,Gemfile set ft=ruby syntax=ruby
+augroup END
+
+augroup javascript_config
+  autocmd!
+
+  let g:vim_json_syntax_conceal = 0
+  let g:jsx_ext_required = 0
+
+  au BufRead,BufNewFile .eslintrc,.babelrc set ft=json syntax=json
+augroup END
+
+augroup neoterm_config
+  autocmd!
+
+  let g:neoterm_position = 'vertical'
+
+  autocmd TermOpen * set number
+  autocmd TermOpen * set wfw
+
+  function! OpenTerminal()
+    :80vs
+    :terminal
+    " :lw
+    " :copen
+    " :bnext
+  endfunction
+  :command! TT call OpenTerminal()
+augroup END
+
+augroup quickwrap_config
+  autocmd!
+
+  vnoremap ' <esc>:call QuickWrap("'")<CR>
+  vnoremap " <esc>:call QuickWrap('"')<CR>
+
+  function! QuickWrap(wrapper)
+    let b:autopairs_enabled = 0
+
+    let l:w = a:wrapper
+    let l:inside_or_around = (&selection == 'exclusive') ? ('i') : ('a')
+    normal `>
+    execute "normal " . inside_or_around . escape(w, '\')
+    normal `<
+    execute "normal i" . escape(w, '\')
+    normal `<
+
+    let b:autopairs_enabled = 1
+  endfunction
+augroup END
+
+augroup closetag_config
+  autocmd!
+
+  let g:closetag_filenames = "*.html,*.xhtml,*.phtml,*.xml,*.jsx,*.react.js,*.js"
+augroup END
+
+augroup extradite_config
+  autocmd!
+
+  let g:extradite_width = 80
+augroup END
+
+augroup rooter_config
+  autocmd!
+
+  let g:rooter_patterns = ['package.json', '.git/']
+augroup END
+
+augroup smartgf_config
+  autocmd!
+
+  let g:smartgf_key = 'z'
+augroup END
+
+augroup indent_guides_config
+  autocmd!
+
+  let g:indent_guides_exclude_filetypes = ['help', 'nerdtree', 'terminal']
+augroup END
+
+augroup echodoc_config
+  autocmd!
+
+  let g:echodoc_enable_at_startup = 1
+augroup END
+
+augroup tagbar_config
+  autocmd!
+
+  nmap T :TagbarToggle<CR>:echo<CR>
+augroup END
+
+augroup ultisnips_config
+  autocmd!
+
+  let g:UltiSnipsExpandTrigger="<c-k>"
+augroup END
+
+augroup scratch_config
+  autocmd!
+
+  nnoremap <silent> <leader><TAB> :Scratch<CR>
+augroup END
+
+augroup gitgutter_config
+  autocmd!
+
+  let g:gitgutter_sign_column_always = 1
+augroup END
+
+augroup zoomwin_config
+  autocmd!
+
+  nmap <S-Enter> :ZoomWin<CR>
+augroup END
+
+augroup syntax_attr_config
+  autocmd!
+
+  map <leader>x :call SyntaxAttr()<CR>
+augroup END
