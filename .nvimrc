@@ -35,7 +35,6 @@ Plug 'Shougo/neopairs.vim'
 " Code Editing
 Plug 'Yggdroot/indentLine'
 Plug 'alvan/vim-closetag'
-" Plug 'darvelo/vim-autoclose'
 Plug 'jiangmiao/auto-pairs'
 Plug 'edsono/vim-matchit'
 Plug 'gorkunov/smartpairs.vim'
