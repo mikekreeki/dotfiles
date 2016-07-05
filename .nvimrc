@@ -543,8 +543,6 @@ augroup trailing_whitespace_config
   autocmd!
 
   " Remove trailing whitespace before save
-  nmap _$ :call PreserveCursor("%s/\\s\\+$//e")<CR>
-  nmap _= :call PreserveCursor("normal gg=G")<CR>
   autocmd BufWritePre * :call PreserveCursor("%s/\\s\\+$//e")
 augroup END
 
