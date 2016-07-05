@@ -8,14 +8,6 @@ function e() {
   fi
 }
 
-# Switch to subdirectory
-function c() {
-  dir=$(ls | fzf --query="$1")
-  if [[ -n "$dir" ]]; then
-      cd $dir
-  fi
-}
-
 # Switch projects
 function p() {
   proj=$(ls ~/Projects | fzf --query="$1")

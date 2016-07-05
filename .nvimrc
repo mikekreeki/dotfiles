@@ -64,8 +64,7 @@ Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-git'
 
 " Building, Linters, Test Runners
-" Plug 'benekastah/neomake'
-Plug '~/Projects/neomake'
+Plug 'benekastah/neomake'
 Plug 'jaawerth/neomake-local-eslint-first'
 Plug 'janko-m/vim-test'
 
@@ -93,14 +92,7 @@ Plug 'heavenshell/vim-jsdoc'
 Plug 'marijnh/tern_for_vim', { 'do': 'npm install' }
 " Plug 'carlitux/deoplete-ternjs'
 
-" CoffeeScript Integration
-Plug 'kchmck/vim-coffee-script'
-
-" Elm Integration
-Plug 'lambdatoast/elm.vim'
-
 " CSS Integration
-Plug 'wavded/vim-stylus'
 Plug 'gorodinskiy/vim-coloresque'
 
 " Other Languages
@@ -115,10 +107,8 @@ Plug 'xolox/vim-notes'
 Plug 'kassio/neoterm'
 
 " Colorschemes
-" Plug 'mikekreeki/mikekreeki-colors.vim'
-Plug '~/Projects/mikekreeki-colors.vim'
+Plug 'mikekreeki/mikekreeki-colors.vim'
 
-Plug 'vimyum/viske'
 call plug#end()
 
 filetype plugin indent on
@@ -128,8 +118,8 @@ set shell=/bin/zsh
 
 let mapleader = ","
 
-set encoding=utf-8
-set fileencoding=utf-8
+" set encoding=utf-8
+" set fileencoding=utf-8
 set hidden
 set number
 set nowrap
@@ -232,11 +222,11 @@ vmap <Down> ]egv
 " Jump to previously edited line
 nnoremap ů g;
 
-" Shorcut to edit .vimrc
-nnoremap <leader>V :e $MYVIMRC<CR>
+" Jump to previous cursor position
+nnoremap § ``
 
 " Press Space to turn off highlighting and clear any message already displayed.
-nnoremap <silent> <Space> :nohlsearch<Bar>:redraw<Bar>:echo<CR>
+nnoremap <silent> <Space> :nohlsearch<Bar>:redraw!<Bar>:echo<CR>
 
 " Visually select the text that was last edited/pasted
 nnoremap gV `[v`]
@@ -260,6 +250,10 @@ nmap <TAB> <C-W>w
 " Resize splits when the window is resized
 autocmd VimResized * wincmd =
 
+" Make horizontal scrolling less horrible.
+set sidescroll=1
+set sidescrolloff=10
+
 cnoreabbrev W w
 cnoreabbrev Q q
 
@@ -270,11 +264,6 @@ set guifont=Monaco:h12
 set guicursor+=a:blinkon0
 set guicursor+=i:ver10
 
-" au InsertLeave * hi Cursor guifg=white guibg=steelblue
-" au InsertEnter * hi Cursor guibg=grey
-
-let g:ag_highlight=1
-
 "Always open help files in a rightward vertical split
 autocmd FileType help,gitcommit wincmd L
 
@@ -283,6 +272,7 @@ autocmd BufWritePost * :echo
 
 nmap <silent> <C-l> ?function<cr>:noh<cr><Plug>(jsdoc)
 
+nnoremap <silent> s vip:sort ui<CR>
 vnoremap <silent> s :sort ui<CR>
 
 hi NonText guifg=black ctermfg=black
@@ -292,6 +282,18 @@ if bufwinnr(1)
   map + <C-W>>
   map - <C-W><
 endif
+
+function! PreserveCursor(command)
+  " Preparation: save last search, and cursor position.
+  let _s=@/
+  let l = line(".")
+  let c = col(".")
+  " Do the business:
+  execute a:command
+  " Clean up: restore previous search history, and cursor position
+  let @/=_s
+  call cursor(l, c)
+endfunction
 
 augroup easymotion_config
   autocmd!
@@ -392,7 +394,7 @@ augroup nerdtree_config
   autocmd WinEnter * call s:CloseIfOnlyNerdTreeLeft()
 
   " Hide NERDTree on small screen
-  function ToggleNERDTreeOnSmallScreen()
+  function! ToggleNERDTreeOnSmallScreen()
       let breakpoint = 200
 
       if &columns == 0
@@ -493,6 +495,8 @@ augroup quickfix_config
   " Disable line numbers and colorcolumn in quickfix
   autocmd FileType qf setlocal colorcolumn=0
   autocmd FileType qf setlocal nonumber
+  autocmd Filetype qf setlocal nolist
+  autocmd Filetype qf setlocal nowrap
 
   " Shortcuts for navigating between quickfix results
   nnoremap ) :cnext<CR>
@@ -539,20 +543,9 @@ augroup trailing_whitespace_config
   autocmd!
 
   " Remove trailing whitespace before save
-  function! Preserve(command)
-    " Preparation: save last search, and cursor position.
-    let _s=@/
-    let l = line(".")
-    let c = col(".")
-    " Do the business:
-    execute a:command
-    " Clean up: restore previous search history, and cursor position
-    let @/=_s
-    call cursor(l, c)
-  endfunction
-  nmap _$ :call Preserve("%s/\\s\\+$//e")<CR>
-  nmap _= :call Preserve("normal gg=G")<CR>
-  autocmd BufWritePre * :call Preserve("%s/\\s\\+$//e")
+  nmap _$ :call PreserveCursor("%s/\\s\\+$//e")<CR>
+  nmap _= :call PreserveCursor("normal gg=G")<CR>
+  autocmd BufWritePre * :call PreserveCursor("%s/\\s\\+$//e")
 augroup END
 
 augroup deoplete_config
@@ -577,8 +570,9 @@ augroup END
 augroup splitjoin_config
   autocmd!
 
-  nnoremap S :SplitjoinJoin<cr>
-  nnoremap s :SplitjoinSplit<cr>
+  " Disable temporarily as I don't use Ruby that much anymore
+  " nnoremap S :SplitjoinJoin<cr>
+  " nnoremap s :SplitjoinSplit<cr>
 augroup END
 
 augroup folding_config
@@ -643,7 +637,7 @@ augroup neoterm_config
 
   let g:neoterm_position = 'vertical'
 
-  autocmd TermOpen * set number
+  autocmd TermOpen * set nonumber
   autocmd TermOpen * set wfw
 
   function! OpenTerminal()
@@ -654,27 +648,6 @@ augroup neoterm_config
     " :bnext
   endfunction
   :command! TT call OpenTerminal()
-augroup END
-
-augroup quickwrap_config
-  autocmd!
-
-  vnoremap ' <esc>:call QuickWrap("'")<CR>
-  vnoremap " <esc>:call QuickWrap('"')<CR>
-
-  function! QuickWrap(wrapper)
-    let b:autopairs_enabled = 0
-
-    let l:w = a:wrapper
-    let l:inside_or_around = (&selection == 'exclusive') ? ('i') : ('a')
-    normal `>
-    execute "normal " . inside_or_around . escape(w, '\')
-    normal `<
-    execute "normal i" . escape(w, '\')
-    normal `<
-
-    let b:autopairs_enabled = 1
-  endfunction
 augroup END
 
 augroup closetag_config
@@ -740,11 +713,46 @@ augroup END
 augroup zoomwin_config
   autocmd!
 
-  nmap <S-Enter> :ZoomWin<CR>
+  nnoremap <S-CR> :ZoomWin<CR>
 augroup END
 
 augroup syntax_attr_config
   autocmd!
 
   map <leader>x :call SyntaxAttr()<CR>
+augroup END
+
+augroup tern_for_vim_config
+  autocmd!
+
+  nmap <silent> D :TernDef<CR>
+  nmap R :TernRename<CR>
+augroup END
+
+augroup polyglot_config
+  autocmd!
+
+  let g:polyglot_disabled = ['javascript', 'jsx', 'ruby']
+augroup END
+
+augroup reload_vimrc_config
+  autocmd!
+
+  " Shorcut to edit .vimrc
+  nnoremap <leader>V :e $MYVIMRC<CR>
+  " Reload .vimrc on save
+  autocmd BufWritePost $MYVIMRC source $MYVIMRC
+augroup END
+
+augroup quickwrap_config
+  autocmd!
+
+  vnoremap ( <esc>`>a)<esc>`<i(<esc>
+  vnoremap ) <esc>`>a)<esc>`<i(<esc>
+  vnoremap [ <esc>`>a]<esc>`<i[<esc>
+  vnoremap ] <esc>`>a]<esc>`<i[<esc>
+  vnoremap { <esc>`>a}<esc>`<i{<esc>
+  vnoremap } <esc>`>a}<esc>`<i{<esc>
+  vnoremap " <esc>`>a"<esc>`<i"<esc>
+  vnoremap ' <esc>`>a'<esc>`<i'<esc>
 augroup END

@@ -1,0 +1,11 @@
+{
+  "libs": [
+    "browser",
+    "ecma5",
+    "ecma6"
+  ],
+  "plugins": {
+    "es_modules": {},
+    "node_resolve": {}
+  }
+}
