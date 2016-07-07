@@ -15,6 +15,7 @@ Plug 'inkarkat/SyntaxAttr.vim'
 Plug 'milkypostman/vim-togglelist'
 Plug 'regedarek/ZoomWin'
 Plug 'tpope/vim-rsi'
+Plug 'gorodinskiy/vim-coloresque'
 
 " Searching
 Plug 'Lokaltog/vim-easymotion'
@@ -89,10 +90,6 @@ Plug 'othree/jspc.vim'
 Plug 'jparise/vim-graphql'
 Plug 'heavenshell/vim-jsdoc'
 Plug 'marijnh/tern_for_vim', { 'do': 'npm install' }
-" Plug 'carlitux/deoplete-ternjs'
-
-" CSS Integration
-Plug 'gorodinskiy/vim-coloresque'
 
 " Other Languages
 Plug 'sheerun/vim-polyglot'
