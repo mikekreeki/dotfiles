@@ -1,8 +1,8 @@
 # SHELL
 alias pwdc='pwd | pbcopy'
 
-alias ll='ls -GFhl'
-# alias ls='ls -GFhl'
+alias ll='ls -GFhl --color=tty'
+alias lsa='ls -GFhla --color=tty'
 
 # RUBYGEMS
 alias gi='gem install'

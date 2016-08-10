@@ -83,9 +83,9 @@ Plug 'elzr/vim-json'
 Plug 'gavocanov/vim-js-indent'
 Plug 'mlaursen/vim-react-snippets'
 Plug 'mustache/vim-mustache-handlebars'
-Plug 'mxw/vim-jsx'
-Plug 'othree/es.next.syntax.vim'
 Plug 'othree/yajs.vim'
+Plug 'othree/es.next.syntax.vim'
+Plug 'mxw/vim-jsx'
 Plug 'othree/jspc.vim'
 Plug 'jparise/vim-graphql'
 Plug 'heavenshell/vim-jsdoc'
@@ -173,6 +173,12 @@ set shortmess+=I
 set conceallevel=2
 set concealcursor=nvi
 set noshowmode
+set exrc
+set secure
+
+" Ignore things
+set wildignore+=*.jpg,*.jpeg,*.gif,*.png,*.gif,*.psd,*.o,*.obj
+set wildignore+=*/.git/*,*/.hg/*,*/.svn/*
 
 nnoremap / /\v
 vnoremap / /\v
@@ -222,7 +228,7 @@ nnoremap ů g;
 nnoremap § ``
 
 " Press Space to turn off highlighting and clear any message already displayed.
-nnoremap <silent> <Space> :nohlsearch<Bar>:redraw!<Bar>:echo<CR>
+nnoremap <silent> <Space> :nohlsearch<Bar>wincmd =<Bar>:redraw!<Bar>:echo<CR>
 
 " Visually select the text that was last edited/pasted
 nnoremap gV `[v`]
@@ -308,22 +314,24 @@ augroup END
 augroup neomake_config
   autocmd!
 
-  autocmd! BufEnter,BufWritePost * Neomake
+  if has('nvim')
+    autocmd! BufEnter,BufWritePost * Neomake
 
-  " let g:neomake_javascript_enabled_makers = ['eslint']
-  " let g:neomake_jsx_enabled_makers = ['eslint']
-  let g:neomake_ruby_enabled_makers = []
-  let g:neomake_open_list = 0
-  let g:neomake_verbose = 0
+    let g:neomake_javascript_enabled_makers = ['eslint']
+    let g:neomake_jsx_enabled_makers = ['eslint']
+    let g:neomake_ruby_enabled_makers = []
+    let g:neomake_open_list = 0
+    let g:neomake_verbose = 0
 
-  let g:neomake_error_sign = {
-    \ 'texthl': 'WarningMsg',
-    \ }
+    let g:neomake_error_sign = {
+      \ 'texthl': 'WarningMsg',
+      \ }
 
-  let g:neomake_warning_sign = {
-    \ 'text': '✖',
-    \ 'texthl': 'Special',
-    \ }
+    let g:neomake_warning_sign = {
+      \ 'text': '✖',
+      \ 'texthl': 'Special',
+      \ }
+  endif
 augroup END
 
 augroup easytags_config
@@ -377,6 +385,24 @@ augroup nerdtree_config
   " When NERDTree CWD changes, CtrlP picks that up. Super cool.
   let g:NERDTreeChDirMode = 2
 
+  " Show hidden file by default, hide just selected
+  let NERDTreeShowHidden = 1
+  let NERDTreeShowHiddenFirst = 1
+  let NERDTreeIgnore = [
+        \ '\.py[cd]$',
+        \ '\~$',
+        \ '\.swo$',
+        \ '\.swp$',
+        \ '\.git',
+        \ '\.hg',
+        \ '\.svn',
+        \ '\.bzr',
+        \ '\.map$',
+        \ '.DS_Store',
+        \ '.agignore',
+        \ 'iTermocil.yml'
+        \]
+
   " Close vim when NERDTree is the last open buffer
   function! s:CloseIfOnlyNerdTreeLeft()
     if exists("t:NERDTreeBufName")
@@ -419,6 +445,20 @@ augroup nerdtree_config
   endfunction
   autocmd VimEnter * call ToggleNERDTreeOnSmallScreen()
   autocmd VimResized * call ToggleNERDTreeOnSmallScreen()
+
+  " If no file or directory arguments are specified, open NERDtree.
+  " If a directory is specified as the only argument, open it in NERDTree.
+  autocmd StdinReadPre * let s:std_in=1
+  function! NERDTreeAutoOpen()
+    if argc() == 0 && !exists('s:std_in')
+      NERDTree
+    elseif argc() == 1 && isdirectory(argv(0))
+      bd
+      exec 'cd' fnameescape(argv(0))
+      NERDTree
+    end
+  endfunction
+  autocmd VimEnter * call NERDTreeAutoOpen()
 augroup END
 
 augroup ctrlp_config
@@ -510,7 +550,7 @@ augroup END
 augroup indentLine_config
   autocmd!
 
-  let g:indentLine_fileTypeExclude = ['notes']
+  let g:indentLine_fileTypeExclude = ['help', 'notes', 'text']
 augroup END
 
 augroup notes_config
@@ -614,6 +654,7 @@ augroup ruby_config
   let ruby_minlines = 100
   let g:rubycomplete_buffer_loading = 1
   let g:rubycomplete_classes_in_global = 1
+
   au BufRead,BufNewFile Rakefile,Capfile,Gemfile set ft=ruby syntax=ruby
 augroup END
 
@@ -629,19 +670,21 @@ augroup END
 augroup neoterm_config
   autocmd!
 
-  let g:neoterm_position = 'vertical'
+  if has('nvim')
+    let g:neoterm_position = 'vertical'
 
-  autocmd TermOpen * set nonumber
-  autocmd TermOpen * set wfw
+    autocmd TermOpen * set nonumber
+    autocmd TermOpen * set wfw
 
-  function! OpenTerminal()
-    :80vs
-    :terminal
-    " :lw
-    " :copen
-    " :bnext
-  endfunction
-  :command! TT call OpenTerminal()
+    function! OpenTerminal()
+      :80vs
+      :terminal
+      " :lw
+      " :copen
+      " :bnext
+    endfunction
+    :command! TT call OpenTerminal()
+  endif
 augroup END
 
 augroup closetag_config
@@ -735,7 +778,7 @@ augroup reload_vimrc_config
   " Shorcut to edit .vimrc
   nnoremap <leader>V :e $MYVIMRC<CR>
   " Reload .vimrc on save
-  autocmd BufWritePost $MYVIMRC source $MYVIMRC
+  " autocmd BufWritePost $MYVIMRC source $MYVIMRC
 augroup END
 
 augroup quickwrap_config
