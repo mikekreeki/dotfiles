@@ -42,10 +42,10 @@ spec/vim_formatter.rb
 
 # JS
 .tern-project
+.tern-port
 
 # git_stats
 git_stats/
 
 # Ag
 .agignore
-

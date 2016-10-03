@@ -5,6 +5,7 @@ Plug 'corntrace/bufexplorer'
 Plug 'gorkunov/smartgf.vim'
 Plug 'kien/ctrlp.vim'
 Plug 'scrooloose/nerdtree'
+Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-projectionist'
 
@@ -21,6 +22,8 @@ Plug 'gorodinskiy/vim-coloresque'
 Plug 'Lokaltog/vim-easymotion'
 Plug 'majutsushi/tagbar'
 Plug 'mhinz/vim-grepper'
+Plug 'osyo-manga/vim-over'
+Plug 'dkprice/vim-easygrep'
 
 " Autocomplete
 Plug 'Shougo/context_filetype.vim'
@@ -46,11 +49,9 @@ Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-endwise'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
-Plug 'SirVer/ultisnips'
 Plug 'Shougo/neosnippet'
 Plug 'Shougo/neosnippet-snippets'
 Plug 'honza/vim-snippets'
-" Plug 'xolox/vim-easytags'
 
 " Project Management
 Plug 'airblade/vim-rooter'
@@ -90,6 +91,7 @@ Plug 'othree/jspc.vim'
 Plug 'jparise/vim-graphql'
 Plug 'heavenshell/vim-jsdoc'
 Plug 'marijnh/tern_for_vim', { 'do': 'npm install' }
+Plug 'ruanyl/vim-fixmyjs'
 
 " Other Languages
 Plug 'sheerun/vim-polyglot'
@@ -114,8 +116,6 @@ set shell=/bin/zsh
 
 let mapleader = ","
 
-" set encoding=utf-8
-" set fileencoding=utf-8
 set hidden
 set number
 set nowrap
@@ -175,6 +175,7 @@ set concealcursor=nvi
 set noshowmode
 set exrc
 set secure
+set termguicolors
 
 " Ignore things
 set wildignore+=*.jpg,*.jpeg,*.gif,*.png,*.gif,*.psd,*.o,*.obj
@@ -261,8 +262,6 @@ cnoreabbrev Q q
 
 colorscheme mikekreeki
 
-set guifont=Monaco:h12
-
 set guicursor+=a:blinkon0
 set guicursor+=i:ver10
 
@@ -331,6 +330,21 @@ augroup neomake_config
       \ 'text': '✖',
       \ 'texthl': 'Special',
       \ }
+
+    function ESLintFix()
+      execute('Fixmyjs')
+      w!
+      edit! %
+    endfunction
+
+    function RunESLintFix()
+      echo 'Fixing..'
+      execute('silent! call ESLintFix()')
+      echo
+    endfunction
+
+    noremap = :call RunESLintFix()<CR>
+    let g:fixmyjs_executable = './node_modules/.bin/eslint'
   endif
 augroup END
 
@@ -379,7 +393,7 @@ augroup nerdtree_config
   nnoremap <silent> Q :NERDTreeFind<CR>
 
   let NERDTreeMinimalUI = 1
-  let g:NERDTreeWinSize = 40
+  let g:NERDTreeWinSize = 60
   let NERDTreeAutoDeleteBuffer = 1
 
   " When NERDTree CWD changes, CtrlP picks that up. Super cool.
@@ -399,6 +413,7 @@ augroup nerdtree_config
         \ '\.bzr',
         \ '\.map$',
         \ '.DS_Store',
+        \ '.tern-port',
         \ '.agignore',
         \ 'iTermocil.yml'
         \]
@@ -416,49 +431,61 @@ augroup nerdtree_config
   autocmd WinEnter * call s:CloseIfOnlyNerdTreeLeft()
 
   " Hide NERDTree on small screen
-  function! ToggleNERDTreeOnSmallScreen()
-      let breakpoint = 200
+  " function! ToggleNERDTreeOnSmallScreen()
+  "     let breakpoint = 200
 
-      if &columns == 0
-        return
-      endif
+  "     if &columns == 0
+  "       return
+  "     endif
 
-      if &columns > breakpoint
-        if exists("t:NERDTreeBufName")
-          if bufwinnr(t:NERDTreeBufName) == -1
-            silent! NERDTree
-            wincmd p
-          endif
-        endif
-      endif
+  "     if &columns > breakpoint
+  "       if exists("t:NERDTreeBufName")
+  "         if bufwinnr(t:NERDTreeBufName) == -1
+  "           silent! NERDTree
+  "           wincmd p
+  "         endif
+  "       endif
+  "     endif
 
-      if &columns < breakpoint
-        if exists("t:NERDTreeBufName")
-          if bufwinnr(t:NERDTreeBufName) != -1
-            silent! NERDTreeClose
-            wincmd p
-          endif
-        endif
-      endif
+  "     if &columns < breakpoint
+  "       if exists("t:NERDTreeBufName")
+  "         if bufwinnr(t:NERDTreeBufName) != -1
+  "           silent! NERDTreeClose
+  "           wincmd p
+  "         endif
+  "       endif
+  "     endif
 
-      redraw!
-  endfunction
-  autocmd VimEnter * call ToggleNERDTreeOnSmallScreen()
-  autocmd VimResized * call ToggleNERDTreeOnSmallScreen()
+  "     redraw!
+  " endfunction
+  " autocmd VimEnter * call ToggleNERDTreeOnSmallScreen()
+  " autocmd VimResized * call ToggleNERDTreeOnSmallScreen()
 
   " If no file or directory arguments are specified, open NERDtree.
   " If a directory is specified as the only argument, open it in NERDTree.
-  autocmd StdinReadPre * let s:std_in=1
-  function! NERDTreeAutoOpen()
-    if argc() == 0 && !exists('s:std_in')
-      NERDTree
-    elseif argc() == 1 && isdirectory(argv(0))
-      bd
-      exec 'cd' fnameescape(argv(0))
-      NERDTree
-    end
-  endfunction
-  autocmd VimEnter * call NERDTreeAutoOpen()
+  " autocmd StdinReadPre * let s:std_in=1
+  " function! NERDTreeAutoOpen()
+  "   if argc() == 0 && !exists('s:std_in')
+  "     NERDTree
+  "   elseif argc() == 1 && isdirectory(argv(0))
+  "     bd
+  "     exec 'cd' fnameescape(argv(0))
+  "     NERDTree
+  "   end
+  " endfunction
+  " autocmd VimEnter * call NERDTreeAutoOpen()
+
+  let g:NERDTreeExtensionHighlightColor = {}
+  let g:NERDTreeExtensionHighlightColor['css'] = 'AAAAAA'
+  let g:NERDTreeExtensionHighlightColor['less'] = 'AAAAAA'
+
+  let g:NERDTreeDisableExactMatchHighlight = 1
+  let g:NERDTreeDisablePatternMatchHighlight = 1
+  let g:NERDTreeExactMatchHighlightFullName = 1
+  let g:NERDTreeFileExtensionHighlightFullName = 1
+  let g:NERDTreePatternMatchHighlightFullName = 1
+  let g:NERDTreeSyntaxDisableDefaultExtensions = 1
+  let g:NERDTreeSyntaxEnabledExtensions = ['css', 'less']
 augroup END
 
 augroup ctrlp_config
@@ -496,6 +523,11 @@ augroup END
 
 augroup neosnippet_config
   autocmd!
+
+  " Turn off conceal
+  let g:neosnippet#enable_conceal_markers = 0
+
+  autocmd InsertLeave * NeoSnippetClearMarkers
 
   imap <C-K> <Plug>(neosnippet_expand_or_jump)
   smap <C-K> <Plug>(neosnippet_expand_or_jump)
@@ -624,13 +656,18 @@ augroup folding_config
   set foldenable
   set foldlevel=1
   set foldtext=MyFoldText()
+
+  " inoremap <CR> <C-O>za
+  " nnoremap <CR> za
+  " onoremap <CR> <C-C>za
+  " vnoremap <CR> zf
 augroup END
 
 augroup grepper_config
   autocmd!
 
   " Project search using Ag
-  nnoremap <leader>f :Grepper -tool ag -open -switch<CR>
+  nnoremap <leader>f :Grepper -tool ag -open -switch -grepprg ag --vimgrep --literal<CR>
 augroup END
 
 augroup bufexplorer_config
@@ -708,7 +745,13 @@ augroup END
 augroup smartgf_config
   autocmd!
 
-  let g:smartgf_key = 'z'
+  " let g:smartgf_key = 'z'
+augroup END
+
+augroup autopairs_config
+  autocmd!
+
+  let g:AutoPairsMultilineClose = 0
 augroup END
 
 augroup indent_guides_config
@@ -727,12 +770,6 @@ augroup tagbar_config
   autocmd!
 
   nmap T :TagbarToggle<CR>:echo<CR>
-augroup END
-
-augroup ultisnips_config
-  autocmd!
-
-  let g:UltiSnipsExpandTrigger="<c-k>"
 augroup END
 
 augroup scratch_config
@@ -762,8 +799,20 @@ augroup END
 augroup tern_for_vim_config
   autocmd!
 
+
+  let g:tern#command = ["tern"]
+  let g:tern#arguments = ["--persistent"]
+
   nmap <silent> D :TernDef<CR>
   nmap R :TernRename<CR>
+augroup END
+
+augroup easygrep_config
+  autocmd!
+
+  let g:EasyGrepJumpToMatch = 0
+  let g:EasyGrepIgnoreCase = 0
+  nmap <silent> F <plug>EgMapGrepCurrentWord_V
 augroup END
 
 augroup polyglot_config
