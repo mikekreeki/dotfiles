@@ -71,7 +71,7 @@ Plug 'janko-m/vim-test'
 
 " Ruby Integration
 Plug 'AmaiSaeta/vim-ruby-sinatra'
-Plug 'AndrewRadev/splitjoin.vim'
+Plug 'AndrewRadev/splitjoin.vim', { 'for': 'ruby' }
 Plug 'keith/rspec.vim'
 Plug 'slim-template/vim-slim'
 Plug 'tpope/vim-bundler'
@@ -637,8 +637,8 @@ augroup splitjoin_config
   autocmd!
 
   " Disable temporarily as I don't use Ruby that much anymore
-  " nnoremap S :SplitjoinJoin<cr>
-  " nnoremap s :SplitjoinSplit<cr>
+  nnoremap S :SplitjoinJoin<cr>
+  nnoremap s :SplitjoinSplit<cr>
 augroup END
 
 augroup folding_config
@@ -745,7 +745,7 @@ augroup END
 augroup smartgf_config
   autocmd!
 
-  " let g:smartgf_key = 'z'
+  let g:smartgf_key = 'z'
 augroup END
 
 augroup autopairs_config
@@ -799,9 +799,8 @@ augroup END
 augroup tern_for_vim_config
   autocmd!
 
-
-  let g:tern#command = ["tern"]
-  let g:tern#arguments = ["--persistent"]
+  let g:tern#command = ['tern']
+  let g:tern#arguments = ['--persistent']
 
   nmap <silent> D :TernDef<CR>
   nmap R :TernRename<CR>
