@@ -14,6 +14,7 @@ Thumbs.db
 
 # NVM
 .node-version
+node_modules_bak
 
 # NPM
 npm-debug.log

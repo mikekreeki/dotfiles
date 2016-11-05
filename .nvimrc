@@ -24,6 +24,7 @@ Plug 'majutsushi/tagbar'
 Plug 'mhinz/vim-grepper'
 Plug 'osyo-manga/vim-over'
 Plug 'dkprice/vim-easygrep'
+Plug 'nelstrom/vim-qargs'
 
 " Autocomplete
 Plug 'Shougo/context_filetype.vim'
@@ -130,7 +131,7 @@ set nobackup
 set noswapfile
 set lazyredraw
 set scrolloff=1
-set synmaxcol=300
+set synmaxcol=1000
 set nojoinspaces
 set nostartofline
 set wildmenu
@@ -318,7 +319,7 @@ augroup neomake_config
 
     let g:neomake_javascript_enabled_makers = ['eslint']
     let g:neomake_jsx_enabled_makers = ['eslint']
-    let g:neomake_ruby_enabled_makers = []
+    let g:neomake_ruby_enabled_makers = ['mri', 'rubocop']
     let g:neomake_open_list = 0
     let g:neomake_verbose = 0
 
@@ -636,9 +637,8 @@ augroup END
 augroup splitjoin_config
   autocmd!
 
-  " Disable temporarily as I don't use Ruby that much anymore
-  nnoremap S :SplitjoinJoin<cr>
-  nnoremap s :SplitjoinSplit<cr>
+  autocmd FileType ruby nnoremap S :SplitjoinJoin<cr>
+  autocmd FileType ruby nnoremap s :SplitjoinSplit<cr>
 augroup END
 
 augroup folding_config
@@ -733,7 +733,10 @@ augroup END
 augroup extradite_config
   autocmd!
 
-  let g:extradite_width = 80
+  let g:extradite_width = 120
+  let g:extradite_showhash = 1
+
+  autocmd FileType extradite,diff setlocal colorcolumn=0
 augroup END
 
 augroup rooter_config
@@ -811,6 +814,8 @@ augroup easygrep_config
 
   let g:EasyGrepJumpToMatch = 0
   let g:EasyGrepIgnoreCase = 0
+  let g:EasyGrepRoot = 'repository'
+
   nmap <silent> F <plug>EgMapGrepCurrentWord_V
 augroup END
 

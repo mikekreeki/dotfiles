@@ -12,9 +12,6 @@ alias gx='gem uninstall'
 # BUNDLER
 alias bi='bundle install && restart && stop'
 
-# RSPEC
-alias rspec='bin/rspec --format VimFormatter --out quickfix.out --format progress'
-
 # RAILS
 alias restart='mkdir -p tmp && touch tmp/restart.txt'
 alias stop='spring stop 2>/dev/null'

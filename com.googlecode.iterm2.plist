@@ -234,6 +234,8 @@
 	<string>~/Documents</string>
 	<key>NSNavPanelExpandedSizeForOpenMode</key>
 	<string>{712, 448}</string>
+	<key>NSNavPanelExpandedSizeForSaveMode</key>
+	<string>{712, 565}</string>
 	<key>NSQuotedKeystrokeBinding</key>
 	<string></string>
 	<key>NSRepeatCountBinding</key>
@@ -265,19 +267,21 @@
 		<integer>1</integer>
 	</dict>
 	<key>NSWindow Frame NSFontPanel</key>
-	<string>356 317 467 123 0 0 1440 877 </string>
+	<string>532 98 467 77 0 0 1920 1057 </string>
 	<key>NSWindow Frame Preferences</key>
 	<string>127 444 606 456 0 0 1440 900 </string>
 	<key>NSWindow Frame SUAutomaticUpdateAlert</key>
-	<string>652 663 616 174 0 0 1920 1057 </string>
+	<string>972 932 616 174 0 0 2560 1417 </string>
 	<key>NSWindow Frame SUStatusFrame</key>
 	<string>760 804 400 129 0 0 1920 1200 </string>
 	<key>NSWindow Frame SUUpdateAlert</key>
 	<string>410 382 620 392 0 0 1440 900 </string>
+	<key>NSWindow Frame SharedPreferences</key>
+	<string>456 249 796 474 0 0 2560 1440 </string>
 	<key>NSWindow Frame UKCrashReporter</key>
 	<string>99 156 592 584 0 0 1440 877 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>0 0 1440 900 0 0 1440 877 </string>
+	<string>0 0 2560 1440 0 0 2560 1417 </string>
 	<key>New Bookmarks</key>
 	<array>
 		<dict>
@@ -1083,6 +1087,8 @@
 	</dict>
 	<key>PrefsCustomFolder</key>
 	<string>/Users/mikekreeki/.dotfiles/</string>
+	<key>Print In Black And White</key>
+	<true/>
 	<key>PromptOnQuit</key>
 	<true/>
 	<key>QuitWhenAllWindowsClosed</key>
@@ -1102,7 +1108,9 @@
 	<key>SUHasLaunchedBefore</key>
 	<true/>
 	<key>SULastCheckTime</key>
-	<date>2016-06-29T13:00:09Z</date>
+	<date>2016-10-18T13:58:30Z</date>
+	<key>SUSkippedVersion</key>
+	<string>3.0.10</string>
 	<key>SavePasteHistory</key>
 	<false/>
 	<key>ShowBookmarkName</key>
@@ -1164,7 +1172,7 @@
 	<key>findRegex_iTerm</key>
 	<false/>
 	<key>iTerm Version</key>
-	<string>3.0.2</string>
+	<string>3.0.8</string>
 	<key>kCommandHistoryHasEverBeenUsed</key>
 	<true/>
 </dict>
