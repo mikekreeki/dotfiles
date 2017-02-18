@@ -27,6 +27,8 @@ magic-enter () {
     if git rev-parse --is-inside-work-tree > /dev/null 2>&1; then
       echo -ne '\n'
       git status -s
+    else
+      lsa
     fi
     zle accept-line
   else
@@ -37,7 +39,7 @@ zle -N magic-enter
 bindkey "^M" magic-enter
 
 f() {
-  eval $(([ -n "$ZSH_NAME" ] && fc -l 1 || history) | fzf +s | sed 's/ *[0-9]* *//')
+  eval $(([ -n "$ZSH_NAME" ] && fc -l 1 || history) | fzf +s --tac | sed 's/ *[0-9]* *//')
 }
 
 fe() {

@@ -35,3 +35,7 @@ export NVIM_TUI_ENABLE_CURSOR_SHAPE=1
 
 # Homebrew installed android-sdk
 export ANDROID_HOME=/usr/local/opt/android-sdk
+
+# Java/JRUBY
+export JAVA_OPTS="-XX:-UseConcMarkSweepGC"
+export JRUBY_OPTS="-J-Xmx4g"

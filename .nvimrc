@@ -4,6 +4,7 @@ call plug#begin('~/.nvim/plugged')
 Plug 'corntrace/bufexplorer'
 Plug 'gorkunov/smartgf.vim'
 Plug 'kien/ctrlp.vim'
+Plug 'jasoncodes/ctrlp-modified.vim'
 Plug 'scrooloose/nerdtree'
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 Plug 'tpope/vim-unimpaired'
@@ -14,9 +15,11 @@ Plug 'bling/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'inkarkat/SyntaxAttr.vim'
 Plug 'milkypostman/vim-togglelist'
-Plug 'regedarek/ZoomWin'
 Plug 'tpope/vim-rsi'
 Plug 'gorodinskiy/vim-coloresque'
+Plug 'itchyny/vim-cursorword'
+" Plug 'romainl/vim-qf'
+Plug 'pmalek/toogle-maximize.vim'
 
 " Searching
 Plug 'Lokaltog/vim-easymotion'
@@ -25,6 +28,7 @@ Plug 'mhinz/vim-grepper'
 Plug 'osyo-manga/vim-over'
 Plug 'dkprice/vim-easygrep'
 Plug 'nelstrom/vim-qargs'
+Plug 'brooth/far.vim'
 
 " Autocomplete
 Plug 'Shougo/context_filetype.vim'
@@ -68,6 +72,7 @@ Plug 'tpope/vim-git'
 " Building, Linters, Test Runners
 Plug 'benekastah/neomake'
 Plug 'jaawerth/neomake-local-eslint-first'
+Plug 'sbdchd/neoformat'
 Plug 'janko-m/vim-test'
 
 " Ruby Integration
@@ -83,11 +88,13 @@ Plug 'tpope/vim-rvm'
 " JavaScript Integration
 Plug 'elzr/vim-json'
 Plug 'gavocanov/vim-js-indent'
-Plug 'mlaursen/vim-react-snippets'
+Plug 'bentayloruk/vim-react-es6-snippets'
 Plug 'mustache/vim-mustache-handlebars'
-Plug 'othree/yajs.vim'
-Plug 'othree/es.next.syntax.vim'
+" Plug 'othree/yajs.vim'
+Plug 'pangloss/vim-javascript'
+" Plug 'othree/es.next.syntax.vim'
 Plug 'mxw/vim-jsx'
+" Plug 'flowtype/vim-flow'
 Plug 'othree/jspc.vim'
 Plug 'jparise/vim-graphql'
 Plug 'heavenshell/vim-jsdoc'
@@ -106,7 +113,8 @@ Plug 'xolox/vim-notes'
 Plug 'kassio/neoterm'
 
 " Colorschemes
-Plug 'mikekreeki/mikekreeki-colors.vim'
+" Plug 'mikekreeki/mikekreeki-colors.vim'
+Plug '~/Projects/mikekreeki-colors.vim'
 
 call plug#end()
 
@@ -319,7 +327,8 @@ augroup neomake_config
 
     let g:neomake_javascript_enabled_makers = ['eslint']
     let g:neomake_jsx_enabled_makers = ['eslint']
-    let g:neomake_ruby_enabled_makers = ['mri', 'rubocop']
+
+    let g:neomake_ruby_enabled_makers = ['rubocop']
     let g:neomake_open_list = 0
     let g:neomake_verbose = 0
 
@@ -509,6 +518,9 @@ augroup ctrlp_config
 
   let g:ctrlp_show_hidden = 1
   let g:ctrlp_use_caching=0
+
+  nmap <silent> .. :CtrlPBranch<CR>
+  nmap <silent> -- :CtrlPBranch<CR>
 augroup END
 
 augroup airline_config
@@ -520,6 +532,8 @@ augroup airline_config
   let g:airline#extensions#hunks#non_zero_only = 1
   let g:airline_section_y=''
   let g:airline_section_z=''
+
+  let g:airline#extensions#branch#enabled = 0
 augroup END
 
 augroup neosnippet_config
@@ -527,6 +541,8 @@ augroup neosnippet_config
 
   " Turn off conceal
   let g:neosnippet#enable_conceal_markers = 0
+  let g:neosnippet#enable_snipmate_compatibility = 1
+  let g:neosnippet#snippets_directory='~/.vim/bundle/vim-react-es6-snippets/snippets'
 
   autocmd InsertLeave * NeoSnippetClearMarkers
 
@@ -552,7 +568,7 @@ augroup neovim_config
     tnoremap <a-k> <c-\><c-n><c-w>k
     tnoremap <a-l> <c-\><c-n><c-w>l
     tnoremap <Esc> <C-\><C-n>
-    autocmd BufEnter term://* startinsert
+    " autocmd BufEnter term://* startinsert
 
     let $NVIM_TUI_ENABLE_CURSOR_SHAPE = 1
   endif
@@ -570,6 +586,8 @@ augroup quickfix_config
   " Shortcuts for navigating between quickfix results
   nnoremap ) :cnext<CR>
   nnoremap ú :cprevious<CR>
+
+  au WinEnter * if winnr('$') == 1 && getbufvar(winbufnr(winnr()), "&buftype") == "quickfix"|q|endif
 augroup END
 
 augroup cursorline_config
@@ -606,6 +624,8 @@ augroup test_config
   nmap <silent> <leader>g :TestVisit<CR>
 
   let test#base#no_colors = 0
+  let test#strategy = 'neoterm'
+  let g:test#preserve_screen = 0
 augroup END
 
 augroup trailing_whitespace_config
@@ -698,6 +718,8 @@ augroup END
 augroup javascript_config
   autocmd!
 
+  let g:flow#enable = 0
+  let g:javascript_plugin_flow = 1
   let g:vim_json_syntax_conceal = 0
   let g:jsx_ext_required = 0
 
@@ -787,10 +809,10 @@ augroup gitgutter_config
   let g:gitgutter_sign_column_always = 1
 augroup END
 
-augroup zoomwin_config
+augroup toggle_maximize_config
   autocmd!
 
-  nnoremap <S-CR> :ZoomWin<CR>
+  autocmd FileType javascript,ruby nnoremap <buffer> <silent> <CR> :call ToggleMaximizeCurrentWindow()<CR>
 augroup END
 
 augroup syntax_attr_config
@@ -823,6 +845,12 @@ augroup polyglot_config
   autocmd!
 
   let g:polyglot_disabled = ['javascript', 'jsx', 'ruby']
+augroup END
+
+augroup cursorword_config
+  autocmd!
+
+  autocmd FileType qf let b:cursorword = 0
 augroup END
 
 augroup reload_vimrc_config

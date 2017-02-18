@@ -50,3 +50,6 @@ git_stats/
 
 # Ag
 .agignore
+
+# Yarn
+yarn-error.log

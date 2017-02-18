@@ -25,8 +25,8 @@ alias gbf='git branch | cut -c3- | fzf | xargs git checkout'
 alias gcl='git clone'
 alias gco='git checkout'
 
-alias gd='git diff --color $@ | diff-so-fancy | less --tabs=1,5 -RFX'
-alias gdc='git diff --cached --color $@ | diff-so-fancy | less --tabs=1,5 -RFX'
+alias gd='git diff --color $@'
+alias gdc='git diff --cached --color $@'
 alias gdm='git diff master..HEAD'
 
 alias gci='git commit'
@@ -55,3 +55,6 @@ alias spring='nocorrect spring'
 
 # REACT NATIVE
 alias packager='./node_modules/react-native/packager/packager.sh'
+
+# Dokku
+alias dokku='$HOME/.dokku/contrib/dokku_client.sh'

@@ -8,6 +8,8 @@ source ~/.dotfiles/.setopt.zsh
 source ~/.dotfiles/.custom.zsh
 source ~/.dotfiles/mikekreeki.zsh-theme
 
+WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'
+
 test -e ${HOME}/.iterm2_shell_integration.zsh && source ${HOME}/.iterm2_shell_integration.zsh
 [[ -s "$HOME/.avn/bin/avn.sh" ]] && source "$HOME/.avn/bin/avn.sh" # load avn
 
