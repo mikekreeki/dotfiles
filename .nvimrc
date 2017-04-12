@@ -99,7 +99,6 @@ Plug 'othree/jspc.vim'
 Plug 'jparise/vim-graphql'
 Plug 'heavenshell/vim-jsdoc'
 Plug 'marijnh/tern_for_vim', { 'do': 'npm install' }
-Plug 'ruanyl/vim-fixmyjs'
 
 " Other Languages
 Plug 'sheerun/vim-polyglot'
@@ -108,6 +107,12 @@ Plug 'sheerun/vim-polyglot'
 Plug 'duff/vim-scratch'
 Plug 'xolox/vim-misc'
 Plug 'xolox/vim-notes'
+
+" Writing
+Plug 'junegunn/goyo.vim'
+Plug 'junegunn/limelight.vim'
+" Plug 'plasticboy/vim-markdown'
+Plug 'gabrielelana/vim-markdown'
 
 " Terminal Integration
 Plug 'kassio/neoterm'
@@ -157,6 +162,7 @@ set gdefault
 set incsearch
 set showmatch
 set hlsearch
+set noic
 set gdefault
 set scs
 set backspace=indent,eol,start
@@ -164,7 +170,7 @@ set clipboard=unnamed,unnamedplus
 set wildmenu
 set wildmode=longest:full,full
 set completefunc=syntaxcomplete#Complete
-execute "set colorcolumn=" . join(range(81,335), ',')
+execute "set colorcolumn=" . join(range(86,335), ',')
 set shiftround
 set history=250
 set updatetime=750
@@ -238,7 +244,7 @@ nnoremap ů g;
 nnoremap § ``
 
 " Press Space to turn off highlighting and clear any message already displayed.
-nnoremap <silent> <Space> :nohlsearch<Bar>wincmd =<Bar>:redraw!<Bar>:echo<CR>
+nnoremap <silent> <Space> :nohlsearch<Bar>wincmd =<Bar>:redraw!<Bar>:checktime<Bar>:echo<CR>
 
 " Visually select the text that was last edited/pasted
 nnoremap gV `[v`]
@@ -828,7 +834,6 @@ augroup tern_for_vim_config
   let g:tern#arguments = ['--persistent']
 
   nmap <silent> D :TernDef<CR>
-  nmap R :TernRename<CR>
 augroup END
 
 augroup easygrep_config
@@ -860,6 +865,24 @@ augroup reload_vimrc_config
   nnoremap <leader>V :e $MYVIMRC<CR>
   " Reload .vimrc on save
   " autocmd BufWritePost $MYVIMRC source $MYVIMRC
+augroup END
+
+augroup writing_config
+  autocmd!
+
+  autocmd FileType Goyo wincmd L
+  autocmd! User GoyoEnter Limelight
+  autocmd! User GoyoLeave Limelight!
+
+  function! s:goyo_enter()
+    set filetype=markdown
+  endfunction
+
+  function! s:goyo_leave()
+  endfunction
+
+  autocmd! User GoyoEnter nested call <SID>goyo_enter()
+  autocmd! User GoyoLeave nested call <SID>goyo_leave()
 augroup END
 
 augroup quickwrap_config
