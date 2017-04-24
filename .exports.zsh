@@ -39,3 +39,8 @@ export ANDROID_HOME=/usr/local/opt/android-sdk
 # Java/JRUBY
 export JAVA_OPTS="-XX:-UseConcMarkSweepGC"
 export JRUBY_OPTS="-J-Xmx4g"
+
+# notwaldorf/tiny-care-terminal
+export TTC_WEATHER='Prague'
+export TTC_APIKEYS=0
+export TTC_REPOS='~/Projects/pb-frontend,~/Projects/pb-backend'

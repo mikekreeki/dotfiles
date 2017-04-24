@@ -3,7 +3,7 @@ call plug#begin('~/.nvim/plugged')
 " Buffer/File Navigation
 Plug 'corntrace/bufexplorer'
 Plug 'gorkunov/smartgf.vim'
-Plug 'kien/ctrlp.vim'
+Plug 'ctrlpvim/ctrlp.vim'
 Plug 'jasoncodes/ctrlp-modified.vim'
 Plug 'scrooloose/nerdtree'
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
@@ -70,8 +70,7 @@ Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-git'
 
 " Building, Linters, Test Runners
-Plug 'benekastah/neomake'
-Plug 'jaawerth/neomake-local-eslint-first'
+Plug 'w0rp/ale'
 Plug 'sbdchd/neoformat'
 Plug 'janko-m/vim-test'
 
@@ -244,7 +243,7 @@ nnoremap ů g;
 nnoremap § ``
 
 " Press Space to turn off highlighting and clear any message already displayed.
-nnoremap <silent> <Space> :nohlsearch<Bar>wincmd =<Bar>:redraw!<Bar>:checktime<Bar>:echo<CR>
+nnoremap <silent> <Space> :nohlsearch<Bar>wincmd =<Bar>:redraw!<Bar>:checktime<Bar>:set nopaste<Bar>:echo<CR>
 
 " Visually select the text that was last edited/pasted
 nnoremap gV `[v`]
@@ -267,6 +266,14 @@ nmap <TAB> <C-W>w
 
 " Resize splits when the window is resized
 autocmd VimResized * wincmd =
+
+" Tabs
+nmap <C-+> :tabm 1
+nmap <C-ě> :tabm 2
+nmap <C-š> :tabm 3
+nmap <C-č> :tabm 4
+nmap <C-ř> :tabm 5
+nmap <C-ž> :tabm 6
 
 " Make horizontal scrolling less horrible.
 set sidescroll=1
@@ -323,45 +330,6 @@ augroup easymotion_config
   omap / <Plug>(easymotion-tn)
   nmap n <Plug>(easymotion-next)
   nmap N <Plug>(easymotion-prev)
-augroup END
-
-augroup neomake_config
-  autocmd!
-
-  if has('nvim')
-    autocmd! BufEnter,BufWritePost * Neomake
-
-    let g:neomake_javascript_enabled_makers = ['eslint']
-    let g:neomake_jsx_enabled_makers = ['eslint']
-
-    let g:neomake_ruby_enabled_makers = ['rubocop']
-    let g:neomake_open_list = 0
-    let g:neomake_verbose = 0
-
-    let g:neomake_error_sign = {
-      \ 'texthl': 'WarningMsg',
-      \ }
-
-    let g:neomake_warning_sign = {
-      \ 'text': '✖',
-      \ 'texthl': 'Special',
-      \ }
-
-    function ESLintFix()
-      execute('Fixmyjs')
-      w!
-      edit! %
-    endfunction
-
-    function RunESLintFix()
-      echo 'Fixing..'
-      execute('silent! call ESLintFix()')
-      echo
-    endfunction
-
-    noremap = :call RunESLintFix()<CR>
-    let g:fixmyjs_executable = './node_modules/.bin/eslint'
-  endif
 augroup END
 
 augroup easytags_config
@@ -494,6 +462,7 @@ augroup nerdtree_config
   let g:NERDTreeExtensionHighlightColor = {}
   let g:NERDTreeExtensionHighlightColor['css'] = 'AAAAAA'
   let g:NERDTreeExtensionHighlightColor['less'] = 'AAAAAA'
+  let g:NERDTreeExtensionHighlightColor['scss'] = 'AAAAAA'
 
   let g:NERDTreeDisableExactMatchHighlight = 1
   let g:NERDTreeDisablePatternMatchHighlight = 1
@@ -501,7 +470,7 @@ augroup nerdtree_config
   let g:NERDTreeFileExtensionHighlightFullName = 1
   let g:NERDTreePatternMatchHighlightFullName = 1
   let g:NERDTreeSyntaxDisableDefaultExtensions = 1
-  let g:NERDTreeSyntaxEnabledExtensions = ['css', 'less']
+  let g:NERDTreeSyntaxEnabledExtensions = ['css', 'less', 'scss']
 augroup END
 
 augroup ctrlp_config
@@ -539,7 +508,12 @@ augroup airline_config
   let g:airline_section_y=''
   let g:airline_section_z=''
 
+  let g:airline#extensions#hunks#enabled = 0
   let g:airline#extensions#branch#enabled = 0
+
+  let g:airline#extensions#ale#enabled = 1
+  let g:airline#extensions#ale#error_symbol = '✖ '
+  let g:airline#extensions#ale#warning_symbol = '✖ '
 augroup END
 
 augroup neosnippet_config
@@ -639,6 +613,19 @@ augroup trailing_whitespace_config
 
   " Remove trailing whitespace before save
   autocmd BufWritePre * :call PreserveCursor("%s/\\s\\+$//e")
+augroup END
+
+augroup ale_config
+  let g:ale_sign_column_always = 1
+  let g:ale_sign_error = '✖'
+  let g:ale_sign_warning = '✖'
+  let g:ale_warn_about_trailing_whitespace = 0
+
+  let g:ale_linters = {
+  \   'javascript': ['eslint', 'flow'],
+  \}
+
+  nmap <silent> <Bs> <Plug>(ale_previous_wrap)
 augroup END
 
 augroup deoplete_config
@@ -819,6 +806,20 @@ augroup toggle_maximize_config
   autocmd!
 
   autocmd FileType javascript,ruby nnoremap <buffer> <silent> <CR> :call ToggleMaximizeCurrentWindow()<CR>
+augroup END
+
+augroup neoformat_config
+  autocmd!
+
+  function! neoformat#formatters#javascript#prettier() abort
+      return {
+          \ 'exe': './node_modules/.bin/prettier',
+          \ 'args': ['--stdin --single-quote --trailing-comma all --print-width 85'],
+          \ 'stdin': 1,
+          \ }
+  endfunction
+
+  autocmd BufWritePre * Neoformat
 augroup END
 
 augroup syntax_attr_config
