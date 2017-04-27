@@ -32,6 +32,7 @@ alias gdm='git diff master..HEAD'
 alias gci='git commit'
 alias gme='git merge'
 alias grb='git rebase'
+alias grbm='git fetch && git rebase origin/master'
 
 alias gls='git ls'
 alias gld='git ld'
