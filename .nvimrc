@@ -20,22 +20,19 @@ Plug 'gorodinskiy/vim-coloresque'
 Plug 'itchyny/vim-cursorword'
 " Plug 'romainl/vim-qf'
 Plug 'pmalek/toogle-maximize.vim'
+Plug 'christoomey/vim-tmux-navigator'
 
 " Searching
 Plug 'Lokaltog/vim-easymotion'
-Plug 'majutsushi/tagbar'
 Plug 'mhinz/vim-grepper'
 Plug 'osyo-manga/vim-over'
 Plug 'dkprice/vim-easygrep'
 Plug 'nelstrom/vim-qargs'
-Plug 'brooth/far.vim'
 
 " Autocomplete
 Plug 'Shougo/context_filetype.vim'
-function! DoRemote(arg)
-  UpdateRemotePlugins
-endfunction
-Plug 'Shougo/deoplete.nvim', { 'do': function('DoRemote') }
+Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+" Plug 'wokalski/autocomplete-flow'
 Plug 'Shougo/echodoc.vim'
 Plug 'Shougo/neco-syntax'
 Plug 'Shougo/neoinclude.vim'
@@ -297,6 +294,8 @@ nmap <silent> <C-l> ?function<cr>:noh<cr><Plug>(jsdoc)
 
 nnoremap <silent> s vip:sort ui<CR>
 vnoremap <silent> s :sort ui<CR>
+
+nnoremap W cs[[
 
 hi NonText guifg=black ctermfg=black
 
@@ -711,7 +710,7 @@ augroup END
 augroup javascript_config
   autocmd!
 
-  let g:flow#enable = 0
+  let g:flow#enable = 1
   let g:javascript_plugin_flow = 1
   let g:vim_json_syntax_conceal = 0
   let g:jsx_ext_required = 0
