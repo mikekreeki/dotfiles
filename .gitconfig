@@ -49,6 +49,9 @@
   pr = "!open \"$(git remote -v | grep origin | grep push | cut -f 2 | cut -d \" \" -f 1 | sed -e \"s|https://github.com/\\(.*\\)/\\(.*\\).git|https://github.com/\\1/\\2|\")/pull/new/$(git rev-parse --abbrev-ref HEAD)\""
   gh = "!open \"$(git remote -v | grep origin | grep push | cut -f 2 | cut -d \" \" -f 1 | sed -e \"s|https://github.com/\\(.*\\)/\\(.*\\).git|https://github.com/\\1/\\2|\")/tree/$(git rev-parse --abbrev-ref HEAD)\""
 
+  ; Fix conflicted files
+  fix = "!git diff --name-only --relative -z --diff-filter=U | xargs -0 ${EDITOR}"
+
   aliases =  config --get-regexp '(alias.*)'
 
   wip = "!f() { git add -A; git ls-files --deleted -z | xargs -0 git rm; git commit -m \"--wip--\";}; f"

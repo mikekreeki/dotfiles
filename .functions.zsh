@@ -13,6 +13,7 @@ function p() {
   proj=$(ls ~/Projects | fzf --query="$1")
   if [[ -n "$proj" ]]; then
       cd ~/Projects/$proj
+      clear
   fi
 }
 

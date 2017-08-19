@@ -5,12 +5,18 @@ Plug 'corntrace/bufexplorer'
 Plug 'gorkunov/smartgf.vim'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'jasoncodes/ctrlp-modified.vim'
+Plug 'kaneshin/ctrlp-git-log'
 Plug 'scrooloose/nerdtree'
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-projectionist'
+Plug 'EinfachToll/DidYouMean'
 
 " Interface
+" Plug 'Shougo/denite.nvim'
+" Plug 'chemzqm/vim-easygit'
+" Plug 'chemzqm/denite-git'
+
 Plug 'bling/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'inkarkat/SyntaxAttr.vim'
@@ -20,7 +26,10 @@ Plug 'gorodinskiy/vim-coloresque'
 Plug 'itchyny/vim-cursorword'
 " Plug 'romainl/vim-qf'
 Plug 'pmalek/toogle-maximize.vim'
-Plug 'christoomey/vim-tmux-navigator'
+" Plug 'christoomey/vim-tmux-navigator'
+" Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+" Plug 'junegunn/fzf.vim'
+Plug 'johngrib/vim-game-code-break'
 
 " Searching
 Plug 'Lokaltog/vim-easymotion'
@@ -37,6 +46,10 @@ Plug 'Shougo/echodoc.vim'
 Plug 'Shougo/neco-syntax'
 Plug 'Shougo/neoinclude.vim'
 Plug 'Shougo/neopairs.vim'
+" Plug 'SirVer/ultisnips'
+" Plug 'honza/vim-snippets'
+" Plug 'epilande/vim-es2015-snippets'
+" Plug 'epilande/vim-react-snippets'
 
 " Code Editing
 Plug 'Yggdroot/indentLine'
@@ -65,6 +78,7 @@ Plug 'rhysd/committia.vim'
 Plug 'rhysd/conflict-marker.vim'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-git'
+Plug 'jreybert/vimagit'
 
 " Building, Linters, Test Runners
 Plug 'w0rp/ale'
@@ -83,32 +97,30 @@ Plug 'tpope/vim-rvm'
 
 " JavaScript Integration
 Plug 'elzr/vim-json'
-Plug 'gavocanov/vim-js-indent'
+" Plug 'gavocanov/vim-js-indent'
 Plug 'bentayloruk/vim-react-es6-snippets'
 Plug 'mustache/vim-mustache-handlebars'
-" Plug 'othree/yajs.vim'
 Plug 'pangloss/vim-javascript'
-" Plug 'othree/es.next.syntax.vim'
 Plug 'mxw/vim-jsx'
 " Plug 'flowtype/vim-flow'
 Plug 'othree/jspc.vim'
 Plug 'jparise/vim-graphql'
 Plug 'heavenshell/vim-jsdoc'
-Plug 'marijnh/tern_for_vim', { 'do': 'npm install' }
+" Plug 'marijnh/tern_for_vim', { 'do': 'npm install' }
 
 " Other Languages
 Plug 'sheerun/vim-polyglot'
+Plug 'gabrielelana/vim-markdown'
 
 " Taking Notes
 Plug 'duff/vim-scratch'
 Plug 'xolox/vim-misc'
-Plug 'xolox/vim-notes'
+" Plug 'xolox/vim-notes'
 
 " Writing
-Plug 'junegunn/goyo.vim'
-Plug 'junegunn/limelight.vim'
+" Plug 'junegunn/goyo.vim'
+" Plug 'junegunn/limelight.vim'
 " Plug 'plasticboy/vim-markdown'
-Plug 'gabrielelana/vim-markdown'
 
 " Terminal Integration
 Plug 'kassio/neoterm'
@@ -116,6 +128,8 @@ Plug 'kassio/neoterm'
 " Colorschemes
 " Plug 'mikekreeki/mikekreeki-colors.vim'
 Plug '~/Projects/mikekreeki-colors.vim'
+
+Plug '~/Projects/neovim-plugin-demo'
 
 call plug#end()
 
@@ -253,7 +267,7 @@ vnoremap > >gv
 nnoremap <leader><leader> <c-^>
 
 " Shortcuts for closing buffers
-nmap <silent> <leader>d :BD<CR>
+nmap <silent> <leader>d :close<CR>
 nmap <silent> <leader>D :close<CR>
 
 " Open a new vertical split and switch over to it
@@ -507,6 +521,20 @@ augroup airline_config
   let g:airline_section_y=''
   let g:airline_section_z=''
 
+  let g:airline_mode_map = {
+      \ '__' : '-',
+      \ 'n'  : 'N',
+      \ 'i'  : 'I',
+      \ 'R'  : 'R',
+      \ 'c'  : 'C',
+      \ 'v'  : 'V',
+      \ 'V'  : 'V',
+      \ '' : 'V',
+      \ 's'  : 'S',
+      \ 'S'  : 'S',
+      \ '' : 'S',
+      \ }
+
   let g:airline#extensions#hunks#enabled = 0
   let g:airline#extensions#branch#enabled = 0
 
@@ -615,6 +643,7 @@ augroup trailing_whitespace_config
 augroup END
 
 augroup ale_config
+
   let g:ale_sign_column_always = 1
   let g:ale_sign_error = '✖'
   let g:ale_sign_warning = '✖'
@@ -673,13 +702,16 @@ augroup folding_config
   " nnoremap <CR> za
   " onoremap <CR> <C-C>za
   " vnoremap <CR> zf
+
+  " TODO: Move into separate group if it works
+  " nnoremap <ENTER> :Denite gitstatus<CR>
 augroup END
 
 augroup grepper_config
   autocmd!
 
   " Project search using Ag
-  nnoremap <leader>f :Grepper -tool ag -open -switch -grepprg ag --vimgrep --literal<CR>
+  nnoremap <leader>f :Grepper -tool ag -highlight -open -switch -grepprg ag --vimgrep --literal<CR>
 augroup END
 
 augroup bufexplorer_config
@@ -783,6 +815,16 @@ augroup echodoc_config
   let g:echodoc_enable_at_startup = 1
 augroup END
 
+" augroup fzf_config
+"   autocmd!
+
+"   nnoremap <C-P> :FZF<CR>
+"   nnoremap < :Commits<CR>
+"   " let g:fzf_commits_log_options = '--color=always --format="%C(auto)%h%d %s %C(black)%C(bold)%cr"'
+"   let g:fzf_commits_log_options = '--color=always --date=short --format="%C(yellow)%h %ad%Cred%d %Creset%s%Cblue [%cn]"'
+"   " ld= log --pretty=format:"%C(yellow)%h\\ %ad%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --date=short
+" augroup END
+
 augroup tagbar_config
   autocmd!
 
@@ -798,7 +840,7 @@ augroup END
 augroup gitgutter_config
   autocmd!
 
-  let g:gitgutter_sign_column_always = 1
+  set signcolumn=yes
 augroup END
 
 augroup toggle_maximize_config
@@ -896,4 +938,5 @@ augroup quickwrap_config
   vnoremap } <esc>`>a}<esc>`<i{<esc>
   vnoremap " <esc>`>a"<esc>`<i"<esc>
   vnoremap ' <esc>`>a'<esc>`<i'<esc>
+  vnoremap ` <esc>`>a`<esc>`<i`<esc>
 augroup END
