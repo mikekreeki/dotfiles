@@ -13,10 +13,6 @@ Plug 'tpope/vim-projectionist'
 Plug 'EinfachToll/DidYouMean'
 
 " Interface
-" Plug 'Shougo/denite.nvim'
-" Plug 'chemzqm/vim-easygit'
-" Plug 'chemzqm/denite-git'
-
 Plug 'bling/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'inkarkat/SyntaxAttr.vim'
@@ -24,12 +20,9 @@ Plug 'milkypostman/vim-togglelist'
 Plug 'tpope/vim-rsi'
 Plug 'gorodinskiy/vim-coloresque'
 Plug 'itchyny/vim-cursorword'
-" Plug 'romainl/vim-qf'
 Plug 'pmalek/toogle-maximize.vim'
-" Plug 'christoomey/vim-tmux-navigator'
-" Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-" Plug 'junegunn/fzf.vim'
 Plug 'johngrib/vim-game-code-break'
+Plug 'johngrib/vim-game-snake'
 
 " Searching
 Plug 'Lokaltog/vim-easymotion'
@@ -41,15 +34,10 @@ Plug 'nelstrom/vim-qargs'
 " Autocomplete
 Plug 'Shougo/context_filetype.vim'
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-" Plug 'wokalski/autocomplete-flow'
 Plug 'Shougo/echodoc.vim'
 Plug 'Shougo/neco-syntax'
 Plug 'Shougo/neoinclude.vim'
 Plug 'Shougo/neopairs.vim'
-" Plug 'SirVer/ultisnips'
-" Plug 'honza/vim-snippets'
-" Plug 'epilande/vim-es2015-snippets'
-" Plug 'epilande/vim-react-snippets'
 
 " Code Editing
 Plug 'Yggdroot/indentLine'
@@ -79,6 +67,7 @@ Plug 'rhysd/conflict-marker.vim'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-git'
 Plug 'jreybert/vimagit'
+Plug 'idanarye/vim-merginal'
 
 " Building, Linters, Test Runners
 Plug 'w0rp/ale'
@@ -97,16 +86,14 @@ Plug 'tpope/vim-rvm'
 
 " JavaScript Integration
 Plug 'elzr/vim-json'
-" Plug 'gavocanov/vim-js-indent'
 Plug 'bentayloruk/vim-react-es6-snippets'
 Plug 'mustache/vim-mustache-handlebars'
 Plug 'pangloss/vim-javascript'
 Plug 'mxw/vim-jsx'
-" Plug 'flowtype/vim-flow'
+Plug 'flowtype/vim-flow'
 Plug 'othree/jspc.vim'
 Plug 'jparise/vim-graphql'
 Plug 'heavenshell/vim-jsdoc'
-" Plug 'marijnh/tern_for_vim', { 'do': 'npm install' }
 
 " Other Languages
 Plug 'sheerun/vim-polyglot'
@@ -115,12 +102,6 @@ Plug 'gabrielelana/vim-markdown'
 " Taking Notes
 Plug 'duff/vim-scratch'
 Plug 'xolox/vim-misc'
-" Plug 'xolox/vim-notes'
-
-" Writing
-" Plug 'junegunn/goyo.vim'
-" Plug 'junegunn/limelight.vim'
-" Plug 'plasticboy/vim-markdown'
 
 " Terminal Integration
 Plug 'kassio/neoterm'
@@ -128,8 +109,6 @@ Plug 'kassio/neoterm'
 " Colorschemes
 " Plug 'mikekreeki/mikekreeki-colors.vim'
 Plug '~/Projects/mikekreeki-colors.vim'
-
-Plug '~/Projects/neovim-plugin-demo'
 
 call plug#end()
 
@@ -194,7 +173,7 @@ set timeoutlen=500
 set fillchars+=vert:\ " there is a single space after '\ '
 set showcmd
 set laststatus=2
-set shortmess+=I
+set shortmess+=IFW
 set conceallevel=2
 set concealcursor=nvi
 set noshowmode
@@ -643,6 +622,7 @@ augroup trailing_whitespace_config
 augroup END
 
 augroup ale_config
+  autocmd!
 
   let g:ale_sign_column_always = 1
   let g:ale_sign_error = '✖'
@@ -654,6 +634,16 @@ augroup ale_config
   \}
 
   nmap <silent> <Bs> <Plug>(ale_previous_wrap)
+augroup END
+
+augroup flow_config
+  autocmd!
+
+  let g:flow#enable = 0
+  let g:flow#omnifunc = 1
+  let g:flow#flowpath = './node_modules/.bin/flow'
+
+  autocmd FileType javascript.jsx nnoremap <buffer> <CR> :FlowJumpToDef<CR>
 augroup END
 
 augroup deoplete_config
@@ -742,7 +732,6 @@ augroup END
 augroup javascript_config
   autocmd!
 
-  let g:flow#enable = 1
   let g:javascript_plugin_flow = 1
   let g:vim_json_syntax_conceal = 0
   let g:jsx_ext_required = 0
@@ -860,7 +849,7 @@ augroup neoformat_config
           \ }
   endfunction
 
-  autocmd BufWritePre * Neoformat
+  autocmd BufWritePre * silent Neoformat
 augroup END
 
 augroup syntax_attr_config
