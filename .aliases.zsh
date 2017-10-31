@@ -10,7 +10,7 @@ alias gu='gem update'
 alias gx='gem uninstall'
 
 # BUNDLER
-alias bi='bundle install && restart && stop'
+alias bi='bundle install && touch tmp/restart.txt && spring stop'
 
 # RAILS
 alias restart='mkdir -p tmp && touch tmp/restart.txt'

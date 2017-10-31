@@ -18,11 +18,11 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'inkarkat/SyntaxAttr.vim'
 Plug 'milkypostman/vim-togglelist'
 Plug 'tpope/vim-rsi'
-Plug 'gorodinskiy/vim-coloresque'
 Plug 'itchyny/vim-cursorword'
 Plug 'pmalek/toogle-maximize.vim'
 Plug 'johngrib/vim-game-code-break'
 Plug 'johngrib/vim-game-snake'
+Plug 'yuttie/comfortable-motion.vim'
 
 " Searching
 Plug 'Lokaltog/vim-easymotion'
@@ -68,6 +68,7 @@ Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-git'
 Plug 'jreybert/vimagit'
 Plug 'idanarye/vim-merginal'
+Plug 'lambdalisue/gina.vim'
 
 " Building, Linters, Test Runners
 Plug 'w0rp/ale'
@@ -118,6 +119,7 @@ syntax on
 set shell=/bin/zsh
 
 let mapleader = ","
+let maplocalleader = "\\"
 
 set hidden
 set number
@@ -180,6 +182,9 @@ set noshowmode
 set exrc
 set secure
 set termguicolors
+
+autocmd BufWinLeave *.* silent! mkview " Make Vim save view (state) (folds, cursor, etc)
+autocmd BufWinEnter *.* silent! loadview " Make Vim load view (state) (folds, cursor, etc)
 
 " Ignore things
 set wildignore+=*.jpg,*.jpeg,*.gif,*.png,*.gif,*.psd,*.o,*.obj
@@ -285,7 +290,7 @@ autocmd BufWritePost * :echo
 
 nmap <silent> <C-l> ?function<cr>:noh<cr><Plug>(jsdoc)
 
-nnoremap <silent> s vip:sort ui<CR>
+" nnoremap <silent> s vip:sort ui<CR>
 vnoremap <silent> s :sort ui<CR>
 
 nnoremap W cs[[
@@ -406,51 +411,6 @@ augroup nerdtree_config
   endfunction
   autocmd WinEnter * call s:CloseIfOnlyNerdTreeLeft()
 
-  " Hide NERDTree on small screen
-  " function! ToggleNERDTreeOnSmallScreen()
-  "     let breakpoint = 200
-
-  "     if &columns == 0
-  "       return
-  "     endif
-
-  "     if &columns > breakpoint
-  "       if exists("t:NERDTreeBufName")
-  "         if bufwinnr(t:NERDTreeBufName) == -1
-  "           silent! NERDTree
-  "           wincmd p
-  "         endif
-  "       endif
-  "     endif
-
-  "     if &columns < breakpoint
-  "       if exists("t:NERDTreeBufName")
-  "         if bufwinnr(t:NERDTreeBufName) != -1
-  "           silent! NERDTreeClose
-  "           wincmd p
-  "         endif
-  "       endif
-  "     endif
-
-  "     redraw!
-  " endfunction
-  " autocmd VimEnter * call ToggleNERDTreeOnSmallScreen()
-  " autocmd VimResized * call ToggleNERDTreeOnSmallScreen()
-
-  " If no file or directory arguments are specified, open NERDtree.
-  " If a directory is specified as the only argument, open it in NERDTree.
-  " autocmd StdinReadPre * let s:std_in=1
-  " function! NERDTreeAutoOpen()
-  "   if argc() == 0 && !exists('s:std_in')
-  "     NERDTree
-  "   elseif argc() == 1 && isdirectory(argv(0))
-  "     bd
-  "     exec 'cd' fnameescape(argv(0))
-  "     NERDTree
-  "   end
-  " endfunction
-  " autocmd VimEnter * call NERDTreeAutoOpen()
-
   let g:NERDTreeExtensionHighlightColor = {}
   let g:NERDTreeExtensionHighlightColor['css'] = 'AAAAAA'
   let g:NERDTreeExtensionHighlightColor['less'] = 'AAAAAA'
@@ -493,6 +453,7 @@ augroup END
 augroup airline_config
   autocmd!
 
+  " let g:airline_inactive_collapse=0
   let g:airline_left_sep=''
   let g:airline_right_sep=''
   let g:airline_theme='powerlineish'
@@ -516,6 +477,7 @@ augroup airline_config
 
   let g:airline#extensions#hunks#enabled = 0
   let g:airline#extensions#branch#enabled = 0
+  let g:airline#extensions#branch#symbol = ''
 
   let g:airline#extensions#ale#enabled = 1
   let g:airline#extensions#ale#error_symbol = '✖ '
@@ -582,12 +544,18 @@ augroup cursorline_config
   " Cursorline in active window only
   au VimEnter,WinEnter,BufWinEnter * setlocal cursorline
   au WinLeave * setlocal nocursorline
+
+  " Only have cursorline in current window and in normal window
+  autocmd WinLeave * set nocursorline
+  autocmd WinEnter * set cursorline
+  autocmd InsertEnter * set nocursorline
+  autocmd InsertLeave * set cursorline
 augroup END
 
 augroup indentLine_config
   autocmd!
 
-  let g:indentLine_fileTypeExclude = ['help', 'notes', 'text']
+  let g:indentLine_fileTypeExclude = ['help', 'notes', 'text', '']
 augroup END
 
 augroup notes_config
@@ -603,15 +571,25 @@ augroup END
 augroup test_config
   autocmd!
 
-  nmap <silent> <leader>R :TestNearest<CR>
-  nmap <silent> <leader>r :TestFile<CR>
-  nmap <silent> <leader>a :TestSuite<CR>
-  nmap <silent> <leader>l :TestLast<CR>
-  nmap <silent> <leader>g :TestVisit<CR>
+  " nmap <silent> <leader>R :TestNearest<CR>
+  " nmap <silent> <leader>r :TestFile<CR>
+  " nmap <silent> <leader>a :TestSuite<CR>
+  " nmap <silent> <leader>l :TestLast<CR>
+  " nmap <silent> <leader>g :TestVisit<CR>
 
   let test#base#no_colors = 0
   let test#strategy = 'neoterm'
   let g:test#preserve_screen = 0
+
+  function! RunTest(cmd)
+    call neoterm#open() " Opens the neoterm window
+    call neoterm#normal('G') " Scroll to the end of the neoterm window
+    call neoterm#clear()
+    exec a:cmd
+  endfunction
+
+  nmap <silent> <leader>R :call RunTest('TestNearest')<CR>
+  nmap <silent> <leader>r f :call RunTest('TestFile')<CR>
 augroup END
 
 augroup trailing_whitespace_config
@@ -644,6 +622,7 @@ augroup flow_config
   let g:flow#flowpath = './node_modules/.bin/flow'
 
   autocmd FileType javascript.jsx nnoremap <buffer> <CR> :FlowJumpToDef<CR>
+  autocmd FileType javascript.jsx nnoremap <buffer> ¨ :FlowType<CR>
 augroup END
 
 augroup deoplete_config
@@ -777,7 +756,7 @@ augroup END
 augroup rooter_config
   autocmd!
 
-  let g:rooter_patterns = ['package.json', '.git/']
+  let g:rooter_patterns = ['.git/']
 augroup END
 
 augroup smartgf_config
@@ -849,7 +828,7 @@ augroup neoformat_config
           \ }
   endfunction
 
-  autocmd BufWritePre * silent Neoformat
+  autocmd BufWritePre src/**/*.js silent Neoformat
 augroup END
 
 augroup syntax_attr_config
@@ -898,22 +877,56 @@ augroup reload_vimrc_config
   " autocmd BufWritePost $MYVIMRC source $MYVIMRC
 augroup END
 
-augroup writing_config
-  autocmd!
+augroup rails_vim_config
+  let g:rails_projections = {
+        \  "app/serializers/*_serializer.rb": {
+        \    "command": "serializer",
+        \    "test": "spec/serializers/%s_spec.rb",
+        \    "related": "app/models/%s.rb",
+        \     "affinity": "model",
+        \    "template": "class %SSerializer < ActiveModel::Serializer\nend"
+        \  },
+        \  "app/decorators/*_decorator.rb": {
+        \    "command": "decorator",
+        \    "related": "app/models/%s.rb",
+        \    "affinity": "model",
+        \    "template": "class %SDecorator < Draper::Decorator\nend",
+        \    "test": "spec/decorators/%s_decorator_spec.rb"
+        \  },
+        \  "app/services/*_service.rb": {
+        \    "command": "service",
+        \    "template": "class %SService\nend",
+        \    "test": "spec/services/%s_service_spec.rb"
+        \  },
+        \  "app/listeners/*_listener.rb": {
+        \    "command": "listener",
+        \    "template": "class %SListener\nend",
+        \    "test": "spec/listeners/%s_listener_spec.rb"
+        \  },
+        \  "app/jobs/*_job.rb": {
+        \    "command": "job",
+        \    "related": "app/models/%s.rb",
+        \    "affinity": "model",
+        \    "template": "class %SJob\nend",
+        \    "test": "spec/jobs/%s_job_spec.rb"
+        \   },
+        \   "config/routes.rb": {"command": "routes"},
+        \   "spec/factories/*.rb": {
+        \     "command": "factory",
+        \     "affinity": "collection",
+        \     "alternate": "app/models/%i.rb",
+        \     "related": "db/schema.rb#%s",
+        \     "test": "spec/models/%i_test.rb",
+        \     "template": "FactoryGirl.define do\n  factory :%i do\n  end\nend",
+        \     "keywords": "factory sequence"
+        \   },
+        \   "spec/features/*_spec.rb": { "command": "feature" },
+        \   "spec/requests/*_spec.rb": { "command": "request" },
+        \   "app/workers/*_worker.rb": { "command": "worker" },
+        \   "app/policies/*_policy.rb": { "command": "policy" },
+        \   "app/paths/*_path.rb": { "command": "path" }
+        \ }
 
-  autocmd FileType Goyo wincmd L
-  autocmd! User GoyoEnter Limelight
-  autocmd! User GoyoLeave Limelight!
-
-  function! s:goyo_enter()
-    set filetype=markdown
-  endfunction
-
-  function! s:goyo_leave()
-  endfunction
-
-  autocmd! User GoyoEnter nested call <SID>goyo_enter()
-  autocmd! User GoyoLeave nested call <SID>goyo_leave()
 augroup END
 
 augroup quickwrap_config
