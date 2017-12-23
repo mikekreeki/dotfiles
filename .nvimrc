@@ -77,7 +77,7 @@ Plug 'janko-m/vim-test'
 
 " Ruby Integration
 Plug 'AmaiSaeta/vim-ruby-sinatra'
-Plug 'AndrewRadev/splitjoin.vim', { 'for': 'ruby' }
+Plug 'AndrewRadev/splitjoin.vim'
 Plug 'keith/rspec.vim'
 Plug 'slim-template/vim-slim'
 Plug 'tpope/vim-bundler'
@@ -99,6 +99,7 @@ Plug 'heavenshell/vim-jsdoc'
 " Other Languages
 Plug 'sheerun/vim-polyglot'
 Plug 'gabrielelana/vim-markdown'
+Plug 'vim-scripts/SyntaxRange'
 
 " Taking Notes
 Plug 'duff/vim-scratch'
@@ -647,8 +648,8 @@ augroup END
 augroup splitjoin_config
   autocmd!
 
-  autocmd FileType ruby nnoremap S :SplitjoinJoin<cr>
-  autocmd FileType ruby nnoremap s :SplitjoinSplit<cr>
+  autocmd FileType ruby,javascript nnoremap S :SplitjoinJoin<cr>
+  autocmd FileType ruby,javascript nnoremap s :SplitjoinSplit<cr>
 augroup END
 
 augroup folding_config
