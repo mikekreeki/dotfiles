@@ -2,7 +2,6 @@ call plug#begin('~/.nvim/plugged')
 
 " Buffer/File Navigation
 Plug 'corntrace/bufexplorer'
-Plug 'gorkunov/smartgf.vim'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'jasoncodes/ctrlp-modified.vim'
 Plug 'kaneshin/ctrlp-git-log'
@@ -11,6 +10,7 @@ Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-projectionist'
 Plug 'EinfachToll/DidYouMean'
+Plug 'fisadev/vim-ctrlp-cmdpalette'
 
 " Interface
 Plug 'bling/vim-airline'
@@ -28,7 +28,7 @@ Plug 'yuttie/comfortable-motion.vim'
 Plug 'Lokaltog/vim-easymotion'
 Plug 'mhinz/vim-grepper'
 Plug 'osyo-manga/vim-over'
-Plug 'dkprice/vim-easygrep'
+" Plug 'dkprice/vim-easygrep'
 Plug 'nelstrom/vim-qargs'
 
 " Autocomplete
@@ -71,30 +71,31 @@ Plug 'idanarye/vim-merginal'
 Plug 'lambdalisue/gina.vim'
 
 " Building, Linters, Test Runners
-Plug 'w0rp/ale'
+Plug 'w0rp/ale',         { 'for': ['ruby', 'javascript'] }
 Plug 'sbdchd/neoformat'
-Plug 'janko-m/vim-test'
+Plug 'janko-m/vim-test', { 'for': 'ruby' }
 
 " Ruby Integration
-Plug 'AmaiSaeta/vim-ruby-sinatra'
-Plug 'AndrewRadev/splitjoin.vim'
-Plug 'keith/rspec.vim'
-Plug 'slim-template/vim-slim'
-Plug 'tpope/vim-bundler'
-Plug 'tpope/vim-rails'
-Plug 'vim-ruby/vim-ruby'
-Plug 'tpope/vim-rvm'
+Plug 'AmaiSaeta/vim-ruby-sinatra', { 'for': 'ruby' }
+Plug 'AndrewRadev/splitjoin.vim',  { 'for': 'ruby' }
+Plug 'keith/rspec.vim',            { 'for': 'ruby' }
+Plug 'slim-template/vim-slim',     { 'for': 'ruby' }
+Plug 'tpope/vim-bundler',          { 'for': 'ruby' }
+Plug 'tpope/vim-rails',            { 'for': 'ruby' }
+Plug 'vim-ruby/vim-ruby',          { 'for': 'ruby' }
+Plug 'tpope/vim-rvm',              { 'for': 'ruby' }
+" Plug 'gorkunov/smartgf.vim',       { 'for': 'ruby' }
 
 " JavaScript Integration
-Plug 'elzr/vim-json'
-Plug 'bentayloruk/vim-react-es6-snippets'
-Plug 'mustache/vim-mustache-handlebars'
-Plug 'pangloss/vim-javascript'
-Plug 'mxw/vim-jsx'
-Plug 'flowtype/vim-flow'
-Plug 'othree/jspc.vim'
-Plug 'jparise/vim-graphql'
-Plug 'heavenshell/vim-jsdoc'
+Plug 'elzr/vim-json',                      { 'for': 'json' }
+Plug 'bentayloruk/vim-react-es6-snippets', { 'for': 'javascript' }
+Plug 'mustache/vim-mustache-handlebars',   { 'for': 'javascript' }
+Plug 'pangloss/vim-javascript',            { 'for': 'javascript' }
+Plug 'mxw/vim-jsx',                        { 'for': 'javascript' }
+Plug 'flowtype/vim-flow',                  { 'for': 'javascript' }
+Plug 'othree/jspc.vim',                    { 'for': 'javascript' }
+Plug 'jparise/vim-graphql',                { 'for': 'javascript' }
+Plug 'heavenshell/vim-jsdoc',              { 'for': 'javascript' }
 
 " Other Languages
 Plug 'sheerun/vim-polyglot'
@@ -191,8 +192,8 @@ autocmd BufWinEnter *.* silent! loadview " Make Vim load view (state) (folds, cu
 set wildignore+=*.jpg,*.jpeg,*.gif,*.png,*.gif,*.psd,*.o,*.obj
 set wildignore+=*/.git/*,*/.hg/*,*/.svn/*
 
-nnoremap / /\v
-vnoremap / /\v
+" nnoremap / /\v
+" vnoremap / /\v
 
 nnoremap <up> <nop>
 nnoremap <down> <nop>
@@ -435,9 +436,7 @@ augroup ctrlp_config
   let g:ctrlp_max_files = 0
   let g:ctrlp_extensions = ['buffertag', 'tag', 'line', 'dir']
 
-  if executable('ag')
-    let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
-  endif
+  let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
 
   let g:ctrlp_match_window = 'bottom,order:ttb'
   let g:ctrlp_reuse_window = 'netrw'
@@ -447,8 +446,8 @@ augroup ctrlp_config
   let g:ctrlp_show_hidden = 1
   let g:ctrlp_use_caching=0
 
-  nmap <silent> .. :CtrlPBranch<CR>
-  nmap <silent> -- :CtrlPBranch<CR>
+  " nmap <silent> .. :CtrlPBranch<CR>
+  " nmap <silent> -- :CtrlPBranch<CR>
 augroup END
 
 augroup airline_config
@@ -763,7 +762,7 @@ augroup END
 augroup smartgf_config
   autocmd!
 
-  let g:smartgf_key = 'z'
+  let g:smartgf_key = '<CR>'
 augroup END
 
 augroup autopairs_config
@@ -824,12 +823,12 @@ augroup neoformat_config
   function! neoformat#formatters#javascript#prettier() abort
       return {
           \ 'exe': './node_modules/.bin/prettier',
-          \ 'args': ['--stdin --single-quote --trailing-comma all --print-width 85'],
+          \ 'args': ['--stdin --config .prettierrc'],
           \ 'stdin': 1,
           \ }
   endfunction
 
-  autocmd BufWritePre src/**/*.js silent Neoformat
+  autocmd BufWritePre src/**/*.js,cypress/**/*.js silent Neoformat
 augroup END
 
 augroup syntax_attr_config
@@ -847,15 +846,15 @@ augroup tern_for_vim_config
   nmap <silent> D :TernDef<CR>
 augroup END
 
-augroup easygrep_config
-  autocmd!
+" augroup easygrep_config
+"   autocmd!
 
-  let g:EasyGrepJumpToMatch = 0
-  let g:EasyGrepIgnoreCase = 0
-  let g:EasyGrepRoot = 'repository'
+"   let g:EasyGrepJumpToMatch = 0
+"   let g:EasyGrepIgnoreCase = 0
+"   let g:EasyGrepRoot = 'repository'
 
-  nmap <silent> F <plug>EgMapGrepCurrentWord_V
-augroup END
+"   nmap <silent> F <plug>EgMapGrepCurrentWord_V
+" augroup END
 
 augroup polyglot_config
   autocmd!
@@ -878,57 +877,57 @@ augroup reload_vimrc_config
   " autocmd BufWritePost $MYVIMRC source $MYVIMRC
 augroup END
 
-augroup rails_vim_config
-  let g:rails_projections = {
-        \  "app/serializers/*_serializer.rb": {
-        \    "command": "serializer",
-        \    "test": "spec/serializers/%s_spec.rb",
-        \    "related": "app/models/%s.rb",
-        \     "affinity": "model",
-        \    "template": "class %SSerializer < ActiveModel::Serializer\nend"
-        \  },
-        \  "app/decorators/*_decorator.rb": {
-        \    "command": "decorator",
-        \    "related": "app/models/%s.rb",
-        \    "affinity": "model",
-        \    "template": "class %SDecorator < Draper::Decorator\nend",
-        \    "test": "spec/decorators/%s_decorator_spec.rb"
-        \  },
-        \  "app/services/*_service.rb": {
-        \    "command": "service",
-        \    "template": "class %SService\nend",
-        \    "test": "spec/services/%s_service_spec.rb"
-        \  },
-        \  "app/listeners/*_listener.rb": {
-        \    "command": "listener",
-        \    "template": "class %SListener\nend",
-        \    "test": "spec/listeners/%s_listener_spec.rb"
-        \  },
-        \  "app/jobs/*_job.rb": {
-        \    "command": "job",
-        \    "related": "app/models/%s.rb",
-        \    "affinity": "model",
-        \    "template": "class %SJob\nend",
-        \    "test": "spec/jobs/%s_job_spec.rb"
-        \   },
-        \   "config/routes.rb": {"command": "routes"},
-        \   "spec/factories/*.rb": {
-        \     "command": "factory",
-        \     "affinity": "collection",
-        \     "alternate": "app/models/%i.rb",
-        \     "related": "db/schema.rb#%s",
-        \     "test": "spec/models/%i_test.rb",
-        \     "template": "FactoryGirl.define do\n  factory :%i do\n  end\nend",
-        \     "keywords": "factory sequence"
-        \   },
-        \   "spec/features/*_spec.rb": { "command": "feature" },
-        \   "spec/requests/*_spec.rb": { "command": "request" },
-        \   "app/workers/*_worker.rb": { "command": "worker" },
-        \   "app/policies/*_policy.rb": { "command": "policy" },
-        \   "app/paths/*_path.rb": { "command": "path" }
-        \ }
+" augroup rails_vim_config
+"   let g:rails_projections = {
+"         \  "app/serializers/*_serializer.rb": {
+"         \    "command": "serializer",
+"         \    "test": "spec/serializers/%s_spec.rb",
+"         \    "related": "app/models/%s.rb",
+"         \     "affinity": "model",
+"         \    "template": "class %SSerializer < ActiveModel::Serializer\nend"
+"         \  },
+"         \  "app/decorators/*_decorator.rb": {
+"         \    "command": "decorator",
+"         \    "related": "app/models/%s.rb",
+"         \    "affinity": "model",
+"         \    "template": "class %SDecorator < Draper::Decorator\nend",
+"         \    "test": "spec/decorators/%s_decorator_spec.rb"
+"         \  },
+"         \  "app/services/*_service.rb": {
+"         \    "command": "service",
+"         \    "template": "class %SService\nend",
+"         \    "test": "spec/services/%s_service_spec.rb"
+"         \  },
+"         \  "app/listeners/*_listener.rb": {
+"         \    "command": "listener",
+"         \    "template": "class %SListener\nend",
+"         \    "test": "spec/listeners/%s_listener_spec.rb"
+"         \  },
+"         \  "app/jobs/*_job.rb": {
+"         \    "command": "job",
+"         \    "related": "app/models/%s.rb",
+"         \    "affinity": "model",
+"         \    "template": "class %SJob\nend",
+"         \    "test": "spec/jobs/%s_job_spec.rb"
+"         \   },
+"         \   "config/routes.rb": {"command": "routes"},
+"         \   "spec/factories/*.rb": {
+"         \     "command": "factory",
+"         \     "affinity": "collection",
+"         \     "alternate": "app/models/%i.rb",
+"         \     "related": "db/schema.rb#%s",
+"         \     "test": "spec/models/%i_test.rb",
+"         \     "template": "FactoryGirl.define do\n  factory :%i do\n  end\nend",
+"         \     "keywords": "factory sequence"
+"         \   },
+"         \   "spec/features/*_spec.rb": { "command": "feature" },
+"         \   "spec/requests/*_spec.rb": { "command": "request" },
+"         \   "app/workers/*_worker.rb": { "command": "worker" },
+"         \   "app/policies/*_policy.rb": { "command": "policy" },
+"         \   "app/paths/*_path.rb": { "command": "path" }
+"         \ }
 
-augroup END
+" augroup END
 
 augroup quickwrap_config
   autocmd!
