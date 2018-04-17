@@ -11,6 +11,7 @@ Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-projectionist'
 Plug 'EinfachToll/DidYouMean'
 Plug 'fisadev/vim-ctrlp-cmdpalette'
+Plug 'kopischke/vim-fetch'
 
 " Interface
 Plug 'bling/vim-airline'
@@ -23,6 +24,7 @@ Plug 'pmalek/toogle-maximize.vim'
 Plug 'johngrib/vim-game-code-break'
 Plug 'johngrib/vim-game-snake'
 Plug 'yuttie/comfortable-motion.vim'
+Plug 'troydm/zoomwintab.vim'
 
 " Searching
 Plug 'Lokaltog/vim-easymotion'
@@ -43,7 +45,8 @@ Plug 'Shougo/neopairs.vim'
 Plug 'Yggdroot/indentLine'
 Plug 'alvan/vim-closetag'
 Plug 'jiangmiao/auto-pairs'
-Plug 'edsono/vim-matchit'
+Plug 'andymass/vim-matchup'
+" Plug 'edsono/vim-matchit'
 Plug 'gorkunov/smartpairs.vim'
 Plug 'junegunn/vim-easy-align'
 Plug 'ntpeters/vim-better-whitespace'
@@ -81,10 +84,10 @@ Plug 'AndrewRadev/splitjoin.vim',  { 'for': 'ruby' }
 Plug 'keith/rspec.vim',            { 'for': 'ruby' }
 Plug 'slim-template/vim-slim',     { 'for': 'ruby' }
 Plug 'tpope/vim-bundler',          { 'for': 'ruby' }
-Plug 'tpope/vim-rails',            { 'for': 'ruby' }
+Plug 'tpope/vim-rails'
 Plug 'vim-ruby/vim-ruby',          { 'for': 'ruby' }
 Plug 'tpope/vim-rvm',              { 'for': 'ruby' }
-" Plug 'gorkunov/smartgf.vim',       { 'for': 'ruby' }
+Plug 'gorkunov/smartgf.vim',       { 'for': 'ruby' }
 
 " JavaScript Integration
 Plug 'elzr/vim-json',                      { 'for': 'json' }
@@ -96,6 +99,10 @@ Plug 'flowtype/vim-flow',                  { 'for': 'javascript' }
 Plug 'othree/jspc.vim',                    { 'for': 'javascript' }
 Plug 'jparise/vim-graphql',                { 'for': 'javascript' }
 Plug 'heavenshell/vim-jsdoc',              { 'for': 'javascript' }
+
+" Elixir integration
+Plug 'slashmili/alchemist.vim'
+Plug 'elixir-editors/vim-elixir'
 
 " Other Languages
 Plug 'sheerun/vim-polyglot'
@@ -278,6 +285,7 @@ set sidescrolloff=10
 
 cnoreabbrev W w
 cnoreabbrev Q q
+cnoreabbrev E e
 
 colorscheme mikekreeki
 
@@ -434,7 +442,7 @@ augroup ctrlp_config
   let g:ctrlp_cmd = 'CtrlP'
 
   let g:ctrlp_max_files = 0
-  let g:ctrlp_extensions = ['buffertag', 'tag', 'line', 'dir']
+  let g:ctrlp_extensions = []
 
   let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
 
@@ -444,7 +452,7 @@ augroup ctrlp_config
   let g:ctrlp_working_path_mode = 0
 
   let g:ctrlp_show_hidden = 1
-  let g:ctrlp_use_caching=0
+  let g:ctrlp_use_caching=1
 
   " nmap <silent> .. :CtrlPBranch<CR>
   " nmap <silent> -- :CtrlPBranch<CR>
@@ -609,7 +617,10 @@ augroup ale_config
 
   let g:ale_linters = {
   \   'javascript': ['eslint', 'flow'],
+  \   'ruby': ['rubocop'],
   \}
+
+  let g:ale_ruby_rubocop_options = '-R'
 
   nmap <silent> <Bs> <Plug>(ale_previous_wrap)
 augroup END
@@ -688,6 +699,8 @@ augroup bufexplorer_config
 
   let g:bufExplorerShowRelativePath=1
   let g:bufExplorerSplitOutPathName=0
+  let g:bufExplorerDefaultHelp=0
+  let g:bufExplorerReverseSort=1
 augroup END
 
 augroup easyalign_config
@@ -735,6 +748,21 @@ augroup neoterm_config
       " :bnext
     endfunction
     :command! TT call OpenTerminal()
+
+    function! NeovimTerminalToggleTerm()
+      bo 15 split
+      try
+	exe s:neovim_visor_termbuf . 'buffer'
+	startinsert
+      catch
+	terminal
+	let s:neovim_visor_termbuf=bufnr('%')
+	execute 'tnoremap <silent> <buffer>' . '<C-t>' . '  <C-\><C-n>:hide<CR>'
+      endtry
+    endfunction
+
+    com! NeovimTerminalToggleTerm call NeovimTerminalToggleTerm()
+    nmap <C-t> :NeovimTerminalToggleTerm<CR>
   endif
 augroup END
 
@@ -742,6 +770,13 @@ augroup closetag_config
   autocmd!
 
   let g:closetag_filenames = "*.html,*.xhtml,*.phtml,*.xml,*.jsx,*.react.js,*.js"
+augroup END
+
+augroup matchup_config
+  autocmd!
+
+  let g:matchup_matchparen_deferred = 1
+  let g:matchup_matchparen_status_offscreen = 0
 augroup END
 
 augroup extradite_config
@@ -796,7 +831,7 @@ augroup END
 augroup tagbar_config
   autocmd!
 
-  nmap T :TagbarToggle<CR>:echo<CR>
+  " nmap T :TagbarToggle<CR>:echo<CR>
 augroup END
 
 augroup scratch_config
@@ -837,6 +872,19 @@ augroup syntax_attr_config
   map <leader>x :call SyntaxAttr()<CR>
 augroup END
 
+augroup elixir_config
+  autocmd!
+
+  let g:alchemist_mappings_disable = 1
+  let g:alchemist_keyword_map = '<leader>K'
+augroup END
+
+augroup zoomwintab_config
+  autocmd!
+
+  nmap <silent> W :ZoomWinTabToggle<CR>
+augroup END
+
 augroup tern_for_vim_config
   autocmd!
 
@@ -859,7 +907,7 @@ augroup END
 augroup polyglot_config
   autocmd!
 
-  let g:polyglot_disabled = ['javascript', 'jsx', 'ruby']
+  let g:polyglot_disabled = ['javascript', 'jsx', 'ruby', 'elixir']
 augroup END
 
 augroup cursorword_config

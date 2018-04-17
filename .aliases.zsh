@@ -59,3 +59,7 @@ alias packager='./node_modules/react-native/packager/packager.sh'
 
 # Dokku
 alias dokku='$HOME/.dokku/contrib/dokku_client.sh'
+
+# Misc
+alias weather='curl wttr.in'
+alias parrot='curl parrot.live'
