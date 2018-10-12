@@ -30,8 +30,8 @@ Plug 'troydm/zoomwintab.vim'
 Plug 'Lokaltog/vim-easymotion'
 Plug 'mhinz/vim-grepper'
 Plug 'osyo-manga/vim-over'
-" Plug 'dkprice/vim-easygrep'
 Plug 'nelstrom/vim-qargs'
+Plug '/usr/local/opt/fzf'
 
 " Autocomplete
 Plug 'Shougo/context_filetype.vim'
@@ -45,7 +45,7 @@ Plug 'Shougo/neopairs.vim'
 Plug 'Yggdroot/indentLine'
 Plug 'alvan/vim-closetag'
 Plug 'jiangmiao/auto-pairs'
-Plug 'andymass/vim-matchup'
+" Plug 'andymass/vim-matchup'
 " Plug 'edsono/vim-matchit'
 Plug 'gorkunov/smartpairs.vim'
 Plug 'junegunn/vim-easy-align'
@@ -72,11 +72,12 @@ Plug 'tpope/vim-git'
 Plug 'jreybert/vimagit'
 Plug 'idanarye/vim-merginal'
 Plug 'lambdalisue/gina.vim'
+Plug 'danishprakash/vim-githubinator'
 
 " Building, Linters, Test Runners
-Plug 'w0rp/ale',         { 'for': ['ruby', 'javascript'] }
+Plug 'w0rp/ale'
 Plug 'sbdchd/neoformat'
-Plug 'janko-m/vim-test', { 'for': 'ruby' }
+Plug 'janko-m/vim-test'
 
 " Ruby Integration
 Plug 'AmaiSaeta/vim-ruby-sinatra', { 'for': 'ruby' }
@@ -87,7 +88,6 @@ Plug 'tpope/vim-bundler',          { 'for': 'ruby' }
 Plug 'tpope/vim-rails'
 Plug 'vim-ruby/vim-ruby',          { 'for': 'ruby' }
 Plug 'tpope/vim-rvm',              { 'for': 'ruby' }
-Plug 'gorkunov/smartgf.vim',       { 'for': 'ruby' }
 
 " JavaScript Integration
 Plug 'elzr/vim-json',                      { 'for': 'json' }
@@ -99,6 +99,13 @@ Plug 'flowtype/vim-flow',                  { 'for': 'javascript' }
 Plug 'othree/jspc.vim',                    { 'for': 'javascript' }
 Plug 'jparise/vim-graphql',                { 'for': 'javascript' }
 Plug 'heavenshell/vim-jsdoc',              { 'for': 'javascript' }
+" Plug 'leafgarland/typescript-vim'
+Plug 'HerringtonDarkholme/yats.vim'
+" Plug 'Quramy/tsuquyomi'
+" Plug 'rudism/deoplete-tsuquyomi'
+" Plug 'mhartington/nvim-typescript', {'do': './install.sh'}
+" Plug 'peitalin/vim-jsx-typescript'
+" Plug 'Shougo/vimproc.vim', {'do' : 'make'} " Dep of tsuquyomi?
 
 " Elixir integration
 Plug 'slashmili/alchemist.vim'
@@ -268,16 +275,12 @@ nnoremap <leader>w <C-w>v<C-w>
 nnoremap <leader>e :vnew<CR>
 nmap <TAB> <C-W>w
 
+" When joining lines do not insert space between
+" nnoremap J :j!<return>
+" TODO
+
 " Resize splits when the window is resized
 autocmd VimResized * wincmd =
-
-" Tabs
-nmap <C-+> :tabm 1
-nmap <C-ě> :tabm 2
-nmap <C-š> :tabm 3
-nmap <C-č> :tabm 4
-nmap <C-ř> :tabm 5
-nmap <C-ž> :tabm 6
 
 " Make horizontal scrolling less horrible.
 set sidescroll=1
@@ -286,6 +289,9 @@ set sidescrolloff=10
 cnoreabbrev W w
 cnoreabbrev Q q
 cnoreabbrev E e
+
+cnoreabbrev GW Gwrite!
+cnoreabbrev GW! Gwrite!
 
 colorscheme mikekreeki
 
@@ -425,6 +431,7 @@ augroup nerdtree_config
   let g:NERDTreeExtensionHighlightColor['css'] = 'AAAAAA'
   let g:NERDTreeExtensionHighlightColor['less'] = 'AAAAAA'
   let g:NERDTreeExtensionHighlightColor['scss'] = 'AAAAAA'
+  let g:NERDTreeExtensionHighlightColor['test.js'] = 'AAAAAA'
 
   let g:NERDTreeDisableExactMatchHighlight = 1
   let g:NERDTreeDisablePatternMatchHighlight = 1
@@ -445,6 +452,7 @@ augroup ctrlp_config
   let g:ctrlp_extensions = []
 
   let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+  let g:ctrlp_user_command_async = 1
 
   let g:ctrlp_match_window = 'bottom,order:ttb'
   let g:ctrlp_reuse_window = 'netrw'
@@ -452,7 +460,7 @@ augroup ctrlp_config
   let g:ctrlp_working_path_mode = 0
 
   let g:ctrlp_show_hidden = 1
-  let g:ctrlp_use_caching=1
+  let g:ctrlp_use_caching = 1
 
   " nmap <silent> .. :CtrlPBranch<CR>
   " nmap <silent> -- :CtrlPBranch<CR>
@@ -525,8 +533,6 @@ augroup neovim_config
     tnoremap <a-l> <c-\><c-n><c-w>l
     tnoremap <Esc> <C-\><C-n>
     " autocmd BufEnter term://* startinsert
-
-    let $NVIM_TUI_ENABLE_CURSOR_SHAPE = 1
   endif
 augroup END
 
@@ -579,25 +585,29 @@ augroup END
 augroup test_config
   autocmd!
 
-  " nmap <silent> <leader>R :TestNearest<CR>
-  " nmap <silent> <leader>r :TestFile<CR>
-  " nmap <silent> <leader>a :TestSuite<CR>
-  " nmap <silent> <leader>l :TestLast<CR>
-  " nmap <silent> <leader>g :TestVisit<CR>
+  nmap <silent> <leader>R :TestNearest<CR>
+  nmap <silent> <leader>r :TestFile<CR>
+  nmap <silent> <leader>a :TestSuite<CR>
+  nmap <silent> <leader>l :TestLast<CR>
+  nmap <silent> <leader>g :TestVisit<CR>
 
-  let test#base#no_colors = 0
-  let test#strategy = 'neoterm'
-  let g:test#preserve_screen = 0
+  let g:test#enabled_runners = ["javascript#jest", "ruby#rspec"]
 
-  function! RunTest(cmd)
-    call neoterm#open() " Opens the neoterm window
-    call neoterm#normal('G') " Scroll to the end of the neoterm window
-    call neoterm#clear()
-    exec a:cmd
-  endfunction
+  " let g:test#javascript#jest#file_pattern = '.*-(spec|test)\.(js|jsx|coffee|ts|tsx)$'
 
-  nmap <silent> <leader>R :call RunTest('TestNearest')<CR>
-  nmap <silent> <leader>r f :call RunTest('TestFile')<CR>
+  " let test#base#no_colors = 0
+  " let test#strategy = 'neoterm'
+  " let g:test#preserve_screen = 0
+
+  " function! RunTest(cmd)
+  "   call neoterm#open() " Opens the neoterm window
+  "   call neoterm#normal('G') " Scroll to the end of the neoterm window
+  "   call neoterm#clear()
+  "   exec a:cmd
+  " endfunction
+
+  " nmap <silent> <leader>R :call RunTest('TestNearest')<CR>
+  " nmap <silent> <leader>r f :call RunTest('TestFile')<CR>
 augroup END
 
 augroup trailing_whitespace_config
@@ -618,6 +628,7 @@ augroup ale_config
   let g:ale_linters = {
   \   'javascript': ['eslint', 'flow'],
   \   'ruby': ['rubocop'],
+  \   'typescript': ['tsserver', 'tslint']
   \}
 
   let g:ale_ruby_rubocop_options = '-R'
@@ -735,7 +746,7 @@ augroup neoterm_config
   autocmd!
 
   if has('nvim')
-    let g:neoterm_position = 'vertical'
+    let g:neoterm_default_mod = 'right'
 
     autocmd TermOpen * set nonumber
     autocmd TermOpen * set wfw
@@ -749,27 +760,44 @@ augroup neoterm_config
     endfunction
     :command! TT call OpenTerminal()
 
-    function! NeovimTerminalToggleTerm()
-      bo 15 split
-      try
-	exe s:neovim_visor_termbuf . 'buffer'
-	startinsert
-      catch
-	terminal
-	let s:neovim_visor_termbuf=bufnr('%')
-	execute 'tnoremap <silent> <buffer>' . '<C-t>' . '  <C-\><C-n>:hide<CR>'
-      endtry
-    endfunction
+    " function! NeovimTerminalToggleTerm()
+    "   bo 15 split
+    "   try
+	" exe s:neovim_visor_termbuf . 'buffer'
+	" startinsert
+    "   catch
+	" terminal
+	" let s:neovim_visor_termbuf=bufnr('%')
+	" execute 'tnoremap <silent> <buffer>' . '<C-q>' . '  <C-\><C-n>:hide<CR>'
+	" execute 'tnoremap <silent> <buffer>' . '<ESC>' . '  <C-\><C-n>:hide<CR>'
+    "   endtry
+    " endfunction
 
-    com! NeovimTerminalToggleTerm call NeovimTerminalToggleTerm()
-    nmap <C-t> :NeovimTerminalToggleTerm<CR>
+    " autocmd TermOpen * nnoremap <silent> <buffer> <C-q> :hide<CR>
+
+    " com! NeovimTerminalToggleTerm call NeovimTerminalToggleTerm()
+    " nmap <C-q> :NeovimTerminalToggleTerm<CR>
+
+    " Readline cheatsheet:
+    " ctrl-a - jump to start of line
+    " ctrl-e - jump to end of line
+    " ctrl-k - kill forwards to the end of line
+    " ctrl-u - kill backwards to the start of line
+    autocmd TermOpen * nnoremap <buffer> I I<C-a>
+    autocmd TermOpen * nnoremap <buffer> A A<C-e>
+    autocmd TermOpen * nnoremap <buffer> C A<C-k>
+    autocmd TermOpen * nnoremap <buffer> D A<C-k><C-\><C-n>
+    autocmd TermOpen * nnoremap <buffer> cc A<C-e><C-u>
+    autocmd TermOpen * nnoremap <buffer> dd A<C-e><C-u><C-\><C-n>
   endif
+
+
 augroup END
 
 augroup closetag_config
   autocmd!
 
-  let g:closetag_filenames = "*.html,*.xhtml,*.phtml,*.xml,*.jsx,*.react.js,*.js"
+  let g:closetag_filenames = "*.html,*.xhtml,*.phtml,*.xml,*.jsx,*.react.js,*.js,*.tsx"
 augroup END
 
 augroup matchup_config
@@ -863,13 +891,38 @@ augroup neoformat_config
           \ }
   endfunction
 
-  autocmd BufWritePre src/**/*.js,cypress/**/*.js silent Neoformat
+  function! neoformat#formatters#typescript#prettier() abort
+      return {
+          \ 'exe': './node_modules/.bin/prettier',
+          \ 'args': ['--stdin --config .prettierrc --parser typescript'],
+          \ 'stdin': 1,
+          \ }
+  endfunction
+
+  autocmd BufWritePre apps/**/*.js,src/**/*.js,cypress/**/*.js silent Neoformat
+  autocmd BufWritePre apps/**/*.ts,src/**/*.ts,cypress/**/*.ts silent Neoformat
+  autocmd BufWritePre apps/**/*.tsx,src/**/*.tsx,cypress/**/*.tsx silent Neoformat
 augroup END
 
 augroup syntax_attr_config
   autocmd!
 
-  map <leader>x :call SyntaxAttr()<CR>
+  map <leader>x	:call SyntaxAttr#SyntaxAttr()<CR>
+augroup END
+
+augroup typescript_config
+  autocmd!
+
+  " autocmd FileType typescript nmap <buffer> <Leader><space> : <C-u>echo tsuquyomi#hint()<CR>
+  " autocmd BufNewFile,BufRead *.tsx,*.jsx set filetype=typescript.jsx
+
+  " autocmd FileType typescript nnoremap <buffer> <CR> :TsuDefinition<CR>
+  " autocmd FileType javascript.jsx nnoremap <buffer> ¨ :FlowType<CR>
+
+  autocmd FileType typescript nnoremap <buffer> <CR> :TSDef<CR>
+  " autocmd FileType typescript syntax match typescriptSemicolons /;/
+
+  let g:nvim_typescript#diagnostics_enable = 0
 augroup END
 
 augroup elixir_config
@@ -907,7 +960,7 @@ augroup END
 augroup polyglot_config
   autocmd!
 
-  let g:polyglot_disabled = ['javascript', 'jsx', 'ruby', 'elixir']
+  let g:polyglot_disabled = ['javascript', 'jsx', 'ruby', 'elixir', 'typescript']
 augroup END
 
 augroup cursorword_config

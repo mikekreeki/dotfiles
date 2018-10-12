@@ -29,7 +29,6 @@ npm-debug.log
 # VIM
 .swp
 *.swp
-tags
 .smartgf_tags
 .smartgf_tags_date
 .nvimrc
@@ -53,3 +52,6 @@ git_stats/
 
 # Yarn
 yarn-error.log
+
+# Custom scripts
+relativize_imports_in_module
