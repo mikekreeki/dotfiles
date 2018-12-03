@@ -73,6 +73,7 @@ Plug 'jreybert/vimagit'
 Plug 'idanarye/vim-merginal'
 Plug 'lambdalisue/gina.vim'
 Plug 'danishprakash/vim-githubinator'
+Plug 'AGhost-7/critiq.vim'
 
 " Building, Linters, Test Runners
 Plug 'w0rp/ale'
@@ -81,7 +82,7 @@ Plug 'janko-m/vim-test'
 
 " Ruby Integration
 Plug 'AmaiSaeta/vim-ruby-sinatra', { 'for': 'ruby' }
-Plug 'AndrewRadev/splitjoin.vim',  { 'for': 'ruby' }
+" Plug 'AndrewRadev/splitjoin.vim',  { 'for': 'ruby' }
 Plug 'keith/rspec.vim',            { 'for': 'ruby' }
 Plug 'slim-template/vim-slim',     { 'for': 'ruby' }
 Plug 'tpope/vim-bundler',          { 'for': 'ruby' }
@@ -238,6 +239,11 @@ noremap $ <nop>
 noremap ^ <nop>
 noremap $ <nop>
 noremap ^ <nop>
+
+" Save/quit via leader
+nnoremap <Leader>w :w<CR>
+nnoremap <Leader>wq :wq<CR>
+nnoremap <Leader>q :q<CR>
 
 " Bubble single lines
 nmap <Up> [e

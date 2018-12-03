@@ -7,6 +7,7 @@ source ~/.dotfiles/.functions.zsh
 source ~/.dotfiles/.exports.zsh
 source ~/.dotfiles/.setopt.zsh
 source ~/.dotfiles/.custom.zsh
+source ~/.dotfiles/.excluded.zsh
 source ~/.dotfiles/mikekreeki.zsh-theme
 
 WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'
