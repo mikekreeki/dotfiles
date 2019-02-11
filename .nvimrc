@@ -9,7 +9,7 @@ Plug 'scrooloose/nerdtree'
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-projectionist'
-Plug 'EinfachToll/DidYouMean'
+" Plug 'EinfachToll/DidYouMean'
 Plug 'fisadev/vim-ctrlp-cmdpalette'
 Plug 'kopischke/vim-fetch'
 
@@ -40,6 +40,7 @@ Plug 'Shougo/echodoc.vim'
 Plug 'Shougo/neco-syntax'
 Plug 'Shougo/neoinclude.vim'
 Plug 'Shougo/neopairs.vim'
+Plug 'reedes/vim-litecorrect'
 
 " Code Editing
 Plug 'Yggdroot/indentLine'
@@ -73,7 +74,8 @@ Plug 'jreybert/vimagit'
 Plug 'idanarye/vim-merginal'
 Plug 'lambdalisue/gina.vim'
 Plug 'danishprakash/vim-githubinator'
-Plug 'AGhost-7/critiq.vim'
+" Plug 'AGhost-7/critiq.vim'
+Plug 'cohama/agit.vim'
 
 " Building, Linters, Test Runners
 Plug 'w0rp/ale'
@@ -104,9 +106,10 @@ Plug 'heavenshell/vim-jsdoc',              { 'for': 'javascript' }
 Plug 'HerringtonDarkholme/yats.vim'
 " Plug 'Quramy/tsuquyomi'
 " Plug 'rudism/deoplete-tsuquyomi'
-" Plug 'mhartington/nvim-typescript', {'do': './install.sh'}
+Plug 'mhartington/nvim-typescript', {'do': 'sh install.sh'}
 " Plug 'peitalin/vim-jsx-typescript'
 " Plug 'Shougo/vimproc.vim', {'do' : 'make'} " Dep of tsuquyomi?
+Plug 'styled-components/vim-styled-components', { 'branch': 'main' }
 
 " Elixir integration
 Plug 'slashmili/alchemist.vim'
@@ -115,6 +118,7 @@ Plug 'elixir-editors/vim-elixir'
 " Other Languages
 Plug 'sheerun/vim-polyglot'
 Plug 'gabrielelana/vim-markdown'
+Plug 'mzlogin/vim-markdown-toc'
 Plug 'vim-scripts/SyntaxRange'
 
 " Taking Notes
@@ -889,21 +893,41 @@ augroup END
 augroup neoformat_config
   autocmd!
 
-  function! neoformat#formatters#javascript#prettier() abort
-      return {
-          \ 'exe': './node_modules/.bin/prettier',
-          \ 'args': ['--stdin --config .prettierrc'],
-          \ 'stdin': 1,
-          \ }
-  endfunction
+  " function! neoformat#formatters#javascript#prettier() abort
+  "     return {
+  "         \ 'exe': './node_modules/.bin/prettier',
+  "         \ 'args': ['--stdin --config .prettierrc'],
+  "         \ 'stdin': 1,
+  "         \ }
+  " endfunction
 
-  function! neoformat#formatters#typescript#prettier() abort
-      return {
-          \ 'exe': './node_modules/.bin/prettier',
-          \ 'args': ['--stdin --config .prettierrc --parser typescript'],
-          \ 'stdin': 1,
-          \ }
-  endfunction
+  " function! neoformat#formatters#typescript#prettier() abort
+  "     return {
+  "         \ 'exe': './node_modules/.bin/prettier',
+  "         \ 'args': ['--stdin --config .prettierrc --parser typescript'],
+  "         \ 'stdin': 1,
+  "         \ }
+  " endfunction
+
+  let g:neoformat_javacript_prettier = {
+            \ 'exe': './node_modules/.bin/prettier',
+            \ 'args': ['--stdin --config .prettierrc'],
+            \ 'stdin': 1,
+            \ }
+
+  let g:neoformat_enabled_javascript = ['prettier']
+  "
+  let g:neoformat_typescript_prettier = {
+            \ 'exe': './node_modules/.bin/prettier',
+            \ 'args': ['--stdin --config .prettierrc --parser typescript'],
+            \ 'stdin': 1,
+            \ }
+
+  let g:neoformat_enabled_typescript = ['prettier']
+
+  " autocmd BufWritePre apps/**/*.js,src/**/*.js,cypress/**/*.js undojoin | silent Neoformat
+  " autocmd BufWritePre apps/**/*.ts,src/**/*.ts,cypress/**/*.ts undojoin | silent Neoformat
+  " autocmd BufWritePre apps/**/*.tsx,src/**/*.tsx,cypress/**/*.tsx undojoin | silent Neoformat
 
   autocmd BufWritePre apps/**/*.js,src/**/*.js,cypress/**/*.js silent Neoformat
   autocmd BufWritePre apps/**/*.ts,src/**/*.ts,cypress/**/*.ts silent Neoformat
@@ -944,14 +968,14 @@ augroup zoomwintab_config
   nmap <silent> W :ZoomWinTabToggle<CR>
 augroup END
 
-augroup tern_for_vim_config
-  autocmd!
+" augroup tern_for_vim_config
+"   autocmd!
 
-  let g:tern#command = ['tern']
-  let g:tern#arguments = ['--persistent']
+"   let g:tern#command = ['tern']
+"   let g:tern#arguments = ['--persistent']
 
-  nmap <silent> D :TernDef<CR>
-augroup END
+"   nmap <silent> D :TernDef<CR>
+" augroup END
 
 " augroup easygrep_config
 "   autocmd!
