@@ -3,14 +3,10 @@ call plug#begin('~/.nvim/plugged')
 " Buffer/File Navigation
 Plug 'corntrace/bufexplorer'
 Plug 'ctrlpvim/ctrlp.vim'
-Plug 'jasoncodes/ctrlp-modified.vim'
-Plug 'kaneshin/ctrlp-git-log'
 Plug 'scrooloose/nerdtree'
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-projectionist'
-" Plug 'EinfachToll/DidYouMean'
-Plug 'fisadev/vim-ctrlp-cmdpalette'
 Plug 'kopischke/vim-fetch'
 
 " Interface
@@ -21,9 +17,6 @@ Plug 'milkypostman/vim-togglelist'
 Plug 'tpope/vim-rsi'
 Plug 'itchyny/vim-cursorword'
 Plug 'pmalek/toogle-maximize.vim'
-Plug 'johngrib/vim-game-code-break'
-Plug 'johngrib/vim-game-snake'
-Plug 'yuttie/comfortable-motion.vim'
 Plug 'troydm/zoomwintab.vim'
 
 " Searching
@@ -65,7 +58,7 @@ Plug 'airblade/vim-rooter'
 
 " Git Integration
 Plug 'airblade/vim-gitgutter'
-Plug 'int3/vim-extradite'
+Plug 'tap349/vim-extradite'
 Plug 'rhysd/committia.vim'
 Plug 'rhysd/conflict-marker.vim'
 Plug 'tpope/vim-fugitive'
@@ -84,7 +77,7 @@ Plug 'janko-m/vim-test'
 
 " Ruby Integration
 Plug 'AmaiSaeta/vim-ruby-sinatra', { 'for': 'ruby' }
-" Plug 'AndrewRadev/splitjoin.vim',  { 'for': 'ruby' }
+Plug 'AndrewRadev/splitjoin.vim',  { 'for': 'ruby' }
 Plug 'keith/rspec.vim',            { 'for': 'ruby' }
 Plug 'slim-template/vim-slim',     { 'for': 'ruby' }
 Plug 'tpope/vim-bundler',          { 'for': 'ruby' }
@@ -94,8 +87,8 @@ Plug 'tpope/vim-rvm',              { 'for': 'ruby' }
 
 " JavaScript Integration
 Plug 'elzr/vim-json',                      { 'for': 'json' }
-Plug 'bentayloruk/vim-react-es6-snippets', { 'for': 'javascript' }
-Plug 'mustache/vim-mustache-handlebars',   { 'for': 'javascript' }
+" Plug 'bentayloruk/vim-react-es6-snippets', { 'for': 'javascript' }
+" Plug 'mustache/vim-mustache-handlebars',   { 'for': 'javascript' }
 Plug 'pangloss/vim-javascript',            { 'for': 'javascript' }
 Plug 'mxw/vim-jsx',                        { 'for': 'javascript' }
 Plug 'flowtype/vim-flow',                  { 'for': 'javascript' }
@@ -106,14 +99,14 @@ Plug 'heavenshell/vim-jsdoc',              { 'for': 'javascript' }
 Plug 'HerringtonDarkholme/yats.vim'
 " Plug 'Quramy/tsuquyomi'
 " Plug 'rudism/deoplete-tsuquyomi'
-Plug 'mhartington/nvim-typescript', {'do': 'sh install.sh'}
+" Plug 'mhartington/nvim-typescript', {'do': 'sh install.sh'}
 " Plug 'peitalin/vim-jsx-typescript'
 " Plug 'Shougo/vimproc.vim', {'do' : 'make'} " Dep of tsuquyomi?
 Plug 'styled-components/vim-styled-components', { 'branch': 'main' }
 
 " Elixir integration
-Plug 'slashmili/alchemist.vim'
-Plug 'elixir-editors/vim-elixir'
+Plug 'slashmili/alchemist.vim',   { 'for': 'elixir' }
+Plug 'elixir-editors/vim-elixir', { 'for': 'elixir' }
 
 " Other Languages
 Plug 'sheerun/vim-polyglot'
@@ -394,7 +387,7 @@ augroup nerdtree_config
   endfunction
 
   " Toggle NERDTree
-  nnoremap <silent> q :call OpenNERDTree()<CR>
+  " nnoremap <silent> q :call OpenNERDTree()<CR>
 
   " Focus file in current buffer in NERDTree
   nnoremap <silent> Q :NERDTreeFind<CR>
@@ -450,6 +443,25 @@ augroup nerdtree_config
   let g:NERDTreePatternMatchHighlightFullName = 1
   let g:NERDTreeSyntaxDisableDefaultExtensions = 1
   let g:NERDTreeSyntaxEnabledExtensions = ['css', 'less', 'scss']
+
+  " Open a NERDTree automatically when vim starts up if no files were specified
+  " autocmd StdinReadPre * let s:std_in=1
+  " autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+
+  function! NERDTreeToggleInCurDir()
+      " If NERDTree is open in the current buffer
+      if (exists("t:NERDTreeBufName") && bufwinnr(t:NERDTreeBufName) != -1)
+          exe ":NERDTreeClose"
+      else
+          if (expand("%:t") != '')
+              exe ":NERDTreeFind"
+          else
+              exe ":NERDTreeToggle"
+          endif
+      endif
+  endfunction
+
+  nnoremap <silent> q :call NERDTreeToggleInCurDir()<CR>
 augroup END
 
 augroup ctrlp_config
@@ -474,6 +486,9 @@ augroup ctrlp_config
 
   " nmap <silent> .. :CtrlPBranch<CR>
   " nmap <silent> -- :CtrlPBranch<CR>
+
+  " nnoremap <leader>be :CtrlPBuffer<CR>
+  nnoremap <leader>bc :CtrlPCmdPalette<CR>
 augroup END
 
 augroup airline_config
@@ -634,6 +649,7 @@ augroup ale_config
   let g:ale_sign_error = '✖'
   let g:ale_sign_warning = '✖'
   let g:ale_warn_about_trailing_whitespace = 0
+  let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
 
   let g:ale_linters = {
   \   'javascript': ['eslint', 'flow'],
@@ -644,6 +660,21 @@ augroup ale_config
   let g:ale_ruby_rubocop_options = '-R'
 
   nmap <silent> <Bs> <Plug>(ale_previous_wrap)
+
+  " let b:ale_fixers = {'typescript': ['tslint']}
+  " let g:ale_fix_on_save = 1
+
+  " Lint always in Normal Mode
+  let g:ale_lint_on_text_changed = 'normal'
+
+  " Lint when leaving Insert Mode but don't lint when in Insert Mode
+  let g:ale_lint_on_insert_leave = 1
+
+  " Set ALE's 200ms delay to zero
+  let g:ale_lint_delay = 0
+
+  let g:ale_virtualtext_cursor = 1
+  let g:ale_set_balloons = 1
 augroup END
 
 augroup flow_config
@@ -673,6 +704,21 @@ augroup deoplete_config
       return pumvisible() ? deoplete#mappings#close_popup() : "\<CR>"
     endfunction
     inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
+
+    " Fix deoplete inserting giberrish when using multiple cursors
+    func! Multiple_cursors_before()
+      if deoplete#is_enabled()
+	call deoplete#disable()
+	let g:deoplete_is_enable_before_multi_cursors = 1
+      else
+	let g:deoplete_is_enable_before_multi_cursors = 0
+      endif
+    endfunc
+    func! Multiple_cursors_after()
+      if g:deoplete_is_enable_before_multi_cursors
+	call deoplete#enable()
+      endif
+    endfunc
   endif
 augroup END
 
@@ -882,6 +928,8 @@ augroup gitgutter_config
   autocmd!
 
   set signcolumn=yes
+
+  let g:gitgutter_override_sign_column_highlight = 0
 augroup END
 
 augroup toggle_maximize_config
@@ -923,7 +971,13 @@ augroup neoformat_config
             \ 'stdin': 1,
             \ }
 
-  let g:neoformat_enabled_typescript = ['prettier']
+  let g:neoformat_typescript_tslint = {
+            \ 'exe': './node_modules/.bin/tslint',
+            \ 'args': ['--format codeFrame --fix'],
+            \ 'stdin': 1,
+            \ }
+
+  let g:neoformat_enabled_typescript = ['prettier', 'tslint']
 
   " autocmd BufWritePre apps/**/*.js,src/**/*.js,cypress/**/*.js undojoin | silent Neoformat
   " autocmd BufWritePre apps/**/*.ts,src/**/*.ts,cypress/**/*.ts undojoin | silent Neoformat
@@ -932,6 +986,18 @@ augroup neoformat_config
   autocmd BufWritePre apps/**/*.js,src/**/*.js,cypress/**/*.js silent Neoformat
   autocmd BufWritePre apps/**/*.ts,src/**/*.ts,cypress/**/*.ts silent Neoformat
   autocmd BufWritePre apps/**/*.tsx,src/**/*.tsx,cypress/**/*.tsx silent Neoformat
+
+  " Enable alignment
+  " let g:neoformat_basic_format_align = 1
+
+  " Enable tab to spaces conversion
+  let g:neoformat_basic_format_retab = 1
+
+  " Enable trimmming of trailing whitespace
+  " let g:neoformat_basic_format_trim = 1
+
+  " Run all enabled formatters (by default Neoformat stops after the first formatter succeeds)
+  let g:neoformat_run_all_formatters = 1
 augroup END
 
 augroup syntax_attr_config
@@ -949,7 +1015,7 @@ augroup typescript_config
   " autocmd FileType typescript nnoremap <buffer> <CR> :TsuDefinition<CR>
   " autocmd FileType javascript.jsx nnoremap <buffer> ¨ :FlowType<CR>
 
-  autocmd FileType typescript nnoremap <buffer> <CR> :TSDef<CR>
+  autocmd FileType typescript,typescript.tsx nnoremap <buffer> <CR> :TSDef<CR>
   " autocmd FileType typescript syntax match typescriptSemicolons /;/
 
   let g:nvim_typescript#diagnostics_enable = 0
