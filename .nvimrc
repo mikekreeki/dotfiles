@@ -99,7 +99,7 @@ Plug 'heavenshell/vim-jsdoc',              { 'for': 'javascript' }
 Plug 'HerringtonDarkholme/yats.vim'
 " Plug 'Quramy/tsuquyomi'
 " Plug 'rudism/deoplete-tsuquyomi'
-" Plug 'mhartington/nvim-typescript', {'do': 'sh install.sh'}
+Plug 'mhartington/nvim-typescript', {'do': 'sh install.sh'}
 " Plug 'peitalin/vim-jsx-typescript'
 " Plug 'Shougo/vimproc.vim', {'do' : 'make'} " Dep of tsuquyomi?
 Plug 'styled-components/vim-styled-components', { 'branch': 'main' }
@@ -203,6 +203,9 @@ autocmd BufWinEnter *.* silent! loadview " Make Vim load view (state) (folds, cu
 " Ignore things
 set wildignore+=*.jpg,*.jpeg,*.gif,*.png,*.gif,*.psd,*.o,*.obj
 set wildignore+=*/.git/*,*/.hg/*,*/.svn/*
+
+set wildoptions=pum
+set pumblend=10
 
 " nnoremap / /\v
 " vnoremap / /\v
