@@ -20,7 +20,7 @@ Plug 'pmalek/toogle-maximize.vim'
 Plug 'troydm/zoomwintab.vim'
 
 " Searching
-Plug 'Lokaltog/vim-easymotion'
+Plug 'easymotion/vim-easymotion'
 Plug 'mhinz/vim-grepper'
 Plug 'osyo-manga/vim-over'
 Plug 'nelstrom/vim-qargs'
@@ -28,7 +28,8 @@ Plug '/usr/local/opt/fzf'
 
 " Autocomplete
 Plug 'Shougo/context_filetype.vim'
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+Plug 'Shougo/deoplete.nvim',   { 'do': ':UpdateRemotePlugins' }
+Plug 'tbodt/deoplete-tabnine', { 'do': './install.sh' }
 Plug 'Shougo/echodoc.vim'
 Plug 'Shougo/neco-syntax'
 Plug 'Shougo/neoinclude.vim'
@@ -67,7 +68,6 @@ Plug 'jreybert/vimagit'
 Plug 'idanarye/vim-merginal'
 Plug 'lambdalisue/gina.vim'
 Plug 'danishprakash/vim-githubinator'
-" Plug 'AGhost-7/critiq.vim'
 Plug 'cohama/agit.vim'
 
 " Building, Linters, Test Runners
@@ -86,22 +86,15 @@ Plug 'vim-ruby/vim-ruby',          { 'for': 'ruby' }
 Plug 'tpope/vim-rvm',              { 'for': 'ruby' }
 
 " JavaScript Integration
-Plug 'elzr/vim-json',                      { 'for': 'json' }
-" Plug 'bentayloruk/vim-react-es6-snippets', { 'for': 'javascript' }
-" Plug 'mustache/vim-mustache-handlebars',   { 'for': 'javascript' }
-Plug 'pangloss/vim-javascript',            { 'for': 'javascript' }
-Plug 'mxw/vim-jsx',                        { 'for': 'javascript' }
-Plug 'flowtype/vim-flow',                  { 'for': 'javascript' }
-Plug 'othree/jspc.vim',                    { 'for': 'javascript' }
-Plug 'jparise/vim-graphql',                { 'for': 'javascript' }
-Plug 'heavenshell/vim-jsdoc',              { 'for': 'javascript' }
-" Plug 'leafgarland/typescript-vim'
-Plug 'HerringtonDarkholme/yats.vim'
-" Plug 'Quramy/tsuquyomi'
-" Plug 'rudism/deoplete-tsuquyomi'
-Plug 'mhartington/nvim-typescript', {'do': 'sh install.sh'}
-" Plug 'peitalin/vim-jsx-typescript'
-" Plug 'Shougo/vimproc.vim', {'do' : 'make'} " Dep of tsuquyomi?
+Plug 'elzr/vim-json',                           { 'for': 'json' }
+Plug 'pangloss/vim-javascript',                 { 'for': 'javascript' }
+Plug 'mxw/vim-jsx',                             { 'for': 'javascript' }
+Plug 'flowtype/vim-flow',                       { 'for': 'javascript' }
+Plug 'othree/jspc.vim',                         { 'for': 'javascript' }
+Plug 'jparise/vim-graphql',                     { 'for': 'javascript' }
+Plug 'heavenshell/vim-jsdoc',                   { 'for': 'javascript' }
+Plug 'HerringtonDarkholme/yats.vim',            { 'for': 'typescript' }
+Plug 'mhartington/nvim-typescript',             { 'do': 'sh install.sh'}
 Plug 'styled-components/vim-styled-components', { 'branch': 'main' }
 
 " Elixir integration
@@ -120,6 +113,7 @@ Plug 'xolox/vim-misc'
 
 " Terminal Integration
 Plug 'kassio/neoterm'
+Plug 'Lenovsky/nuake'
 
 " Colorschemes
 " Plug 'mikekreeki/mikekreeki-colors.vim'
@@ -509,6 +503,8 @@ augroup airline_config
       \ '__' : '-',
       \ 'n'  : 'N',
       \ 'i'  : 'I',
+      \ 'ic' : 'I',
+      \ 'ix' : 'I',
       \ 'R'  : 'R',
       \ 'c'  : 'C',
       \ 'v'  : 'V',
@@ -517,6 +513,7 @@ augroup airline_config
       \ 's'  : 'S',
       \ 'S'  : 'S',
       \ '' : 'S',
+      \ 't'  : 'T',
       \ }
 
   let g:airline#extensions#hunks#enabled = 0
@@ -676,7 +673,7 @@ augroup ale_config
   " Set ALE's 200ms delay to zero
   let g:ale_lint_delay = 0
 
-  let g:ale_virtualtext_cursor = 1
+  " let g:ale_virtualtext_cursor = 1
   let g:ale_set_balloons = 1
 augroup END
 
