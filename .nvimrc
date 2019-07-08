@@ -18,6 +18,7 @@ Plug 'tpope/vim-rsi'
 Plug 'itchyny/vim-cursorword'
 Plug 'pmalek/toogle-maximize.vim'
 Plug 'troydm/zoomwintab.vim'
+Plug 'junegunn/goyo.vim'
 
 " Searching
 Plug 'easymotion/vim-easymotion'
@@ -96,6 +97,7 @@ Plug 'heavenshell/vim-jsdoc',                   { 'for': 'javascript' }
 Plug 'HerringtonDarkholme/yats.vim',            { 'for': 'typescript' }
 Plug 'mhartington/nvim-typescript',             { 'do': 'sh install.sh'}
 Plug 'styled-components/vim-styled-components', { 'branch': 'main' }
+" Plug 'meain/vim-package-info',                  { 'do': 'npm install' }
 
 " Elixir integration
 Plug 'slashmili/alchemist.vim',   { 'for': 'elixir' }
@@ -224,6 +226,18 @@ nnoremap <C-K> <C-u>
 vnoremap <C-J> <C-d>
 vnoremap <C-K> <C-u>
 
+" tabs
+nnoremap th :tabfirst<CR>
+nnoremap tk :tabnext<CR>
+nnoremap tj :tabprev<CR>
+nnoremap tl :tablast<CR>
+nnoremap tt :tabedit<Space>
+nnoremap tn :tabnew<CR>
+nnoremap tm :tabm<Space>
+nnoremap tx :tabclose<CR>
+nnoremap tc :tabclose<CR>
+nnoremap td :tabclose<CR>
+
 " move to beginning/end of line
 noremap H ^
 noremap L $
@@ -233,11 +247,6 @@ noremap $ <nop>
 noremap ^ <nop>
 noremap $ <nop>
 noremap ^ <nop>
-
-" Save/quit via leader
-nnoremap <Leader>w :w<CR>
-nnoremap <Leader>wq :wq<CR>
-nnoremap <Leader>q :q<CR>
 
 " Bubble single lines
 nmap <Up> [e
@@ -288,6 +297,10 @@ set sidescrolloff=10
 
 cnoreabbrev W w
 cnoreabbrev Q q
+cnoreabbrev wQ wq
+cnoreabbrev Wg wq
+cnoreabbrev WQ wq
+
 cnoreabbrev E e
 
 cnoreabbrev GW Gwrite!
@@ -480,6 +493,7 @@ augroup ctrlp_config
 
   let g:ctrlp_show_hidden = 1
   let g:ctrlp_use_caching = 1
+  let g:ctrlp_lazy_update = 50
 
   " nmap <silent> .. :CtrlPBranch<CR>
   " nmap <silent> -- :CtrlPBranch<CR>
@@ -957,11 +971,11 @@ augroup neoformat_config
   "         \ }
   " endfunction
 
-  let g:neoformat_javacript_prettier = {
-            \ 'exe': './node_modules/.bin/prettier',
-            \ 'args': ['--stdin --config .prettierrc'],
-            \ 'stdin': 1,
-            \ }
+  " let g:neoformat_javacript_prettier = {
+  "           \ 'exe': './node_modules/.bin/prettier',
+  "           \ 'args': ['--stdin --config .prettierrc'],
+  "           \ 'stdin': 1,
+  "           \ }
 
   let g:neoformat_enabled_javascript = ['prettier']
   "
@@ -971,13 +985,14 @@ augroup neoformat_config
             \ 'stdin': 1,
             \ }
 
-  let g:neoformat_typescript_tslint = {
-            \ 'exe': './node_modules/.bin/tslint',
-            \ 'args': ['--format codeFrame --fix'],
-            \ 'stdin': 1,
-            \ }
+  " let g:neoformat_typescript_tslint = {
+  "           \ 'exe': './node_modules/.bin/tslint',
+  "           \ 'args': ['--format codeFrame --fix'],
+  "           \ 'stdin': 1,
+  "           \ }
 
-  let g:neoformat_enabled_typescript = ['prettier', 'tslint']
+  let g:neoformat_enabled_typescript = ['prettier']
+  let g:neoformat_enabled_ruby = ['rubocop']
 
   " autocmd BufWritePre apps/**/*.js,src/**/*.js,cypress/**/*.js undojoin | silent Neoformat
   " autocmd BufWritePre apps/**/*.ts,src/**/*.ts,cypress/**/*.ts undojoin | silent Neoformat
@@ -986,6 +1001,7 @@ augroup neoformat_config
   autocmd BufWritePre apps/**/*.js,src/**/*.js,cypress/**/*.js silent Neoformat
   autocmd BufWritePre apps/**/*.ts,src/**/*.ts,cypress/**/*.ts silent Neoformat
   autocmd BufWritePre apps/**/*.tsx,src/**/*.tsx,cypress/**/*.tsx silent Neoformat
+  autocmd BufWritePre *.rb silent Neoformat
 
   " Enable alignment
   " let g:neoformat_basic_format_align = 1
@@ -1032,6 +1048,12 @@ augroup zoomwintab_config
   autocmd!
 
   nmap <silent> W :ZoomWinTabToggle<CR>
+augroup END
+
+augroup goyo_config
+  autocmd!
+
+  let g:goyo_height = '100%'
 augroup END
 
 " augroup tern_for_vim_config
