@@ -66,7 +66,7 @@ Plug 'rhysd/conflict-marker.vim'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-git'
 Plug 'jreybert/vimagit'
-Plug 'idanarye/vim-merginal'
+" Plug 'idanarye/vim-merginal'
 Plug 'lambdalisue/gina.vim'
 Plug 'danishprakash/vim-githubinator'
 Plug 'cohama/agit.vim'
@@ -95,9 +95,8 @@ Plug 'othree/jspc.vim',                         { 'for': 'javascript' }
 Plug 'jparise/vim-graphql',                     { 'for': 'javascript' }
 Plug 'heavenshell/vim-jsdoc',                   { 'for': 'javascript' }
 Plug 'HerringtonDarkholme/yats.vim',            { 'for': 'typescript' }
-Plug 'mhartington/nvim-typescript',             { 'do': 'sh install.sh'}
+" Plug 'mhartington/nvim-typescript',             { 'do': 'sh install.sh'}
 Plug 'styled-components/vim-styled-components', { 'branch': 'main' }
-" Plug 'meain/vim-package-info',                  { 'do': 'npm install' }
 
 " Elixir integration
 Plug 'slashmili/alchemist.vim',   { 'for': 'elixir' }
@@ -114,7 +113,7 @@ Plug 'duff/vim-scratch'
 Plug 'xolox/vim-misc'
 
 " Terminal Integration
-Plug 'kassio/neoterm'
+" Plug 'kassio/neoterm'
 Plug 'Lenovsky/nuake'
 
 " Colorschemes
@@ -200,8 +199,9 @@ autocmd BufWinEnter *.* silent! loadview " Make Vim load view (state) (folds, cu
 set wildignore+=*.jpg,*.jpeg,*.gif,*.png,*.gif,*.psd,*.o,*.obj
 set wildignore+=*/.git/*,*/.hg/*,*/.svn/*
 
-set wildoptions=pum
-set pumblend=10
+" Enable once on Neovim 0.4
+" set wildoptions=pum
+" set pumblend=10
 
 " nnoremap / /\v
 " vnoremap / /\v
@@ -459,16 +459,16 @@ augroup nerdtree_config
   " autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 
   function! NERDTreeToggleInCurDir()
-      " If NERDTree is open in the current buffer
-      if (exists("t:NERDTreeBufName") && bufwinnr(t:NERDTreeBufName) != -1)
-          exe ":NERDTreeClose"
+    " If NERDTree is open in the current buffer
+    if (exists("t:NERDTreeBufName") && bufwinnr(t:NERDTreeBufName) != -1)
+      exe ":NERDTreeClose"
+    else
+      if (expand("%:t") != '')
+	exe ":NERDTreeFind"
       else
-          if (expand("%:t") != '')
-              exe ":NERDTreeFind"
-          else
-              exe ":NERDTreeToggle"
-          endif
+	exe ":NERDTreeToggle"
       endif
+    endif
   endfunction
 
   nnoremap <silent> q :call NERDTreeToggleInCurDir()<CR>
@@ -715,7 +715,7 @@ augroup deoplete_config
     inoremap <silent><expr><s-tab> pumvisible() ? "\<c-p>" : "\<s-tab>"
 
     function! s:my_cr_function()
-      return pumvisible() ? deoplete#mappings#close_popup() : "\<CR>"
+      return pumvisible() ? deoplete#close_popup() : "\<CR>"
     endfunction
     inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
 
@@ -981,7 +981,7 @@ augroup neoformat_config
   "
   let g:neoformat_typescript_prettier = {
             \ 'exe': './node_modules/.bin/prettier',
-            \ 'args': ['--stdin --config .prettierrc --parser typescript'],
+            \ 'args': ['--stdin'],
             \ 'stdin': 1,
             \ }
 
@@ -994,14 +994,10 @@ augroup neoformat_config
   let g:neoformat_enabled_typescript = ['prettier']
   let g:neoformat_enabled_ruby = ['rubocop']
 
-  " autocmd BufWritePre apps/**/*.js,src/**/*.js,cypress/**/*.js undojoin | silent Neoformat
-  " autocmd BufWritePre apps/**/*.ts,src/**/*.ts,cypress/**/*.ts undojoin | silent Neoformat
-  " autocmd BufWritePre apps/**/*.tsx,src/**/*.tsx,cypress/**/*.tsx undojoin | silent Neoformat
-
   autocmd BufWritePre apps/**/*.js,src/**/*.js,cypress/**/*.js silent Neoformat
   autocmd BufWritePre apps/**/*.ts,src/**/*.ts,cypress/**/*.ts silent Neoformat
   autocmd BufWritePre apps/**/*.tsx,src/**/*.tsx,cypress/**/*.tsx silent Neoformat
-  autocmd BufWritePre *.rb silent Neoformat
+  " autocmd BufWritePre *.rb silent Neoformat
 
   " Enable alignment
   " let g:neoformat_basic_format_align = 1
@@ -1031,7 +1027,7 @@ augroup typescript_config
   " autocmd FileType typescript nnoremap <buffer> <CR> :TsuDefinition<CR>
   " autocmd FileType javascript.jsx nnoremap <buffer> ¨ :FlowType<CR>
 
-  autocmd FileType typescript,typescript.tsx nnoremap <buffer> <CR> :TSDef<CR>
+  autocmd FileType typescript,typescript.tsx nnoremap <buffer> <CR> :ALEGoToDefinition<CR>
   " autocmd FileType typescript syntax match typescriptSemicolons /;/
 
   let g:nvim_typescript#diagnostics_enable = 0

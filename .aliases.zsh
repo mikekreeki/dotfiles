@@ -43,6 +43,7 @@ alias gwtf='git wtf'
 alias gwtfa="git branch | sed 's/^..//' | grep '^\d' | xargs git wtf"
 
 alias gh='git gh'
+alias up='git up'
 
 # SNX
 alias snxs='echo druSEqE3 | snx'
