@@ -8,6 +8,7 @@ Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-projectionist'
 Plug 'kopischke/vim-fetch'
+Plug 'liuchengxu/vim-clap'
 
 " Interface
 Plug 'bling/vim-airline'
@@ -47,7 +48,9 @@ Plug 'gorkunov/smartpairs.vim'
 Plug 'junegunn/vim-easy-align'
 Plug 'ntpeters/vim-better-whitespace'
 Plug 'terryma/vim-multiple-cursors'
-Plug 'tpope/vim-commentary'
+" Plug 'mg979/vim-visual-multi'
+" Plug 'tpope/vim-commentary'
+Plug 'tyru/caw.vim'
 Plug 'tpope/vim-endwise'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
@@ -90,7 +93,7 @@ Plug 'tpope/vim-rvm',              { 'for': 'ruby' }
 Plug 'elzr/vim-json',                           { 'for': 'json' }
 Plug 'pangloss/vim-javascript',                 { 'for': 'javascript' }
 Plug 'mxw/vim-jsx',                             { 'for': 'javascript' }
-Plug 'flowtype/vim-flow',                       { 'for': 'javascript' }
+" Plug 'flowtype/vim-flow',                       { 'for': 'javascript' }
 Plug 'othree/jspc.vim',                         { 'for': 'javascript' }
 Plug 'jparise/vim-graphql',                     { 'for': 'javascript' }
 Plug 'heavenshell/vim-jsdoc',                   { 'for': 'javascript' }
@@ -668,7 +671,7 @@ augroup ale_config
   let g:ale_linters = {
   \   'javascript': ['eslint', 'flow'],
   \   'ruby': ['rubocop'],
-  \   'typescript': ['tsserver', 'tslint']
+  \   'typescript': ['tsserver', 'eslint', 'tslint']
   \}
 
   let g:ale_ruby_rubocop_options = '-R'
@@ -721,6 +724,8 @@ augroup deoplete_config
 
     " Fix deoplete inserting giberrish when using multiple cursors
     func! Multiple_cursors_before()
+      :ALEDisable
+
       if deoplete#is_enabled()
 	call deoplete#disable()
 	let g:deoplete_is_enable_before_multi_cursors = 1
@@ -729,6 +734,8 @@ augroup deoplete_config
       endif
     endfunc
     func! Multiple_cursors_after()
+      :ALEEnable
+
       if g:deoplete_is_enable_before_multi_cursors
 	call deoplete#enable()
       endif
@@ -978,10 +985,10 @@ augroup neoformat_config
   "           \ }
 
   let g:neoformat_enabled_javascript = ['prettier']
-  "
+
   let g:neoformat_typescript_prettier = {
-            \ 'exe': './node_modules/.bin/prettier',
-            \ 'args': ['--stdin'],
+            \ 'exe': './node_modules/prettier/bin-prettier.js',
+            \ 'args': ['--stdin', '--stdin-filepath', '"%:p"', '--parser', 'typescript'],
             \ 'stdin': 1,
             \ }
 
