@@ -2,13 +2,15 @@ call plug#begin('~/.nvim/plugged')
 
 " Buffer/File Navigation
 Plug 'corntrace/bufexplorer'
-Plug 'ctrlpvim/ctrlp.vim'
+" Plug 'ctrlpvim/ctrlp.vim'
+" Plug 'cloudhead/neovim-fuzzy'
 Plug 'scrooloose/nerdtree'
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-projectionist'
 Plug 'kopischke/vim-fetch'
-Plug 'liuchengxu/vim-clap'
+" Plug 'liuchengxu/vim-clap'
+Plug 'srstevenson/vim-picker'
 
 " Interface
 Plug 'bling/vim-airline'
@@ -27,6 +29,7 @@ Plug 'mhinz/vim-grepper'
 Plug 'osyo-manga/vim-over'
 Plug 'nelstrom/vim-qargs'
 Plug '/usr/local/opt/fzf'
+Plug 'brooth/far.vim'
 
 " Autocomplete
 Plug 'Shougo/context_filetype.vim'
@@ -477,33 +480,38 @@ augroup nerdtree_config
   nnoremap <silent> q :call NERDTreeToggleInCurDir()<CR>
 augroup END
 
-augroup ctrlp_config
-  autocmd!
+" augroup ctrlp_config
+"   autocmd!
+"
+"   let g:ctrlp_map = '<c-p>'
+"   let g:ctrlp_cmd = 'CtrlP'
+"
+"   let g:ctrlp_max_files = 0
+"   let g:ctrlp_extensions = []
+"
+"   let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+"   let g:ctrlp_user_command_async = 1
+"
+"   let g:ctrlp_match_window = 'bottom,order:ttb'
+"   let g:ctrlp_reuse_window = 'netrw'
+"
+"   let g:ctrlp_working_path_mode = 0
+"
+"   let g:ctrlp_show_hidden = 1
+"   let g:ctrlp_use_caching = 1
+"   let g:ctrlp_lazy_update = 50
+"
+"   " nmap <silent> .. :CtrlPBranch<CR>
+"   " nmap <silent> -- :CtrlPBranch<CR>
+"
+"   " nnoremap <leader>be :CtrlPBuffer<CR>
+"   nnoremap <leader>bc :CtrlPCmdPalette<CR>
+" augroup END
 
-  let g:ctrlp_map = '<c-p>'
-  let g:ctrlp_cmd = 'CtrlP'
+nmap <unique> <C-p> <Plug>(PickerEdit)
 
-  let g:ctrlp_max_files = 0
-  let g:ctrlp_extensions = []
-
-  let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
-  let g:ctrlp_user_command_async = 1
-
-  let g:ctrlp_match_window = 'bottom,order:ttb'
-  let g:ctrlp_reuse_window = 'netrw'
-
-  let g:ctrlp_working_path_mode = 0
-
-  let g:ctrlp_show_hidden = 1
-  let g:ctrlp_use_caching = 1
-  let g:ctrlp_lazy_update = 50
-
-  " nmap <silent> .. :CtrlPBranch<CR>
-  " nmap <silent> -- :CtrlPBranch<CR>
-
-  " nnoremap <leader>be :CtrlPBuffer<CR>
-  nnoremap <leader>bc :CtrlPCmdPalette<CR>
-augroup END
+" let g:picker_selector_executable = 'sk'
+" let g:picker_selector_flags = ''
 
 augroup airline_config
   autocmd!
@@ -992,6 +1000,12 @@ augroup neoformat_config
             \ 'stdin': 1,
             \ }
 
+  let g:neoformat_typescriptreact_prettier = {
+            \ 'exe': './node_modules/prettier/bin-prettier.js',
+            \ 'args': ['--stdin', '--stdin-filepath', '"%:p"', '--parser', 'typescript'],
+            \ 'stdin': 1,
+            \ }
+
   " let g:neoformat_typescript_tslint = {
   "           \ 'exe': './node_modules/.bin/tslint',
   "           \ 'args': ['--format codeFrame --fix'],
@@ -999,6 +1013,7 @@ augroup neoformat_config
   "           \ }
 
   let g:neoformat_enabled_typescript = ['prettier']
+  let g:neoformat_enabled_typescriptreact = ['prettier']
   let g:neoformat_enabled_ruby = ['rubocop']
 
   autocmd BufWritePre apps/**/*.js,src/**/*.js,cypress/**/*.js silent Neoformat
@@ -1029,12 +1044,12 @@ augroup typescript_config
   autocmd!
 
   " autocmd FileType typescript nmap <buffer> <Leader><space> : <C-u>echo tsuquyomi#hint()<CR>
-  " autocmd BufNewFile,BufRead *.tsx,*.jsx set filetype=typescript.jsx
+  autocmd BufNewFile,BufRead *.tsx set filetype=typescriptreact
 
   " autocmd FileType typescript nnoremap <buffer> <CR> :TsuDefinition<CR>
   " autocmd FileType javascript.jsx nnoremap <buffer> ¨ :FlowType<CR>
 
-  autocmd FileType typescript,typescript.tsx nnoremap <buffer> <CR> :ALEGoToDefinition<CR>
+  autocmd FileType typescript,typescriptreact nnoremap <buffer> <CR> :ALEGoToDefinition<CR>
   " autocmd FileType typescript syntax match typescriptSemicolons /;/
 
   let g:nvim_typescript#diagnostics_enable = 0
