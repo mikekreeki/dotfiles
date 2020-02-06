@@ -11,6 +11,7 @@ Plug 'tpope/vim-projectionist'
 Plug 'kopischke/vim-fetch'
 " Plug 'liuchengxu/vim-clap'
 Plug 'srstevenson/vim-picker'
+Plug 'liuchengxu/vim-clap', { 'do': function('clap#helper#build_all') }
 
 " Interface
 Plug 'bling/vim-airline'
@@ -78,7 +79,7 @@ Plug 'danishprakash/vim-githubinator'
 Plug 'cohama/agit.vim'
 
 " Building, Linters, Test Runners
-Plug 'w0rp/ale'
+Plug 'dense-analysis/ale'
 Plug 'sbdchd/neoformat'
 Plug 'janko-m/vim-test'
 
@@ -332,6 +333,8 @@ nnoremap W cs[[
 
 hi NonText guifg=black ctermfg=black
 
+set diffopt+=internal,algorithm:patience,indent-heuristic
+
 " Faster split resizing
 if bufwinnr(1)
   map + <C-W>>
@@ -508,7 +511,29 @@ augroup END
 "   nnoremap <leader>bc :CtrlPCmdPalette<CR>
 " augroup END
 
-nmap <unique> <C-p> <Plug>(PickerEdit)
+
+augroup picker_config
+  autocmd!
+
+  let g:picker_custom_find_executable = 'rg'
+  let g:picker_custom_find_flags = '--color never --files'
+
+  nmap <unique> <C-p> <Plug>(PickerEdit)
+augroup END
+
+augroup clap_config
+  autocmd!
+
+  nmap <unique> <silent> <C-o> :Clap files<CR>
+
+  autocmd FileType clap setlocal colorcolumn=0
+
+  let g:clap_provider_grep_delay = 0
+  let g:clap_current_selection_sign = { 'text': '>', 'texthl': "WarningMsg", "linehl": "ClapCurrentSelection" }
+
+
+  autocmd BufEnter,FocusGained clap_input,clap_spinner set colorcolumn=
+augroup END
 
 " let g:picker_selector_executable = 'sk'
 " let g:picker_selector_flags = ''
@@ -685,6 +710,8 @@ augroup ale_config
   let g:ale_ruby_rubocop_options = '-R'
 
   nmap <silent> <Bs> <Plug>(ale_previous_wrap)
+
+  autocmd BufEnter ale-preview :set wrap<CR>
 
   " let b:ale_fixers = {'typescript': ['tslint']}
   " let g:ale_fix_on_save = 1
@@ -1044,7 +1071,7 @@ augroup typescript_config
   autocmd!
 
   " autocmd FileType typescript nmap <buffer> <Leader><space> : <C-u>echo tsuquyomi#hint()<CR>
-  autocmd BufNewFile,BufRead *.tsx set filetype=typescriptreact
+  autocmd BufNewFile,BufRead,BufEnter *.tsx set filetype=typescriptreact
 
   " autocmd FileType typescript nnoremap <buffer> <CR> :TsuDefinition<CR>
   " autocmd FileType javascript.jsx nnoremap <buffer> ¨ :FlowType<CR>

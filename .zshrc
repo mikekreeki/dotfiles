@@ -26,5 +26,6 @@ HEROKU_AC_ZSH_SETUP_PATH=/Users/mikekreeki/Library/Caches/heroku/autocomplete/zs
 
 export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
 export PATH="/usr/local/opt/postgresql@10/bin:$PATH"
-export LDFLAGS="-L/usr/local/opt/postgresql@10/lib"
-export CPPFLAGS="-I/usr/local/opt/postgresql@10/include"
+
+export LDFLAGS="-L/usr/local/opt/postgresql@10/lib -L/usr/local/opt/openssl@1.1/lib"
+export CPPFLAGS="-I/usr/local/opt/postgresql@10/include -I/usr/local/opt/openssl@1.1/include"
