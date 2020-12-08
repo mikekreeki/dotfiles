@@ -1,17 +1,17 @@
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" PLUGINS
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
 call plug#begin('~/.nvim/plugged')
 
 " Buffer/File Navigation
 Plug 'corntrace/bufexplorer'
-" Plug 'ctrlpvim/ctrlp.vim'
-" Plug 'cloudhead/neovim-fuzzy'
 Plug 'scrooloose/nerdtree'
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-projectionist'
 Plug 'kopischke/vim-fetch'
-" Plug 'liuchengxu/vim-clap'
 Plug 'srstevenson/vim-picker'
-Plug 'liuchengxu/vim-clap', { 'do': function('clap#helper#build_all') }
 
 " Interface
 Plug 'bling/vim-airline'
@@ -30,7 +30,6 @@ Plug 'mhinz/vim-grepper'
 Plug 'osyo-manga/vim-over'
 Plug 'nelstrom/vim-qargs'
 Plug '/usr/local/opt/fzf'
-Plug 'brooth/far.vim'
 
 " Autocomplete
 Plug 'Shougo/context_filetype.vim'
@@ -52,7 +51,6 @@ Plug 'gorkunov/smartpairs.vim'
 Plug 'junegunn/vim-easy-align'
 Plug 'ntpeters/vim-better-whitespace'
 Plug 'terryma/vim-multiple-cursors'
-" Plug 'mg979/vim-visual-multi'
 " Plug 'tpope/vim-commentary'
 Plug 'tyru/caw.vim'
 Plug 'tpope/vim-endwise'
@@ -61,6 +59,7 @@ Plug 'tpope/vim-surround'
 Plug 'Shougo/neosnippet'
 Plug 'Shougo/neosnippet-snippets'
 Plug 'honza/vim-snippets'
+Plug 'RRethy/vim-hexokinase', { 'do': 'make hexokinase' }
 
 " Project Management
 Plug 'airblade/vim-rooter'
@@ -73,7 +72,6 @@ Plug 'rhysd/conflict-marker.vim'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-git'
 Plug 'jreybert/vimagit'
-" Plug 'idanarye/vim-merginal'
 Plug 'lambdalisue/gina.vim'
 Plug 'danishprakash/vim-githubinator'
 Plug 'cohama/agit.vim'
@@ -97,12 +95,10 @@ Plug 'tpope/vim-rvm',              { 'for': 'ruby' }
 Plug 'elzr/vim-json',                           { 'for': 'json' }
 Plug 'pangloss/vim-javascript',                 { 'for': 'javascript' }
 Plug 'mxw/vim-jsx',                             { 'for': 'javascript' }
-" Plug 'flowtype/vim-flow',                       { 'for': 'javascript' }
 Plug 'othree/jspc.vim',                         { 'for': 'javascript' }
 Plug 'jparise/vim-graphql',                     { 'for': 'javascript' }
 Plug 'heavenshell/vim-jsdoc',                   { 'for': 'javascript' }
 Plug 'HerringtonDarkholme/yats.vim',            { 'for': 'typescript' }
-" Plug 'mhartington/nvim-typescript',             { 'do': 'sh install.sh'}
 Plug 'styled-components/vim-styled-components', { 'branch': 'main' }
 
 " Elixir integration
@@ -114,6 +110,7 @@ Plug 'sheerun/vim-polyglot'
 Plug 'gabrielelana/vim-markdown'
 Plug 'mzlogin/vim-markdown-toc'
 Plug 'vim-scripts/SyntaxRange'
+Plug 'chrisbra/csv.vim'
 
 " Taking Notes
 Plug 'duff/vim-scratch'
@@ -127,10 +124,15 @@ Plug 'Lenovsky/nuake'
 " Plug 'mikekreeki/mikekreeki-colors.vim'
 Plug '~/Projects/mikekreeki-colors.vim'
 
+
 call plug#end()
 
 filetype plugin indent on
 syntax on
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" VIM CONFIGURATION
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 set shell=/bin/zsh
 
@@ -198,6 +200,7 @@ set noshowmode
 set exrc
 set secure
 set termguicolors
+set inccommand=split
 
 autocmd BufWinLeave *.* silent! mkview " Make Vim save view (state) (folds, cursor, etc)
 autocmd BufWinEnter *.* silent! loadview " Make Vim load view (state) (folds, cursor, etc)
@@ -206,13 +209,13 @@ autocmd BufWinEnter *.* silent! loadview " Make Vim load view (state) (folds, cu
 set wildignore+=*.jpg,*.jpeg,*.gif,*.png,*.gif,*.psd,*.o,*.obj
 set wildignore+=*/.git/*,*/.hg/*,*/.svn/*
 
-" Enable once on Neovim 0.4
-" set wildoptions=pum
-" set pumblend=10
+set wildoptions=pum
+set pumblend=10
 
 " nnoremap / /\v
 " vnoremap / /\v
 
+" Disable arrow keys
 nnoremap <up> <nop>
 nnoremap <down> <nop>
 nnoremap <left> <nop>
@@ -222,9 +225,11 @@ inoremap <down> <nop>
 inoremap <left> <nop>
 inoremap <right> <nop>
 
+" Make up/down motion behave reasonably
 nnoremap j gj
 nnoremap k gk
 
+" Maybe antipattern, maybe not :)
 nnoremap J 10j
 nnoremap K 10k
 
@@ -233,7 +238,7 @@ nnoremap <C-K> <C-u>
 vnoremap <C-J> <C-d>
 vnoremap <C-K> <C-u>
 
-" tabs
+" Easier navigation betwen tabs
 nnoremap th :tabfirst<CR>
 nnoremap tk :tabnext<CR>
 nnoremap tj :tabprev<CR>
@@ -245,7 +250,7 @@ nnoremap tx :tabclose<CR>
 nnoremap tc :tabclose<CR>
 nnoremap td :tabclose<CR>
 
-" move to beginning/end of line
+" Move to beginning/end of line
 noremap H ^
 noremap L $
 
@@ -263,7 +268,7 @@ nmap <Down> ]e
 vmap <Up> [egv
 vmap <Down> ]egv
 
-" Jump to previously edited line
+" Jump to previously edited line (works on CZ keyboard)
 nnoremap ů g;
 
 " Jump to previous cursor position
@@ -292,8 +297,7 @@ nnoremap <leader>e :vnew<CR>
 nmap <TAB> <C-W>w
 
 " When joining lines do not insert space between
-" nnoremap J :j!<return>
-" TODO
+vnoremap J :j!<return>
 
 " Resize splits when the window is resized
 autocmd VimResized * wincmd =
@@ -302,31 +306,35 @@ autocmd VimResized * wincmd =
 set sidescroll=1
 set sidescrolloff=10
 
+" Catch common mistakes
 cnoreabbrev W w
 cnoreabbrev Q q
 cnoreabbrev wQ wq
 cnoreabbrev Wg wq
 cnoreabbrev WQ wq
-
 cnoreabbrev E e
 
+" Easier git save
 cnoreabbrev GW Gwrite!
 cnoreabbrev GW! Gwrite!
 
+" Use my own colorscheme
 colorscheme mikekreeki
 
+" Setup cursor look
 set guicursor+=a:blinkon0
 set guicursor+=i:ver10
 
-"Always open help files in a rightward vertical split
+" Always open help files in a rightward vertical split
 autocmd FileType help,gitcommit wincmd L
 
+" Reduce noise in status line
 autocmd BufEnter * :echo
 autocmd BufWritePost * :echo
 
 nmap <silent> <C-l> ?function<cr>:noh<cr><Plug>(jsdoc)
 
-" nnoremap <silent> s vip:sort ui<CR>
+" Shortcut for sorting stuff alphabetically
 vnoremap <silent> s :sort ui<CR>
 
 nnoremap W cs[[
@@ -341,6 +349,10 @@ if bufwinnr(1)
   map - <C-W><
 endif
 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" HELPER FUNCTIONS
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
 function! PreserveCursor(command)
   " Preparation: save last search, and cursor position.
   let _s=@/
@@ -352,6 +364,10 @@ function! PreserveCursor(command)
   let @/=_s
   call cursor(l, c)
 endfunction
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" PLUGIN CONFIGURATION
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 augroup easymotion_config
   autocmd!
@@ -388,28 +404,6 @@ augroup END
 
 augroup nerdtree_config
   autocmd!
-
-  function! OpenNERDTree()
-    "" Check if NERDTree is open
-    if exists("t:NERDTreeBufName")
-      let s:ntree = bufwinnr(t:NERDTreeBufName)
-    else
-      let s:ntree = -1
-    endif
-
-    if (s:ntree != -1)
-      "" If NERDTree is open, close it.
-      :NERDTreeClose
-    else
-      :NERDTreeFind
-    endif
-  endfunction
-
-  " Toggle NERDTree
-  " nnoremap <silent> q :call OpenNERDTree()<CR>
-
-  " Focus file in current buffer in NERDTree
-  nnoremap <silent> Q :NERDTreeFind<CR>
 
   let NERDTreeMinimalUI = 1
   let g:NERDTreeWinSize = 60
@@ -471,16 +465,30 @@ augroup nerdtree_config
     " If NERDTree is open in the current buffer
     if (exists("t:NERDTreeBufName") && bufwinnr(t:NERDTreeBufName) != -1)
       exe ":NERDTreeClose"
+    elseif bufname('%')
+      exe ":NERDTreeFind"
     else
-      if (expand("%:t") != '')
-	exe ":NERDTreeFind"
-      else
-	exe ":NERDTreeToggle"
-      endif
+      exe ":NERDTreeCWD"
     endif
+
+  " Old impl, remove
+ "    " If NERDTree is open in the current buffer
+ "    if (exists("t:NERDTreeBufName") && bufwinnr(t:NERDTreeBufName) != -1)
+ "      exe ":NERDTreeClose"
+ "    else
+ "      if (expand("%:t") != '')
+	" exe ":NERDTreeFind"
+ "      else
+	" exe ":NERDTreeToggle"
+ "      endif
+ "    endif
   endfunction
 
   nnoremap <silent> q :call NERDTreeToggleInCurDir()<CR>
+
+  " Focus file in current buffer in NERDTree
+  nnoremap <silent> Q :NERDTreeFind<CR>
+
 augroup END
 
 " augroup ctrlp_config
@@ -521,19 +529,19 @@ augroup picker_config
   nmap <unique> <C-p> <Plug>(PickerEdit)
 augroup END
 
-augroup clap_config
-  autocmd!
-
-  nmap <unique> <silent> <C-o> :Clap files<CR>
-
-  autocmd FileType clap setlocal colorcolumn=0
-
-  let g:clap_provider_grep_delay = 0
-  let g:clap_current_selection_sign = { 'text': '>', 'texthl': "WarningMsg", "linehl": "ClapCurrentSelection" }
-
-
-  autocmd BufEnter,FocusGained clap_input,clap_spinner set colorcolumn=
-augroup END
+" augroup clap_config
+"   autocmd!
+"
+"   nmap <unique> <silent> <C-o> :Clap files<CR>
+"
+"   autocmd FileType clap setlocal colorcolumn=0
+"
+"   let g:clap_provider_grep_delay = 0
+"   let g:clap_current_selection_sign = { 'text': '>', 'texthl': "WarningMsg", "linehl": "ClapCurrentSelection" }
+"
+"
+"   autocmd BufEnter,FocusGained clap_input,clap_spinner set colorcolumn=
+" augroup END
 
 " let g:picker_selector_executable = 'sk'
 " let g:picker_selector_flags = ''
@@ -729,25 +737,13 @@ augroup ale_config
   let g:ale_set_balloons = 1
 augroup END
 
-augroup flow_config
-  autocmd!
-
-  let g:flow#enable = 0
-  let g:flow#omnifunc = 1
-  let g:flow#flowpath = './node_modules/.bin/flow'
-
-  autocmd FileType javascript.jsx nnoremap <buffer> <CR> :FlowJumpToDef<CR>
-  autocmd FileType javascript.jsx nnoremap <buffer> ¨ :FlowType<CR>
-augroup END
-
 augroup deoplete_config
   autocmd!
 
   if has('nvim')
     let g:deoplete#enable_at_startup = 1
-    let g:deoplete#enable_smart_case = 1
     let g:deoplete#auto_completion_start_length = 0
-    let g:deoplete#file#enable_buffer_path = 1
+    " let g:deoplete#file#enable_buffer_path = 1
 
     inoremap <silent><expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
     inoremap <silent><expr><s-tab> pumvisible() ? "\<c-p>" : "\<s-tab>"
@@ -814,6 +810,7 @@ augroup grepper_config
   autocmd!
 
   " Project search using Ag
+  " nnoremap <leader>f :Grepper -tool ag -highlight -open -switch -grepprg ag --vimgrep --literal<CR>
   nnoremap <leader>f :Grepper -tool ag -highlight -open -switch -grepprg ag --vimgrep --literal<CR>
 augroup END
 
@@ -852,6 +849,12 @@ augroup javascript_config
   let g:jsx_ext_required = 0
 
   au BufRead,BufNewFile .eslintrc,.babelrc set ft=json syntax=json
+augroup END
+
+augroup committia_config
+  autocmd!
+
+  let g:committia_use_singlecolumn = 1
 augroup END
 
 augroup neoterm_config
@@ -902,8 +905,6 @@ augroup neoterm_config
     autocmd TermOpen * nnoremap <buffer> cc A<C-e><C-u>
     autocmd TermOpen * nnoremap <buffer> dd A<C-e><C-u><C-\><C-n>
   endif
-
-
 augroup END
 
 augroup closetag_config
@@ -1013,11 +1014,11 @@ augroup neoformat_config
   "         \ }
   " endfunction
 
-  " let g:neoformat_javacript_prettier = {
-  "           \ 'exe': './node_modules/.bin/prettier',
-  "           \ 'args': ['--stdin --config .prettierrc'],
-  "           \ 'stdin': 1,
-  "           \ }
+  let g:neoformat_javacript_prettier = {
+            \ 'exe': './node_modules/.bin/prettier',
+            \ 'args': ['--stdin --config .prettierrc'],
+            \ 'stdin': 1,
+            \ }
 
   let g:neoformat_enabled_javascript = ['prettier']
 
@@ -1039,13 +1040,14 @@ augroup neoformat_config
   "           \ 'stdin': 1,
   "           \ }
 
+  let g:neoformat_enabled_javascript = ['prettier']
   let g:neoformat_enabled_typescript = ['prettier']
   let g:neoformat_enabled_typescriptreact = ['prettier']
   let g:neoformat_enabled_ruby = ['rubocop']
 
-  autocmd BufWritePre apps/**/*.js,src/**/*.js,cypress/**/*.js silent Neoformat
-  autocmd BufWritePre apps/**/*.ts,src/**/*.ts,cypress/**/*.ts silent Neoformat
-  autocmd BufWritePre apps/**/*.tsx,src/**/*.tsx,cypress/**/*.tsx silent Neoformat
+  autocmd BufWritePre apps/**/*.js,src/**/*.js,cypress/**/*.js,test/**/*.js,libs/**/*.js silent Neoformat
+  autocmd BufWritePre apps/**/*.ts,src/**/*.ts,cypress/**/*.ts,test/**/*.ts,libs/**/*.ts silent Neoformat
+  autocmd BufWritePre apps/**/*.tsx,src/**/*.tsx,cypress/**/*.tsx,test/**/*.tsx,libs/**/*.tsx silent Neoformat
   " autocmd BufWritePre *.rb silent Neoformat
 
   " Enable alignment
@@ -1076,7 +1078,7 @@ augroup typescript_config
   " autocmd FileType typescript nnoremap <buffer> <CR> :TsuDefinition<CR>
   " autocmd FileType javascript.jsx nnoremap <buffer> ¨ :FlowType<CR>
 
-  autocmd FileType typescript,typescriptreact nnoremap <buffer> <CR> :ALEGoToDefinition<CR>
+  autocmd FileType typescript,typescriptreact,javascript,javascript.jsx nnoremap <buffer> <CR> :ALEGoToDefinition<CR>
   " autocmd FileType typescript syntax match typescriptSemicolons /;/
 
   let g:nvim_typescript#diagnostics_enable = 0
@@ -1101,15 +1103,6 @@ augroup goyo_config
   let g:goyo_height = '100%'
 augroup END
 
-" augroup tern_for_vim_config
-"   autocmd!
-
-"   let g:tern#command = ['tern']
-"   let g:tern#arguments = ['--persistent']
-
-"   nmap <silent> D :TernDef<CR>
-" augroup END
-
 " augroup easygrep_config
 "   autocmd!
 
@@ -1130,6 +1123,12 @@ augroup cursorword_config
   autocmd!
 
   autocmd FileType qf let b:cursorword = 0
+augroup END
+
+augroup hexokinase_config
+  autocmd!
+
+  let g:Hexokinase_highlighters = ['virtual']
 augroup END
 
 augroup reload_vimrc_config

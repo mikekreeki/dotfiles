@@ -61,6 +61,20 @@ alias packager='./node_modules/react-native/packager/packager.sh'
 # Dokku
 alias dokku='$HOME/.dokku/contrib/dokku_client.sh'
 
+# Kubectl
+alias pods='kubectl get pods'
+console(){ kubectl exec -ti $@ rails c }
+
+# production() {
+#   kubectx interstellar.prod.productboard.net;
+#   kubectx -
+# }
+#
+# staging() {
+#   kubectx voyager.staging.productboard.net;
+#   kubectx -
+# }
+
 # Misc
 alias weather='curl wttr.in'
 alias parrot='curl parrot.live'
