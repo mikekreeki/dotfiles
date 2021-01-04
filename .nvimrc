@@ -2,6 +2,13 @@
 " PLUGINS
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
+augroup polyglot_config
+  autocmd!
+
+  " For some reason they want this defined before the plugin is loaded
+  let g:polyglot_disabled = ['javascript', 'jsx', 'ruby', 'elixir', 'typescript']
+augroup END
+
 call plug#begin('~/.nvim/plugged')
 
 " Buffer/File Navigation
@@ -51,6 +58,7 @@ Plug 'gorkunov/smartpairs.vim'
 Plug 'junegunn/vim-easy-align'
 Plug 'ntpeters/vim-better-whitespace'
 Plug 'terryma/vim-multiple-cursors'
+" Plug 'mg979/vim-visual-multi'
 " Plug 'tpope/vim-commentary'
 Plug 'tyru/caw.vim'
 Plug 'tpope/vim-endwise'
@@ -1112,12 +1120,6 @@ augroup END
 
 "   nmap <silent> F <plug>EgMapGrepCurrentWord_V
 " augroup END
-
-augroup polyglot_config
-  autocmd!
-
-  let g:polyglot_disabled = ['javascript', 'jsx', 'ruby', 'elixir', 'typescript']
-augroup END
 
 augroup cursorword_config
   autocmd!
