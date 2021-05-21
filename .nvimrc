@@ -6,7 +6,7 @@ augroup polyglot_config
   autocmd!
 
   " For some reason they want this defined before the plugin is loaded
-  let g:polyglot_disabled = ['javascript', 'jsx', 'ruby', 'elixir', 'typescript']
+  let g:polyglot_disabled = ['javascript', 'jsx', 'ruby', 'elixir', 'typescript', 'vue']
 augroup END
 
 call plug#begin('~/.nvim/plugged')
@@ -30,6 +30,7 @@ Plug 'itchyny/vim-cursorword'
 Plug 'pmalek/toogle-maximize.vim'
 Plug 'troydm/zoomwintab.vim'
 Plug 'junegunn/goyo.vim'
+Plug 'ervandew/regex'
 
 " Searching
 Plug 'easymotion/vim-easymotion'
@@ -108,6 +109,8 @@ Plug 'jparise/vim-graphql',                     { 'for': 'javascript' }
 Plug 'heavenshell/vim-jsdoc',                   { 'for': 'javascript' }
 Plug 'HerringtonDarkholme/yats.vim',            { 'for': 'typescript' }
 Plug 'styled-components/vim-styled-components', { 'branch': 'main' }
+Plug 'pantharshit00/vim-prisma'
+Plug 'leafOfTree/vim-vue-plugin'
 
 " Elixir integration
 Plug 'slashmili/alchemist.vim',   { 'for': 'elixir' }
@@ -206,7 +209,7 @@ set conceallevel=2
 set concealcursor=nvi
 set noshowmode
 set exrc
-set secure
+" set secure
 set termguicolors
 set inccommand=split
 
@@ -215,7 +218,7 @@ autocmd BufWinEnter *.* silent! loadview " Make Vim load view (state) (folds, cu
 
 " Ignore things
 set wildignore+=*.jpg,*.jpeg,*.gif,*.png,*.gif,*.psd,*.o,*.obj
-set wildignore+=*/.git/*,*/.hg/*,*/.svn/*
+set wildignore+=*/.git\//*,*/.hg/*,*/.svn/*
 
 set wildoptions=pum
 set pumblend=10
@@ -428,7 +431,7 @@ augroup nerdtree_config
         \ '\~$',
         \ '\.swo$',
         \ '\.swp$',
-        \ '\.git',
+        \ '\.git/',
         \ '\.hg',
         \ '\.svn',
         \ '\.bzr',
@@ -532,7 +535,7 @@ augroup picker_config
   autocmd!
 
   let g:picker_custom_find_executable = 'rg'
-  let g:picker_custom_find_flags = '--color never --files'
+  let g:picker_custom_find_flags = "--color never --files --hidden --glob '!.git'"
 
   nmap <unique> <C-p> <Plug>(PickerEdit)
 augroup END
@@ -819,7 +822,7 @@ augroup grepper_config
 
   " Project search using Ag
   " nnoremap <leader>f :Grepper -tool ag -highlight -open -switch -grepprg ag --vimgrep --literal<CR>
-  nnoremap <leader>f :Grepper -tool ag -highlight -open -switch -grepprg ag --vimgrep --literal<CR>
+  nnoremap <leader>f :Grepper -tool ag -highlight -open -switch -grepprg ag --vimgrep --literal --hidden --skip-vcs-ignores<CR>
 augroup END
 
 augroup bufexplorer_config
@@ -854,7 +857,7 @@ augroup javascript_config
 
   let g:javascript_plugin_flow = 1
   let g:vim_json_syntax_conceal = 0
-  let g:jsx_ext_required = 0
+  let g:jsx_ext_required = 1
 
   au BufRead,BufNewFile .eslintrc,.babelrc set ft=json syntax=json
 augroup END
@@ -865,41 +868,12 @@ augroup committia_config
   let g:committia_use_singlecolumn = 1
 augroup END
 
-augroup neoterm_config
+augroup terminal_config
   autocmd!
 
   if has('nvim')
-    let g:neoterm_default_mod = 'right'
-
     autocmd TermOpen * set nonumber
     autocmd TermOpen * set wfw
-
-    function! OpenTerminal()
-      :80vs
-      :terminal
-      " :lw
-      " :copen
-      " :bnext
-    endfunction
-    :command! TT call OpenTerminal()
-
-    " function! NeovimTerminalToggleTerm()
-    "   bo 15 split
-    "   try
-	" exe s:neovim_visor_termbuf . 'buffer'
-	" startinsert
-    "   catch
-	" terminal
-	" let s:neovim_visor_termbuf=bufnr('%')
-	" execute 'tnoremap <silent> <buffer>' . '<C-q>' . '  <C-\><C-n>:hide<CR>'
-	" execute 'tnoremap <silent> <buffer>' . '<ESC>' . '  <C-\><C-n>:hide<CR>'
-    "   endtry
-    " endfunction
-
-    " autocmd TermOpen * nnoremap <silent> <buffer> <C-q> :hide<CR>
-
-    " com! NeovimTerminalToggleTerm call NeovimTerminalToggleTerm()
-    " nmap <C-q> :NeovimTerminalToggleTerm<CR>
 
     " Readline cheatsheet:
     " ctrl-a - jump to start of line
@@ -918,7 +892,7 @@ augroup END
 augroup closetag_config
   autocmd!
 
-  let g:closetag_filenames = "*.html,*.xhtml,*.phtml,*.xml,*.jsx,*.react.js,*.js,*.tsx"
+  let g:closetag_filenames = "*.html,*.xhtml,*.phtml,*.xml,*.jsx,*.react.js,*.js,*.tsx,*.vue"
 augroup END
 
 augroup matchup_config
@@ -940,7 +914,8 @@ augroup END
 augroup rooter_config
   autocmd!
 
-  let g:rooter_patterns = ['.git/']
+  let g:rooter_patterns = ['package.json', '.git/']
+  " let g:rooter_patterns = ['.git/']
 augroup END
 
 augroup smartgf_config
@@ -1006,22 +981,6 @@ augroup END
 augroup neoformat_config
   autocmd!
 
-  " function! neoformat#formatters#javascript#prettier() abort
-  "     return {
-  "         \ 'exe': './node_modules/.bin/prettier',
-  "         \ 'args': ['--stdin --config .prettierrc'],
-  "         \ 'stdin': 1,
-  "         \ }
-  " endfunction
-
-  " function! neoformat#formatters#typescript#prettier() abort
-  "     return {
-  "         \ 'exe': './node_modules/.bin/prettier',
-  "         \ 'args': ['--stdin --config .prettierrc --parser typescript'],
-  "         \ 'stdin': 1,
-  "         \ }
-  " endfunction
-
   let g:neoformat_javacript_prettier = {
             \ 'exe': './node_modules/.bin/prettier',
             \ 'args': ['--stdin --config .prettierrc'],
@@ -1074,20 +1033,15 @@ augroup END
 augroup syntax_attr_config
   autocmd!
 
-  map <leader>x	:call SyntaxAttr#SyntaxAttr()<CR>
+  nmap <leader>x :call SyntaxAttr#SyntaxAttr()<CR>
 augroup END
 
 augroup typescript_config
   autocmd!
 
-  " autocmd FileType typescript nmap <buffer> <Leader><space> : <C-u>echo tsuquyomi#hint()<CR>
   autocmd BufNewFile,BufRead,BufEnter *.tsx set filetype=typescriptreact
 
-  " autocmd FileType typescript nnoremap <buffer> <CR> :TsuDefinition<CR>
-  " autocmd FileType javascript.jsx nnoremap <buffer> ¨ :FlowType<CR>
-
   autocmd FileType typescript,typescriptreact,javascript,javascript.jsx nnoremap <buffer> <CR> :ALEGoToDefinition<CR>
-  " autocmd FileType typescript syntax match typescriptSemicolons /;/
 
   let g:nvim_typescript#diagnostics_enable = 0
 augroup END
@@ -1127,6 +1081,12 @@ augroup cursorword_config
   autocmd FileType qf let b:cursorword = 0
 augroup END
 
+augroup cursorword_config
+  autocmd!
+
+  autocmd FileType markdown setl conceallevel=0
+augroup END
+
 augroup hexokinase_config
   autocmd!
 
@@ -1138,61 +1098,10 @@ augroup reload_vimrc_config
 
   " Shorcut to edit .vimrc
   nnoremap <leader>V :e $MYVIMRC<CR>
+
   " Reload .vimrc on save
   " autocmd BufWritePost $MYVIMRC source $MYVIMRC
 augroup END
-
-" augroup rails_vim_config
-"   let g:rails_projections = {
-"         \  "app/serializers/*_serializer.rb": {
-"         \    "command": "serializer",
-"         \    "test": "spec/serializers/%s_spec.rb",
-"         \    "related": "app/models/%s.rb",
-"         \     "affinity": "model",
-"         \    "template": "class %SSerializer < ActiveModel::Serializer\nend"
-"         \  },
-"         \  "app/decorators/*_decorator.rb": {
-"         \    "command": "decorator",
-"         \    "related": "app/models/%s.rb",
-"         \    "affinity": "model",
-"         \    "template": "class %SDecorator < Draper::Decorator\nend",
-"         \    "test": "spec/decorators/%s_decorator_spec.rb"
-"         \  },
-"         \  "app/services/*_service.rb": {
-"         \    "command": "service",
-"         \    "template": "class %SService\nend",
-"         \    "test": "spec/services/%s_service_spec.rb"
-"         \  },
-"         \  "app/listeners/*_listener.rb": {
-"         \    "command": "listener",
-"         \    "template": "class %SListener\nend",
-"         \    "test": "spec/listeners/%s_listener_spec.rb"
-"         \  },
-"         \  "app/jobs/*_job.rb": {
-"         \    "command": "job",
-"         \    "related": "app/models/%s.rb",
-"         \    "affinity": "model",
-"         \    "template": "class %SJob\nend",
-"         \    "test": "spec/jobs/%s_job_spec.rb"
-"         \   },
-"         \   "config/routes.rb": {"command": "routes"},
-"         \   "spec/factories/*.rb": {
-"         \     "command": "factory",
-"         \     "affinity": "collection",
-"         \     "alternate": "app/models/%i.rb",
-"         \     "related": "db/schema.rb#%s",
-"         \     "test": "spec/models/%i_test.rb",
-"         \     "template": "FactoryGirl.define do\n  factory :%i do\n  end\nend",
-"         \     "keywords": "factory sequence"
-"         \   },
-"         \   "spec/features/*_spec.rb": { "command": "feature" },
-"         \   "spec/requests/*_spec.rb": { "command": "request" },
-"         \   "app/workers/*_worker.rb": { "command": "worker" },
-"         \   "app/policies/*_policy.rb": { "command": "policy" },
-"         \   "app/paths/*_path.rb": { "command": "path" }
-"         \ }
-
-" augroup END
 
 augroup quickwrap_config
   autocmd!
@@ -1206,4 +1115,20 @@ augroup quickwrap_config
   vnoremap " <esc>`>a"<esc>`<i"<esc>
   vnoremap ' <esc>`>a'<esc>`<i'<esc>
   vnoremap ` <esc>`>a`<esc>`<i`<esc>
+augroup END
+
+function! s:source_project_config() abort
+  let l:projectfile = findfile('.vimrc', expand('%:p').';')
+  if filereadable(l:projectfile)
+    silent execute 'source' l:projectfile
+  endif
+endfunction
+
+augroup MyAutoCmds
+  autocmd!
+  autocmd BufRead,BufNewFile * call <SID>source_project_config()
+
+  if has('nvim')
+    autocmd DirChanged * call <SID>source_project_config()
+  endif
 augroup END

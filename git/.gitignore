@@ -31,10 +31,12 @@ npm-debug.log
 *.swp
 .smartgf_tags
 .smartgf_tags_date
+.vimrc
 .nvimrc
 
 # RAILS
 .env
+.env.local
 config/mongoid.yml
 config/database.yml
 quickfix.out
@@ -43,6 +45,7 @@ spec/vim_formatter.rb
 # JS
 .tern-project
 .tern-port
+.nvmrc
 
 # git_stats
 git_stats/
