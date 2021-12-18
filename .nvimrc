@@ -21,12 +21,15 @@ Plug 'kopischke/vim-fetch'
 Plug 'srstevenson/vim-picker'
 
 " Interface
-Plug 'bling/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
+" Plug 'bling/vim-airline'
+" Plug 'vim-airline/vim-airline-themes'
+Plug 'nvim-lualine/lualine.nvim'
 Plug 'inkarkat/SyntaxAttr.vim'
 Plug 'milkypostman/vim-togglelist'
 Plug 'tpope/vim-rsi'
-Plug 'itchyny/vim-cursorword'
+" Plug 'itchyny/vim-cursorword'
+Plug 'xiyaowong/nvim-cursorword'
+Plug 'yamatsum/nvim-cursorline'
 Plug 'pmalek/toogle-maximize.vim'
 Plug 'troydm/zoomwintab.vim'
 Plug 'junegunn/goyo.vim'
@@ -43,7 +46,7 @@ Plug '/usr/local/opt/fzf'
 Plug 'Shougo/context_filetype.vim'
 Plug 'Shougo/deoplete.nvim',   { 'do': ':UpdateRemotePlugins' }
 Plug 'tbodt/deoplete-tabnine', { 'do': './install.sh' }
-Plug 'Shougo/echodoc.vim'
+" Plug 'Shougo/echodoc.vim'
 Plug 'Shougo/neco-syntax'
 Plug 'Shougo/neoinclude.vim'
 Plug 'Shougo/neopairs.vim'
@@ -52,7 +55,8 @@ Plug 'reedes/vim-litecorrect'
 " Code Editing
 Plug 'Yggdroot/indentLine'
 Plug 'alvan/vim-closetag'
-Plug 'jiangmiao/auto-pairs'
+" Plug 'jiangmiao/auto-pairs'
+Plug 'windwp/nvim-autopairs'
 " Plug 'andymass/vim-matchup'
 " Plug 'edsono/vim-matchit'
 Plug 'gorkunov/smartpairs.vim'
@@ -65,25 +69,25 @@ Plug 'tyru/caw.vim'
 Plug 'tpope/vim-endwise'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
-Plug 'Shougo/neosnippet'
-Plug 'Shougo/neosnippet-snippets'
-Plug 'honza/vim-snippets'
-Plug 'RRethy/vim-hexokinase', { 'do': 'make hexokinase' }
+" Plug 'Shougo/neosnippet'
+" Plug 'Shougo/neosnippet-snippets'
+" Plug 'honza/vim-snippets'
+" Plug 'RRethy/vim-hexokinase', { 'do': 'make hexokinase' }
 
 " Project Management
 Plug 'airblade/vim-rooter'
 
 " Git Integration
-Plug 'airblade/vim-gitgutter'
-Plug 'tap349/vim-extradite'
-Plug 'rhysd/committia.vim'
-Plug 'rhysd/conflict-marker.vim'
 Plug 'tpope/vim-fugitive'
+Plug 'airblade/vim-gitgutter'
+Plug 'rsrchboy/vim-extradite'
+" Plug 'rhysd/committia.vim'
+Plug 'rhysd/conflict-marker.vim'
 Plug 'tpope/vim-git'
-Plug 'jreybert/vimagit'
-Plug 'lambdalisue/gina.vim'
-Plug 'danishprakash/vim-githubinator'
-Plug 'cohama/agit.vim'
+" Plug 'jreybert/vimagit'
+" Plug 'lambdalisue/gina.vim'
+" Plug 'danishprakash/vim-githubinator'
+" Plug 'cohama/agit.vim'
 
 " Building, Linters, Test Runners
 Plug 'dense-analysis/ale'
@@ -104,13 +108,13 @@ Plug 'tpope/vim-rvm',              { 'for': 'ruby' }
 Plug 'elzr/vim-json',                           { 'for': 'json' }
 Plug 'pangloss/vim-javascript',                 { 'for': 'javascript' }
 Plug 'mxw/vim-jsx',                             { 'for': 'javascript' }
-Plug 'othree/jspc.vim',                         { 'for': 'javascript' }
+" Plug 'othree/jspc.vim',                         { 'for': 'javascript' }
 Plug 'jparise/vim-graphql',                     { 'for': 'javascript' }
 Plug 'heavenshell/vim-jsdoc',                   { 'for': 'javascript' }
 Plug 'HerringtonDarkholme/yats.vim',            { 'for': 'typescript' }
 Plug 'styled-components/vim-styled-components', { 'branch': 'main' }
 Plug 'pantharshit00/vim-prisma'
-Plug 'leafOfTree/vim-vue-plugin'
+" Plug 'leafOfTree/vim-vue-plugin'
 
 " Elixir integration
 Plug 'slashmili/alchemist.vim',   { 'for': 'elixir' }
@@ -119,17 +123,13 @@ Plug 'elixir-editors/vim-elixir', { 'for': 'elixir' }
 " Other Languages
 Plug 'sheerun/vim-polyglot'
 Plug 'gabrielelana/vim-markdown'
-Plug 'mzlogin/vim-markdown-toc'
+" Plug 'mzlogin/vim-markdown-toc'
 Plug 'vim-scripts/SyntaxRange'
 Plug 'chrisbra/csv.vim'
 
 " Taking Notes
 Plug 'duff/vim-scratch'
-Plug 'xolox/vim-misc'
-
-" Terminal Integration
-" Plug 'kassio/neoterm'
-Plug 'Lenovsky/nuake'
+" Plug 'xolox/vim-misc'
 
 " Colorschemes
 " Plug 'mikekreeki/mikekreeki-colors.vim'
@@ -212,6 +212,7 @@ set exrc
 " set secure
 set termguicolors
 set inccommand=split
+set redrawtime=5000
 
 autocmd BufWinLeave *.* silent! mkview " Make Vim save view (state) (folds, cursor, etc)
 autocmd BufWinEnter *.* silent! loadview " Make Vim load view (state) (folds, cursor, etc)
@@ -285,8 +286,9 @@ nnoremap ů g;
 " Jump to previous cursor position
 nnoremap § ``
 
-" Press Space to turn off highlighting and clear any message already displayed.
-nnoremap <silent> <Space> :nohlsearch<Bar>wincmd =<Bar>:redraw!<Bar>:checktime<Bar>:set nopaste<Bar>:echo<CR>
+" Press Space to turn off highlighting, clear any message already displayed,
+" rehighlight syntax
+nnoremap <silent> <Space> :nohlsearch<Bar>wincmd =<Bar>:redraw!<Bar>:checktime<Bar>:set nopaste<Bar>:echo<Bar>:syntax sync fromstart<CR>
 
 " Visually select the text that was last edited/pasted
 nnoremap gV `[v`]
@@ -308,7 +310,7 @@ nnoremap <leader>e :vnew<CR>
 nmap <TAB> <C-W>w
 
 " When joining lines do not insert space between
-vnoremap J :j!<return>
+" vnoremap J :j!<return>
 
 " Resize splits when the window is resized
 autocmd VimResized * wincmd =
@@ -321,7 +323,7 @@ set sidescrolloff=10
 cnoreabbrev W w
 cnoreabbrev Q q
 cnoreabbrev wQ wq
-cnoreabbrev Wg wq
+cnoreabbrev Wq wq
 cnoreabbrev WQ wq
 cnoreabbrev E e
 
@@ -540,77 +542,152 @@ augroup picker_config
   nmap <unique> <C-p> <Plug>(PickerEdit)
 augroup END
 
-" augroup clap_config
-"   autocmd!
-"
-"   nmap <unique> <silent> <C-o> :Clap files<CR>
-"
-"   autocmd FileType clap setlocal colorcolumn=0
-"
-"   let g:clap_provider_grep_delay = 0
-"   let g:clap_current_selection_sign = { 'text': '>', 'texthl': "WarningMsg", "linehl": "ClapCurrentSelection" }
-"
-"
-"   autocmd BufEnter,FocusGained clap_input,clap_spinner set colorcolumn=
-" augroup END
-
 " let g:picker_selector_executable = 'sk'
 " let g:picker_selector_flags = ''
 
-augroup airline_config
-  autocmd!
+" augroup airline_config
+"   autocmd!
+"
+"   " let g:airline_inactive_collapse=0
+"   let g:airline_left_sep=''
+"   let g:airline_right_sep=''
+"   let g:airline_theme='powerlineish'
+"   let g:airline#extensions#hunks#non_zero_only = 1
+"   let g:airline_section_y=''
+"   let g:airline_section_z=''
+"
+"   let g:airline_mode_map = {
+"      \ '__' : '-',
+"      \ 'n'  : 'N',
+"      \ 'i'  : 'I',
+"      \ 'ic' : 'I',
+"      \ 'ix' : 'I',
+"      \ 'R'  : 'R',
+"      \ 'c'  : 'C',
+"      \ 'v'  : 'V',
+"      \ 'V'  : 'V',
+"      \ '' : 'V',
+"      \ 's'  : 'S',
+"      \ 'S'  : 'S',
+"      \ '' : 'S',
+"      \ 't'  : 'T',
+"      \ }
+"
+"   let g:airline#extensions#hunks#enabled = 0
+"   let g:airline#extensions#branch#enabled = 0
+"   let g:airline#extensions#branch#symbol = ''
+"
+"   let g:airline#extensions#ale#enabled = 1
+"   let g:airline#extensions#ale#error_symbol = '✖ '
+"   let g:airline#extensions#ale#warning_symbol = '✖ '
+" augroup END
 
-  " let g:airline_inactive_collapse=0
-  let g:airline_left_sep=''
-  let g:airline_right_sep=''
-  let g:airline_theme='powerlineish'
-  let g:airline#extensions#hunks#non_zero_only = 1
-  let g:airline_section_y=''
-  let g:airline_section_z=''
+lua << END
+  local custom_powerline = require'lualine.themes.powerline'
 
-  let g:airline_mode_map = {
-      \ '__' : '-',
-      \ 'n'  : 'N',
-      \ 'i'  : 'I',
-      \ 'ic' : 'I',
-      \ 'ix' : 'I',
-      \ 'R'  : 'R',
-      \ 'c'  : 'C',
-      \ 'v'  : 'V',
-      \ 'V'  : 'V',
-      \ '' : 'V',
-      \ 's'  : 'S',
-      \ 'S'  : 'S',
-      \ '' : 'S',
-      \ 't'  : 'T',
-      \ }
+  custom_powerline.normal.b.bg = '#000'
+  custom_powerline.normal.c.bg = '#000'
 
-  let g:airline#extensions#hunks#enabled = 0
-  let g:airline#extensions#branch#enabled = 0
-  let g:airline#extensions#branch#symbol = ''
+  custom_powerline.insert.a.fg = '#FFFFFF'
+  custom_powerline.insert.a.bg = '#005F87'
 
-  let g:airline#extensions#ale#enabled = 1
-  let g:airline#extensions#ale#error_symbol = '✖ '
-  let g:airline#extensions#ale#warning_symbol = '✖ '
-augroup END
+  custom_powerline.insert.b.fg = '#FFF'
+  custom_powerline.insert.b.bg = '#000'
 
-augroup neosnippet_config
-  autocmd!
+  custom_powerline.insert.c.bg = '#000'
 
-  " Turn off conceal
-  let g:neosnippet#enable_conceal_markers = 0
-  let g:neosnippet#enable_snipmate_compatibility = 1
-  let g:neosnippet#snippets_directory='~/.vim/bundle/vim-react-es6-snippets/snippets'
+  local module = require'lualine.utils.mode'
 
-  autocmd InsertLeave * NeoSnippetClearMarkers
+  module.map = {
+    ['n']    = 'N',
+    ['no']   = 'O-PENDING',
+    ['nov']  = 'O-PENDING',
+    ['noV']  = 'O-PENDING',
+    ['no'] = 'O-PENDING',
+    ['niI']  = 'N',
+    ['niR']  = 'N',
+    ['niV']  = 'N',
+    ['nt']   = 'N',
+    ['v']    = 'V',
+    ['vs']   = 'V',
+    ['V']    = 'V-LINE',
+    ['Vs']   = 'V-LINE',
+    ['']   = 'V-BLOCK',
+    ['s']  = 'V-BLOCK',
+    ['s']    = 'SELECT',
+    ['S']    = 'S-LINE',
+    ['']   = 'S-BLOCK',
+    ['i']    = 'INSERT',
+    ['ic']   = 'INSERT',
+    ['ix']   = 'INSERT',
+    ['R']    = 'REPLACE',
+    ['Rc']   = 'REPLACE',
+    ['Rx']   = 'REPLACE',
+    ['Rv']   = 'V-REPLACE',
+    ['Rvc']  = 'V-REPLACE',
+    ['Rvx']  = 'V-REPLACE',
+    ['c']    = 'COMMAND',
+    ['cv']   = 'EX',
+    ['ce']   = 'EX',
+    ['r']    = 'REPLACE',
+    ['rm']   = 'MORE',
+    ['r?']   = 'CONFIRM',
+    ['!']    = 'SHELL',
+    ['t']    = 'T',
+  }
 
-  imap <C-K> <Plug>(neosnippet_expand_or_jump)
-  smap <C-K> <Plug>(neosnippet_expand_or_jump)
-  xmap <C-K> <Plug>(neosnippet_expand_target)
+  require'lualine'.setup {
+    options = {
+      icons_enabled = false,
+      theme = custom_powerline,
+    },
+    sections = {
+      lualine_a = {'mode'},
+      lualine_b = {
+        {
+          'filename',
+          path = 1,
+        },
+      },
+      lualine_c = {},
+      lualine_x = {},
+      lualine_y = {'filetype'},
+      lualine_z = {
+        {
+          'diagnostics',
+          sources = {'ale'},
+          diagnostics_color = {
+            -- Same values like general color option can be used here.
+            error = 'DiagnosticError', -- changes diagnostic's error color
+            warn  = 'DiagnosticWarn',  -- changes diagnostic's warn color
+            info  = 'DiagnosticInfo',  -- changes diagnostic's info color
+            hint  = 'DiagnosticHint',  -- changes diagnostic's hint color
+          },
+          symbols = {error = '✖ ', warn = '✖ ', info = 'I', hint = 'H'},
+        }
+      },
+    },
+    extensions = {'quickfix', 'nerdtree'}
+  }
+END
 
-  smap <expr><Space> neosnippet#expandable_or_jumpable() ?
-  \ "\<Plug>(neosnippet_expand_or_jump)" : "\<Space>"
-augroup END
+" augroup neosnippet_config
+"   autocmd!
+"
+"   " Turn off conceal
+"   let g:neosnippet#enable_conceal_markers = 0
+"   let g:neosnippet#enable_snipmate_compatibility = 1
+"   let g:neosnippet#snippets_directory='~/.vim/bundle/vim-react-es6-snippets/snippets'
+"
+"   autocmd InsertLeave * NeoSnippetClearMarkers
+"
+"   imap <C-K> <Plug>(neosnippet_expand_or_jump)
+"   smap <C-K> <Plug>(neosnippet_expand_or_jump)
+"   xmap <C-K> <Plug>(neosnippet_expand_target)
+"
+"   smap <expr><Space> neosnippet#expandable_or_jumpable() ?
+"  \ "\<Plug>(neosnippet_expand_or_jump)" : "\<Space>"
+" augroup END
 
 augroup neovim_config
   autocmd!
@@ -646,19 +723,19 @@ augroup quickfix_config
   au WinEnter * if winnr('$') == 1 && getbufvar(winbufnr(winnr()), "&buftype") == "quickfix"|q|endif
 augroup END
 
-augroup cursorline_config
-  autocmd!
-
-  " Cursorline in active window only
-  au VimEnter,WinEnter,BufWinEnter * setlocal cursorline
-  au WinLeave * setlocal nocursorline
-
-  " Only have cursorline in current window and in normal window
-  autocmd WinLeave * set nocursorline
-  autocmd WinEnter * set cursorline
-  autocmd InsertEnter * set nocursorline
-  autocmd InsertLeave * set cursorline
-augroup END
+" augroup cursorline_config
+"   autocmd!
+"
+"   " Cursorline in active window only
+"   au VimEnter,WinEnter,BufWinEnter * setlocal cursorline
+"   au WinLeave * setlocal nocursorline
+"
+"   " Only have cursorline in current window and in normal window
+"   autocmd WinLeave * set nocursorline
+"   autocmd WinEnter * set cursorline
+"   autocmd InsertEnter * set nocursorline
+"   autocmd InsertLeave * set cursorline
+" augroup END
 
 augroup indentLine_config
   autocmd!
@@ -718,7 +795,7 @@ augroup ale_config
   let g:ale_sign_error = '✖'
   let g:ale_sign_warning = '✖'
   let g:ale_warn_about_trailing_whitespace = 0
-  let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
+  let g:ale_echo_msg_format = '%linter%: %s'
 
   let g:ale_linters = {
   \   'javascript': ['eslint', 'flow'],
@@ -745,7 +822,7 @@ augroup ale_config
   let g:ale_lint_delay = 0
 
   " let g:ale_virtualtext_cursor = 1
-  let g:ale_set_balloons = 1
+  let g:ale_hover_cursor = 0
 augroup END
 
 augroup deoplete_config
@@ -769,17 +846,17 @@ augroup deoplete_config
       :ALEDisable
 
       if deoplete#is_enabled()
-	call deoplete#disable()
-	let g:deoplete_is_enable_before_multi_cursors = 1
+        call deoplete#disable()
+        let g:deoplete_is_enable_before_multi_cursors = 1
       else
-	let g:deoplete_is_enable_before_multi_cursors = 0
+        let g:deoplete_is_enable_before_multi_cursors = 0
       endif
     endfunc
     func! Multiple_cursors_after()
       :ALEEnable
 
       if g:deoplete_is_enable_before_multi_cursors
-	call deoplete#enable()
+        call deoplete#enable()
       endif
     endfunc
   endif
@@ -821,8 +898,8 @@ augroup grepper_config
   autocmd!
 
   " Project search using Ag
-  " nnoremap <leader>f :Grepper -tool ag -highlight -open -switch -grepprg ag --vimgrep --literal<CR>
-  nnoremap <leader>f :Grepper -tool ag -highlight -open -switch -grepprg ag --vimgrep --literal --hidden --skip-vcs-ignores<CR>
+  " nnoremap <leader>f :Grepper -tool ag -highlight -open -switch -grepprg ag --vimgrep --literal --hidden<CR>
+  nnoremap <leader>f :Grepper -tool rg<CR>
 augroup END
 
 augroup bufexplorer_config
@@ -909,13 +986,15 @@ augroup extradite_config
   let g:extradite_showhash = 1
 
   autocmd FileType extradite,diff setlocal colorcolumn=0
+
+  nmap E :Extradite<CR>
 augroup END
 
 augroup rooter_config
   autocmd!
 
-  let g:rooter_patterns = ['package.json', '.git/']
-  " let g:rooter_patterns = ['.git/']
+  " let g:rooter_patterns = ['package.json', '.git/']
+  let g:rooter_patterns = ['.git/']
 augroup END
 
 augroup smartgf_config
@@ -924,11 +1003,15 @@ augroup smartgf_config
   let g:smartgf_key = '<CR>'
 augroup END
 
-augroup autopairs_config
-  autocmd!
+" augroup autopairs_config
+"   autocmd!
+"
+"   let g:AutoPairsMultilineClose = 0
+" augroup END
 
-  let g:AutoPairsMultilineClose = 0
-augroup END
+lua << END
+  require('nvim-autopairs').setup{}
+END
 
 augroup indent_guides_config
   autocmd!
@@ -1012,9 +1095,11 @@ augroup neoformat_config
   let g:neoformat_enabled_typescriptreact = ['prettier']
   let g:neoformat_enabled_ruby = ['rubocop']
 
-  autocmd BufWritePre apps/**/*.js,src/**/*.js,cypress/**/*.js,test/**/*.js,libs/**/*.js silent Neoformat
-  autocmd BufWritePre apps/**/*.ts,src/**/*.ts,cypress/**/*.ts,test/**/*.ts,libs/**/*.ts silent Neoformat
-  autocmd BufWritePre apps/**/*.tsx,src/**/*.tsx,cypress/**/*.tsx,test/**/*.tsx,libs/**/*.tsx silent Neoformat
+
+  autocmd BufWritePre **/*.js,**/*.ts,**/*.tsx silent Neoformat
+  " autocmd BufWritePre apps/**/*.js,src/**/*.js,cypress/**/*.js,test/**/*.js,libs/**/*.js silent Neoformat
+  " autocmd BufWritePre apps/**/*.ts,src/**/*.ts,cypress/**/*.ts,test/**/*.ts,libs/**/*.ts silent Neoformat
+  " autocmd BufWritePre apps/**/*.tsx,src/**/*.tsx,cypress/**/*.tsx,test/**/*.tsx,libs/**/*.tsx silent Neoformat
   " autocmd BufWritePre *.rb silent Neoformat
 
   " Enable alignment
@@ -1063,6 +1148,7 @@ augroup goyo_config
   autocmd!
 
   let g:goyo_height = '100%'
+  let g:goyo_width = 120
 augroup END
 
 " augroup easygrep_config
@@ -1075,23 +1161,23 @@ augroup END
 "   nmap <silent> F <plug>EgMapGrepCurrentWord_V
 " augroup END
 
-augroup cursorword_config
-  autocmd!
+" augroup cursorword_config
+"   autocmd!
+"
+"   autocmd FileType qf let b:cursorword = 0
+" augroup END
 
-  autocmd FileType qf let b:cursorword = 0
-augroup END
-
-augroup cursorword_config
+augroup markdown_config
   autocmd!
 
   autocmd FileType markdown setl conceallevel=0
 augroup END
 
-augroup hexokinase_config
-  autocmd!
-
-  let g:Hexokinase_highlighters = ['virtual']
-augroup END
+" augroup hexokinase_config
+"   autocmd!
+"
+"   let g:Hexokinase_highlighters = ['virtual']
+" augroup END
 
 augroup reload_vimrc_config
   autocmd!
