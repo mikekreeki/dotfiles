@@ -2,12 +2,12 @@
 " PLUGINS
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-augroup polyglot_config
-  autocmd!
-
-  " For some reason they want this defined before the plugin is loaded
-  let g:polyglot_disabled = ['javascript', 'jsx', 'ruby', 'elixir', 'typescript', 'vue']
-augroup END
+" augroup polyglot_config
+"   autocmd!
+"
+"   " For some reason they want this defined before the plugin is loaded
+"   let g:polyglot_disabled = ['javascript', 'jsx', 'ruby', 'elixir', 'typescript', 'vue']
+" augroup END
 
 call plug#begin('~/.nvim/plugged')
 
@@ -44,8 +44,14 @@ Plug '/usr/local/opt/fzf'
 
 " Autocomplete
 Plug 'Shougo/context_filetype.vim'
-Plug 'Shougo/deoplete.nvim',   { 'do': ':UpdateRemotePlugins' }
-Plug 'tbodt/deoplete-tabnine', { 'do': './install.sh' }
+" Plug 'Shougo/deoplete.nvim',   { 'do': ':UpdateRemotePlugins' }
+" Plug 'tbodt/deoplete-tabnine', { 'do': './install.sh' }
+Plug 'hrsh7th/cmp-nvim-lsp'
+Plug 'hrsh7th/cmp-buffer'
+Plug 'hrsh7th/cmp-path'
+Plug 'hrsh7th/cmp-cmdline'
+Plug 'tzachar/cmp-tabnine', { 'do': './install.sh' }
+Plug 'hrsh7th/nvim-cmp'
 " Plug 'Shougo/echodoc.vim'
 Plug 'Shougo/neco-syntax'
 Plug 'Shougo/neoinclude.vim'
@@ -62,8 +68,8 @@ Plug 'windwp/nvim-autopairs'
 Plug 'gorkunov/smartpairs.vim'
 Plug 'junegunn/vim-easy-align'
 Plug 'ntpeters/vim-better-whitespace'
-Plug 'terryma/vim-multiple-cursors'
-" Plug 'mg979/vim-visual-multi'
+" Plug 'terryma/vim-multiple-cursors'
+Plug 'mg979/vim-visual-multi'
 " Plug 'tpope/vim-commentary'
 Plug 'tyru/caw.vim'
 Plug 'tpope/vim-endwise'
@@ -121,7 +127,7 @@ Plug 'slashmili/alchemist.vim',   { 'for': 'elixir' }
 Plug 'elixir-editors/vim-elixir', { 'for': 'elixir' }
 
 " Other Languages
-Plug 'sheerun/vim-polyglot'
+" Plug 'sheerun/vim-polyglot'
 Plug 'gabrielelana/vim-markdown'
 " Plug 'mzlogin/vim-markdown-toc'
 Plug 'vim-scripts/SyntaxRange'
@@ -396,24 +402,24 @@ augroup easymotion_config
   nmap N <Plug>(easymotion-prev)
 augroup END
 
-augroup easytags_config
-  let g:easytags_cmd = '/Users/mikekreeki/.nvm/versions/node/v5.5.0/bin/jsctags'
-  let g:easytags_file = '~/.vimtags'
-  let g:easytags_updatetime_warn = 0
-  let g:easytags_events = ['BufReadPost', 'BufWritePost']
-  let g:tagbar_compact = 1
-  let g:tagbar_iconchars = ['▸', '▾']
-
-  let g:easytags_languages = {
-        \   'javascript': {
-        \       'cmd': g:easytags_cmd,
-        \       'args': [],
-        \       'fileoutput_opt': '-f',
-        \       'stdout_opt': '-f-',
-        \       'recurse_flag': '-R'
-        \   }
-    \}
-augroup END
+" augroup easytags_config
+"   let g:easytags_cmd = '/Users/mikekreeki/.nvm/versions/node/v5.5.0/bin/jsctags'
+"   let g:easytags_file = '~/.vimtags'
+"   let g:easytags_updatetime_warn = 0
+"   let g:easytags_events = ['BufReadPost', 'BufWritePost']
+"   let g:tagbar_compact = 1
+"   let g:tagbar_iconchars = ['▸', '▾']
+"
+"   let g:easytags_languages = {
+"        \   'javascript': {
+"        \       'cmd': g:easytags_cmd,
+"        \       'args': [],
+"        \       'fileoutput_opt': '-f',
+"        \       'stdout_opt': '-f-',
+"        \       'recurse_flag': '-R'
+"        \   }
+"    \}
+" augroup END
 
 augroup nerdtree_config
   autocmd!
@@ -825,41 +831,81 @@ augroup ale_config
   let g:ale_hover_cursor = 0
 augroup END
 
-augroup deoplete_config
+" augroup deoplete_config
+"   autocmd!
+"
+"   if has('nvim')
+"     let g:deoplete#enable_at_startup = 1
+"     let g:deoplete#auto_completion_start_length = 0
+"     " let g:deoplete#file#enable_buffer_path = 1
+"
+"     inoremap <silent><expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
+"     inoremap <silent><expr><s-tab> pumvisible() ? "\<c-p>" : "\<s-tab>"
+"
+"     function! s:my_cr_function()
+"       return pumvisible() ? deoplete#close_popup() : "\<CR>"
+"     endfunction
+"     inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
+"
+"     " Fix deoplete inserting giberrish when using multiple cursors
+"     func! Multiple_cursors_before()
+"       :ALEDisable
+"
+"       if deoplete#is_enabled()
+"         call deoplete#disable()
+"         let g:deoplete_is_enable_before_multi_cursors = 1
+"       else
+"         let g:deoplete_is_enable_before_multi_cursors = 0
+"       endif
+"     endfunc
+"     func! Multiple_cursors_after()
+"       :ALEEnable
+"
+"       if g:deoplete_is_enable_before_multi_cursors
+"         call deoplete#enable()
+"       endif
+"     endfunc
+"   endif
+" augroup END
+
+lua << EOF
+  local cmp = require'cmp'
+
+  cmp.setup({
+    snippet = {},
+    mapping = {
+      ['<TAB>'] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
+      ['<S-TAB>'] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }),
+      ['<CR>'] = cmp.mapping.confirm({ select = true }),
+    },
+    sources = cmp.config.sources({
+      { name = 'path' },
+      { name = 'buffer' },
+      { name = 'cmp_tabnine' },
+      { name = 'cmdline' },
+    })
+  })
+
+  cmp.setup.cmdline('/', {
+    sources = {
+      { name = 'buffer' }
+    }
+  })
+
+  cmp.setup.cmdline('/', {
+    sources = {
+      { name = 'buffer' }
+    }
+  })
+EOF
+
+augroup vim_visual_multi
   autocmd!
 
-  if has('nvim')
-    let g:deoplete#enable_at_startup = 1
-    let g:deoplete#auto_completion_start_length = 0
-    " let g:deoplete#file#enable_buffer_path = 1
-
-    inoremap <silent><expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
-    inoremap <silent><expr><s-tab> pumvisible() ? "\<c-p>" : "\<s-tab>"
-
-    function! s:my_cr_function()
-      return pumvisible() ? deoplete#close_popup() : "\<CR>"
-    endfunction
-    inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
-
-    " Fix deoplete inserting giberrish when using multiple cursors
-    func! Multiple_cursors_before()
-      :ALEDisable
-
-      if deoplete#is_enabled()
-        call deoplete#disable()
-        let g:deoplete_is_enable_before_multi_cursors = 1
-      else
-        let g:deoplete_is_enable_before_multi_cursors = 0
-      endif
-    endfunc
-    func! Multiple_cursors_after()
-      :ALEEnable
-
-      if g:deoplete_is_enable_before_multi_cursors
-        call deoplete#enable()
-      endif
-    endfunc
-  endif
+  let g:VM_maps = {}
+  let g:VM_maps["Undo"] = 'u'
+  let g:VM_maps["Redo"] = '<C-r>'
+  let g:VM_maps["Skip Region"]  = '<C-x>'
 augroup END
 
 augroup splitjoin_config
@@ -1035,11 +1081,11 @@ augroup END
 "   " ld= log --pretty=format:"%C(yellow)%h\\ %ad%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --date=short
 " augroup END
 
-augroup tagbar_config
-  autocmd!
-
-  " nmap T :TagbarToggle<CR>:echo<CR>
-augroup END
+" augroup tagbar_config
+"   autocmd!
+"
+"   " nmap T :TagbarToggle<CR>:echo<CR>
+" augroup END
 
 augroup scratch_config
   autocmd!
