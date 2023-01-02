@@ -75,8 +75,6 @@
 [help]
   autocorrect = 1
 
-[credential]
-  helper = osxkeychain
 
 [filter "media"]
   required = true
@@ -87,12 +85,6 @@
   required = true
   clean = git hawser clean %f
   smudge = git hawser smudge %f
-
-[filter "lfs"]
-  required = true
-	clean = git-lfs clean -- %f
-	smudge = git-lfs smudge -- %f
-	process = git-lfs filter-process
 
 [diff]
   renames = copies
@@ -130,3 +122,22 @@
   old = red bold
   new = green bold
   whitespace = red reverse
+
+[filter "lfs"]
+  smudge = git-lfs smudge -- %f
+  process = git-lfs filter-process
+  required = true
+  clean = git-lfs clean -- %f
+
+# The first line resets the list of helpers so we can check Netlify's first.
+[credential]
+  helper = ""
+
+# This next lines include Netlify's Git Credential Helper configuration in your Git configuration.
+[include]
+  path = /Users/mikekreeki/Library/Preferences/netlify/helper/git-config
+
+[credential]
+  helper = osxkeychain
+[http]
+	postBuffer = 157286400

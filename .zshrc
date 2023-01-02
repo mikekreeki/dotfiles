@@ -30,3 +30,6 @@ export PATH="/usr/local/opt/postgresql@10/bin:$PATH"
 
 export LDFLAGS="-L/usr/local/opt/postgresql@10/lib"
 export CPPFLAGS="-I/usr/local/opt/postgresql@10/include"
+
+# The next line updates PATH for Netlify's Git Credential Helper.
+test -f '/Users/mikekreeki/Library/Preferences/netlify/helper/path.zsh.inc' && source '/Users/mikekreeki/Library/Preferences/netlify/helper/path.zsh.inc'

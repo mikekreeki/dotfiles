@@ -49,7 +49,6 @@ Plug 'Shougo/context_filetype.vim'
 Plug 'hrsh7th/cmp-nvim-lsp'
 Plug 'hrsh7th/cmp-buffer'
 Plug 'hrsh7th/cmp-path'
-Plug 'hrsh7th/cmp-cmdline'
 Plug 'tzachar/cmp-tabnine', { 'do': './install.sh' }
 Plug 'hrsh7th/nvim-cmp'
 " Plug 'Shougo/echodoc.vim'
@@ -503,11 +502,13 @@ augroup nerdtree_config
  "    endif
   endfunction
 
-  nnoremap <silent> q :call NERDTreeToggleInCurDir()<CR>
+  command NERDTreeOnCurrentDir :call NERDTreeToggleInCurDir()
+
+  " Fix width of buffers after NERDTree opens/closes
+  nnoremap <silent> q :exec 'NERDTreeOnCurrentDir' <Bar> wincmd =<CR>
 
   " Focus file in current buffer in NERDTree
-  nnoremap <silent> Q :NERDTreeFind<CR>
-
+  nnoremap <silent> Q :exec 'NERDTreeFind' <Bar> wincmd =<CR>
 augroup END
 
 " augroup ctrlp_config
@@ -882,8 +883,7 @@ lua << EOF
       { name = 'path' },
       { name = 'buffer' },
       { name = 'cmp_tabnine' },
-      { name = 'cmdline' },
-    })
+    }),
   })
 
   cmp.setup.cmdline('/', {
