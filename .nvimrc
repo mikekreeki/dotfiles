@@ -40,7 +40,6 @@ Plug 'easymotion/vim-easymotion'
 Plug 'mhinz/vim-grepper'
 Plug 'osyo-manga/vim-over'
 Plug 'nelstrom/vim-qargs'
-Plug '/usr/local/opt/fzf'
 
 " Autocomplete
 Plug 'Shougo/context_filetype.vim'
@@ -539,7 +538,6 @@ augroup END
 "   nnoremap <leader>bc :CtrlPCmdPalette<CR>
 " augroup END
 
-
 augroup picker_config
   autocmd!
 
@@ -646,6 +644,7 @@ lua << END
   require'lualine'.setup {
     options = {
       icons_enabled = false,
+      section_separators = { left = "", right = "" },
       theme = custom_powerline,
     },
     sections = {
@@ -828,7 +827,7 @@ augroup ale_config
   " Set ALE's 200ms delay to zero
   let g:ale_lint_delay = 0
 
-  " let g:ale_virtualtext_cursor = 1
+  let g:ale_virtualtext_cursor = 0
   let g:ale_hover_cursor = 0
 augroup END
 
@@ -1032,8 +1031,6 @@ augroup extradite_config
   let g:extradite_showhash = 1
 
   autocmd FileType extradite,diff setlocal colorcolumn=0
-
-  nmap E :Extradite<CR>
 augroup END
 
 augroup rooter_config
@@ -1070,16 +1067,6 @@ augroup echodoc_config
 
   let g:echodoc_enable_at_startup = 1
 augroup END
-
-" augroup fzf_config
-"   autocmd!
-
-"   nnoremap <C-P> :FZF<CR>
-"   nnoremap < :Commits<CR>
-"   " let g:fzf_commits_log_options = '--color=always --format="%C(auto)%h%d %s %C(black)%C(bold)%cr"'
-"   let g:fzf_commits_log_options = '--color=always --date=short --format="%C(yellow)%h %ad%Cred%d %Creset%s%Cblue [%cn]"'
-"   " ld= log --pretty=format:"%C(yellow)%h\\ %ad%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --date=short
-" augroup END
 
 " augroup tagbar_config
 "   autocmd!
@@ -1164,7 +1151,7 @@ augroup END
 augroup syntax_attr_config
   autocmd!
 
-  nmap <leader>x :call SyntaxAttr#SyntaxAttr()<CR>
+  " nmap <leader>x :call SyntaxAttr#SyntaxAttr()<CR>
 augroup END
 
 augroup typescript_config
@@ -1173,6 +1160,7 @@ augroup typescript_config
   autocmd BufNewFile,BufRead,BufEnter *.tsx set filetype=typescriptreact
 
   autocmd FileType typescript,typescriptreact,javascript,javascript.jsx nnoremap <buffer> <CR> :ALEGoToDefinition<CR>
+  autocmd FileType typescript,typescriptreact,javascript,javascript.jsx nnoremap <buffer> <leader>x :ALEHover<CR>
 
   let g:nvim_typescript#diagnostics_enable = 0
 augroup END

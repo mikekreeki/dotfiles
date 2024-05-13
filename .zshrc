@@ -33,3 +33,10 @@ export CPPFLAGS="-I/usr/local/opt/postgresql@10/include"
 
 # The next line updates PATH for Netlify's Git Credential Helper.
 test -f '/Users/mikekreeki/Library/Preferences/netlify/helper/path.zsh.inc' && source '/Users/mikekreeki/Library/Preferences/netlify/helper/path.zsh.inc'
+
+export ANDROID_HOME=$HOME/Library/Android/sdk
+
+export PATH=$PATH:$ANDROID_HOME/emulator
+export PATH=$PATH:$ANDROID_HOME/platform-tools
+export PATH=$PATH:$ANDROID_HOME/tools
+export PATH=$PATH:$ANDROID_HOME/tools/bin
