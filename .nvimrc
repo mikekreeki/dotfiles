@@ -136,8 +136,8 @@ Plug 'duff/vim-scratch'
 " Plug 'xolox/vim-misc'
 
 " Colorschemes
-" Plug 'mikekreeki/mikekreeki-colors.vim'
-Plug '~/Projects/mikekreeki-colors.vim'
+Plug 'mikekreeki/mikekreeki-colors.vim'
+" Plug '~/Projects/mikekreeki-colors.vim'
 
 
 call plug#end()

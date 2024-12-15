@@ -4,6 +4,14 @@ export PATH="/Users/mikekreeki/.dotfiles/bin:$PATH"
 # HOMEBREW
 export PATH="/usr/local/bin:$PATH"
 
+# OPENSSL
+export PATH="/opt/homebrew/opt/openssl@1.1/bin:$PATH" # have openssl@1.1 first in your PATH
+
+export LDFLAGS="-L/opt/homebrew/opt/openssl@1.1/lib" # For compilers to find openssl@1.1
+export CPPFLAGS="-I/opt/homebrew/opt/openssl@1.1/include" # For compilers to find openssl@1.1
+
+export PKG_CONFIG_PATH="/opt/homebrew/opt/openssl@1.1/lib/pkgconfig" # For pkg-config to find openssl@1.1
+
 # RVM
 export PATH="$HOME/.rvm/bin:$PATH"
 
@@ -31,8 +39,7 @@ export NVIM_TUI_ENABLE_TRUE_COLOR=1
 export NVIM_TUI_ENABLE_CURSOR_SHAPE=1
 
 # Java/JRUBY
-export JAVA_OPTS="-XX:-UseConcMarkSweepGC"
-export JRUBY_OPTS="-J-Xmx4g"
+export JAVA_HOME=/Library/Java/JavaVirtualMachines/zulu-17.jdk/Contents/Home
 
 # notwaldorf/tiny-care-terminal
 export TTC_WEATHER='Prague'

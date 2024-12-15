@@ -54,6 +54,7 @@ alias mvim='nvim'
 
 # NOCORRECT
 alias spring='nocorrect spring'
+alias expo='nocorrect expo'
 
 # REACT NATIVE
 alias packager='./node_modules/react-native/packager/packager.sh'
