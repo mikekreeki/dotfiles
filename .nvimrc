@@ -30,9 +30,9 @@ Plug 'tpope/vim-rsi'
 " Plug 'itchyny/vim-cursorword'
 Plug 'xiyaowong/nvim-cursorword'
 Plug 'yamatsum/nvim-cursorline'
-Plug 'pmalek/toogle-maximize.vim'
-Plug 'troydm/zoomwintab.vim'
-Plug 'junegunn/goyo.vim'
+"Plug 'pmalek/toogle-maximize.vim'
+"Plug 'troydm/zoomwintab.vim'
+"Plug 'junegunn/goyo.vim'
 Plug 'ervandew/regex'
 
 " Searching
@@ -42,6 +42,8 @@ Plug 'osyo-manga/vim-over'
 Plug 'nelstrom/vim-qargs'
 
 " Autocomplete
+" Plug 'zbirenbaum/copilot.lua'
+" Plug 'zbirenbaum/copilot-cmp'
 Plug 'Shougo/context_filetype.vim'
 " Plug 'Shougo/deoplete.nvim',   { 'do': ':UpdateRemotePlugins' }
 " Plug 'tbodt/deoplete-tabnine', { 'do': './install.sh' }
@@ -50,6 +52,8 @@ Plug 'hrsh7th/cmp-buffer'
 Plug 'hrsh7th/cmp-path'
 Plug 'tzachar/cmp-tabnine', { 'do': './install.sh' }
 Plug 'hrsh7th/nvim-cmp'
+Plug 'hrsh7th/cmp-vsnip'
+Plug 'hrsh7th/vim-vsnip'
 " Plug 'Shougo/echodoc.vim'
 Plug 'Shougo/neco-syntax'
 Plug 'Shougo/neoinclude.vim'
@@ -73,6 +77,7 @@ Plug 'tyru/caw.vim'
 Plug 'tpope/vim-endwise'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
+Plug 'echasnovski/mini.nvim'
 " Plug 'Shougo/neosnippet'
 " Plug 'Shougo/neosnippet-snippets'
 " Plug 'honza/vim-snippets'
@@ -113,16 +118,11 @@ Plug 'elzr/vim-json',                           { 'for': 'json' }
 Plug 'pangloss/vim-javascript',                 { 'for': 'javascript' }
 Plug 'mxw/vim-jsx',                             { 'for': 'javascript' }
 " Plug 'othree/jspc.vim',                         { 'for': 'javascript' }
-Plug 'jparise/vim-graphql',                     { 'for': 'javascript' }
+"Plug 'jparise/vim-graphql',                     { 'for': 'javascript' }
 Plug 'heavenshell/vim-jsdoc',                   { 'for': 'javascript' }
 Plug 'HerringtonDarkholme/yats.vim',            { 'for': 'typescript' }
-Plug 'styled-components/vim-styled-components', { 'branch': 'main' }
-Plug 'pantharshit00/vim-prisma'
+"Plug 'styled-components/vim-styled-components', { 'branch': 'main' }
 " Plug 'leafOfTree/vim-vue-plugin'
-
-" Elixir integration
-Plug 'slashmili/alchemist.vim',   { 'for': 'elixir' }
-Plug 'elixir-editors/vim-elixir', { 'for': 'elixir' }
 
 " Other Languages
 " Plug 'sheerun/vim-polyglot'
@@ -135,9 +135,14 @@ Plug 'chrisbra/csv.vim'
 Plug 'duff/vim-scratch'
 " Plug 'xolox/vim-misc'
 
+" AI - via codecompanion
+"Plug 'nvim-lua/plenary.nvim'
+"Plug 'nvim-treesitter/nvim-treesitter'
+"Plug 'olimorris/codecompanion.nvim'
+
 " Colorschemes
-Plug 'mikekreeki/mikekreeki-colors.vim'
-" Plug '~/Projects/mikekreeki-colors.vim'
+"Plug 'mikekreeki/mikekreeki-colors.vim'
+Plug '~/Projects/mikekreeki-colors.vim'
 
 
 call plug#end()
@@ -206,7 +211,7 @@ set undoreload=10000            " number of lines to save for undo
 set splitright
 set timeoutlen=500
 set fillchars+=vert:\ " there is a single space after '\ '
-set showcmd
+set noshowcmd
 set laststatus=2
 set shortmess+=IFW
 set conceallevel=2
@@ -673,6 +678,14 @@ lua << END
         }
       },
     },
+    inactive_sections = {
+      lualine_a = {},
+      lualine_b = {},
+      lualine_c = {'filename'},
+      lualine_x = {},
+      lualine_y = {},
+      lualine_z = {}
+    },
     extensions = {'quickfix', 'nerdtree'}
   }
 END
@@ -872,7 +885,15 @@ lua << EOF
   local cmp = require'cmp'
 
   cmp.setup({
-    snippet = {},
+    snippet = {
+      expand = function(args)
+        vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` users.
+        -- require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
+        -- require('snippy').expand_snippet(args.body) -- For `snippy` users.
+        -- vim.fn["UltiSnips#Anon"](args.body) -- For `ultisnips` users.
+        -- vim.snippet.expand(args.body) -- For native neovim snippets (Neovim v0.10+)
+      end,
+    },
     mapping = {
       ['<TAB>'] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
       ['<S-TAB>'] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }),
@@ -1088,11 +1109,11 @@ augroup gitgutter_config
   let g:gitgutter_override_sign_column_highlight = 0
 augroup END
 
-augroup toggle_maximize_config
-  autocmd!
-
-  autocmd FileType javascript,ruby nnoremap <buffer> <silent> <CR> :call ToggleMaximizeCurrentWindow()<CR>
-augroup END
+"augroup toggle_maximize_config
+"  autocmd!
+"
+"  autocmd FileType javascript,ruby nnoremap <buffer> <silent> <CR> :call ToggleMaximizeCurrentWindow()<CR>
+"augroup END
 
 augroup neoformat_config
   autocmd!
@@ -1151,7 +1172,7 @@ augroup END
 augroup syntax_attr_config
   autocmd!
 
-  " nmap <leader>x :call SyntaxAttr#SyntaxAttr()<CR>
+   nmap <leader>x :call SyntaxAttr#SyntaxAttr()<CR>
 augroup END
 
 augroup typescript_config
@@ -1172,18 +1193,24 @@ augroup elixir_config
   let g:alchemist_keyword_map = '<leader>K'
 augroup END
 
-augroup zoomwintab_config
+augroup syntaxattr_config
   autocmd!
 
-  nmap <silent> W :ZoomWinTabToggle<CR>
+  map <leader><S-x> :call SyntaxAttr#SyntaxAttr()<CR>
 augroup END
 
-augroup goyo_config
-  autocmd!
+"augroup zoomwintab_config
+"  autocmd!
+"
+"  nmap <silent> W :ZoomWinTabToggle<CR>
+"augroup END
 
-  let g:goyo_height = '100%'
-  let g:goyo_width = 120
-augroup END
+"augroup goyo_config
+"  autocmd!
+"
+"  let g:goyo_height = '100%'
+"  let g:goyo_width = 120
+"augroup END
 
 " augroup easygrep_config
 "   autocmd!
@@ -1252,3 +1279,49 @@ augroup MyAutoCmds
     autocmd DirChanged * call <SID>source_project_config()
   endif
 augroup END
+
+"lua << EOF
+"  require('avante').setup({
+"    mappings = {
+"      sidebar = {
+"        switch_windows = 'S-Tab',
+"      },
+"    },
+"    windows = {
+"      sidebar_header = {
+"        enabled = false,
+"      },
+"      edit = {
+"        start_insert = false,
+"      },
+"      ask = {
+"        start_insert = false,
+"      },
+"    },
+"    hints = { enabled = true },
+"  })
+"EOF
+
+"lua << EOF
+"  require("codecompanion").setup({
+"    strategies = {
+"      chat = {
+"        adapter = "anthropic",
+"      },
+"      inline = {
+"        adapter = "anthropic",
+"      },
+"      cmd = {
+"        adapter = "anthropic",
+"      }
+"    }
+"  })
+"
+"  vim.g.codecompanion_auto_tool_mode = true
+"EOF
+
+"lua << EOF
+"  require('render-markdown').setup({
+"    ft = { "codecompanion" }
+"  })
+"EOF
