@@ -2,13 +2,6 @@
 " PLUGINS
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-" augroup polyglot_config
-"   autocmd!
-"
-"   " For some reason they want this defined before the plugin is loaded
-"   let g:polyglot_disabled = ['javascript', 'jsx', 'ruby', 'elixir', 'typescript', 'vue']
-" augroup END
-
 call plug#begin('~/.nvim/plugged')
 
 " Buffer/File Navigation
@@ -21,18 +14,11 @@ Plug 'kopischke/vim-fetch'
 Plug 'srstevenson/vim-picker'
 
 " Interface
-" Plug 'bling/vim-airline'
-" Plug 'vim-airline/vim-airline-themes'
 Plug 'nvim-lualine/lualine.nvim'
 Plug 'inkarkat/SyntaxAttr.vim'
 Plug 'milkypostman/vim-togglelist'
 Plug 'tpope/vim-rsi'
-" Plug 'itchyny/vim-cursorword'
 Plug 'xiyaowong/nvim-cursorword'
-Plug 'yamatsum/nvim-cursorline'
-"Plug 'pmalek/toogle-maximize.vim'
-"Plug 'troydm/zoomwintab.vim'
-"Plug 'junegunn/goyo.vim'
 Plug 'ervandew/regex'
 
 " Searching
@@ -42,11 +28,7 @@ Plug 'osyo-manga/vim-over'
 Plug 'nelstrom/vim-qargs'
 
 " Autocomplete
-" Plug 'zbirenbaum/copilot.lua'
-" Plug 'zbirenbaum/copilot-cmp'
 Plug 'Shougo/context_filetype.vim'
-" Plug 'Shougo/deoplete.nvim',   { 'do': ':UpdateRemotePlugins' }
-" Plug 'tbodt/deoplete-tabnine', { 'do': './install.sh' }
 Plug 'hrsh7th/cmp-nvim-lsp'
 Plug 'hrsh7th/cmp-buffer'
 Plug 'hrsh7th/cmp-path'
@@ -54,7 +36,6 @@ Plug 'tzachar/cmp-tabnine', { 'do': './install.sh' }
 Plug 'hrsh7th/nvim-cmp'
 Plug 'hrsh7th/cmp-vsnip'
 Plug 'hrsh7th/vim-vsnip'
-" Plug 'Shougo/echodoc.vim'
 Plug 'Shougo/neco-syntax'
 Plug 'Shougo/neoinclude.vim'
 Plug 'Shougo/neopairs.vim'
@@ -63,25 +44,16 @@ Plug 'reedes/vim-litecorrect'
 " Code Editing
 Plug 'Yggdroot/indentLine'
 Plug 'alvan/vim-closetag'
-" Plug 'jiangmiao/auto-pairs'
 Plug 'windwp/nvim-autopairs'
-" Plug 'andymass/vim-matchup'
-" Plug 'edsono/vim-matchit'
 Plug 'gorkunov/smartpairs.vim'
 Plug 'junegunn/vim-easy-align'
 Plug 'ntpeters/vim-better-whitespace'
-" Plug 'terryma/vim-multiple-cursors'
 Plug 'mg979/vim-visual-multi'
-" Plug 'tpope/vim-commentary'
 Plug 'tyru/caw.vim'
 Plug 'tpope/vim-endwise'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
 Plug 'echasnovski/mini.nvim'
-" Plug 'Shougo/neosnippet'
-" Plug 'Shougo/neosnippet-snippets'
-" Plug 'honza/vim-snippets'
-" Plug 'RRethy/vim-hexokinase', { 'do': 'make hexokinase' }
 
 " Project Management
 Plug 'airblade/vim-rooter'
@@ -90,13 +62,8 @@ Plug 'airblade/vim-rooter'
 Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-gitgutter'
 Plug 'rsrchboy/vim-extradite'
-" Plug 'rhysd/committia.vim'
 Plug 'rhysd/conflict-marker.vim'
 Plug 'tpope/vim-git'
-" Plug 'jreybert/vimagit'
-" Plug 'lambdalisue/gina.vim'
-" Plug 'danishprakash/vim-githubinator'
-" Plug 'cohama/agit.vim'
 
 " Building, Linters, Test Runners
 Plug 'dense-analysis/ale'
@@ -117,31 +84,18 @@ Plug 'tpope/vim-rvm',              { 'for': 'ruby' }
 Plug 'elzr/vim-json',                           { 'for': 'json' }
 Plug 'pangloss/vim-javascript',                 { 'for': 'javascript' }
 Plug 'mxw/vim-jsx',                             { 'for': 'javascript' }
-" Plug 'othree/jspc.vim',                         { 'for': 'javascript' }
-"Plug 'jparise/vim-graphql',                     { 'for': 'javascript' }
 Plug 'heavenshell/vim-jsdoc',                   { 'for': 'javascript' }
 Plug 'HerringtonDarkholme/yats.vim',            { 'for': 'typescript' }
-"Plug 'styled-components/vim-styled-components', { 'branch': 'main' }
-" Plug 'leafOfTree/vim-vue-plugin'
 
 " Other Languages
-" Plug 'sheerun/vim-polyglot'
 Plug 'gabrielelana/vim-markdown'
-" Plug 'mzlogin/vim-markdown-toc'
 Plug 'vim-scripts/SyntaxRange'
 Plug 'chrisbra/csv.vim'
 
 " Taking Notes
 Plug 'duff/vim-scratch'
-" Plug 'xolox/vim-misc'
-
-" AI - via codecompanion
-"Plug 'nvim-lua/plenary.nvim'
-"Plug 'nvim-treesitter/nvim-treesitter'
-"Plug 'olimorris/codecompanion.nvim'
 
 " Colorschemes
-"Plug 'mikekreeki/mikekreeki-colors.vim'
 Plug '~/Projects/mikekreeki-colors.vim'
 
 
@@ -405,25 +359,6 @@ augroup easymotion_config
   nmap N <Plug>(easymotion-prev)
 augroup END
 
-" augroup easytags_config
-"   let g:easytags_cmd = '/Users/mikekreeki/.nvm/versions/node/v5.5.0/bin/jsctags'
-"   let g:easytags_file = '~/.vimtags'
-"   let g:easytags_updatetime_warn = 0
-"   let g:easytags_events = ['BufReadPost', 'BufWritePost']
-"   let g:tagbar_compact = 1
-"   let g:tagbar_iconchars = ['▸', '▾']
-"
-"   let g:easytags_languages = {
-"        \   'javascript': {
-"        \       'cmd': g:easytags_cmd,
-"        \       'args': [],
-"        \       'fileoutput_opt': '-f',
-"        \       'stdout_opt': '-f-',
-"        \       'recurse_flag': '-R'
-"        \   }
-"    \}
-" augroup END
-
 augroup nerdtree_config
   autocmd!
 
@@ -515,34 +450,6 @@ augroup nerdtree_config
   nnoremap <silent> Q :exec 'NERDTreeFind' <Bar> wincmd =<CR>
 augroup END
 
-" augroup ctrlp_config
-"   autocmd!
-"
-"   let g:ctrlp_map = '<c-p>'
-"   let g:ctrlp_cmd = 'CtrlP'
-"
-"   let g:ctrlp_max_files = 0
-"   let g:ctrlp_extensions = []
-"
-"   let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
-"   let g:ctrlp_user_command_async = 1
-"
-"   let g:ctrlp_match_window = 'bottom,order:ttb'
-"   let g:ctrlp_reuse_window = 'netrw'
-"
-"   let g:ctrlp_working_path_mode = 0
-"
-"   let g:ctrlp_show_hidden = 1
-"   let g:ctrlp_use_caching = 1
-"   let g:ctrlp_lazy_update = 50
-"
-"   " nmap <silent> .. :CtrlPBranch<CR>
-"   " nmap <silent> -- :CtrlPBranch<CR>
-"
-"   " nnoremap <leader>be :CtrlPBuffer<CR>
-"   nnoremap <leader>bc :CtrlPCmdPalette<CR>
-" augroup END
-
 augroup picker_config
   autocmd!
 
@@ -554,43 +461,6 @@ augroup END
 
 " let g:picker_selector_executable = 'sk'
 " let g:picker_selector_flags = ''
-
-" augroup airline_config
-"   autocmd!
-"
-"   " let g:airline_inactive_collapse=0
-"   let g:airline_left_sep=''
-"   let g:airline_right_sep=''
-"   let g:airline_theme='powerlineish'
-"   let g:airline#extensions#hunks#non_zero_only = 1
-"   let g:airline_section_y=''
-"   let g:airline_section_z=''
-"
-"   let g:airline_mode_map = {
-"      \ '__' : '-',
-"      \ 'n'  : 'N',
-"      \ 'i'  : 'I',
-"      \ 'ic' : 'I',
-"      \ 'ix' : 'I',
-"      \ 'R'  : 'R',
-"      \ 'c'  : 'C',
-"      \ 'v'  : 'V',
-"      \ 'V'  : 'V',
-"      \ '' : 'V',
-"      \ 's'  : 'S',
-"      \ 'S'  : 'S',
-"      \ '' : 'S',
-"      \ 't'  : 'T',
-"      \ }
-"
-"   let g:airline#extensions#hunks#enabled = 0
-"   let g:airline#extensions#branch#enabled = 0
-"   let g:airline#extensions#branch#symbol = ''
-"
-"   let g:airline#extensions#ale#enabled = 1
-"   let g:airline#extensions#ale#error_symbol = '✖ '
-"   let g:airline#extensions#ale#warning_symbol = '✖ '
-" augroup END
 
 lua << END
   local custom_powerline = require'lualine.themes.powerline'
@@ -690,24 +560,6 @@ lua << END
   }
 END
 
-" augroup neosnippet_config
-"   autocmd!
-"
-"   " Turn off conceal
-"   let g:neosnippet#enable_conceal_markers = 0
-"   let g:neosnippet#enable_snipmate_compatibility = 1
-"   let g:neosnippet#snippets_directory='~/.vim/bundle/vim-react-es6-snippets/snippets'
-"
-"   autocmd InsertLeave * NeoSnippetClearMarkers
-"
-"   imap <C-K> <Plug>(neosnippet_expand_or_jump)
-"   smap <C-K> <Plug>(neosnippet_expand_or_jump)
-"   xmap <C-K> <Plug>(neosnippet_expand_target)
-"
-"   smap <expr><Space> neosnippet#expandable_or_jumpable() ?
-"  \ "\<Plug>(neosnippet_expand_or_jump)" : "\<Space>"
-" augroup END
-
 augroup neovim_config
   autocmd!
 
@@ -741,20 +593,6 @@ augroup quickfix_config
 
   au WinEnter * if winnr('$') == 1 && getbufvar(winbufnr(winnr()), "&buftype") == "quickfix"|q|endif
 augroup END
-
-" augroup cursorline_config
-"   autocmd!
-"
-"   " Cursorline in active window only
-"   au VimEnter,WinEnter,BufWinEnter * setlocal cursorline
-"   au WinLeave * setlocal nocursorline
-"
-"   " Only have cursorline in current window and in normal window
-"   autocmd WinLeave * set nocursorline
-"   autocmd WinEnter * set cursorline
-"   autocmd InsertEnter * set nocursorline
-"   autocmd InsertLeave * set cursorline
-" augroup END
 
 augroup indentLine_config
   autocmd!
@@ -843,43 +681,6 @@ augroup ale_config
   let g:ale_virtualtext_cursor = 0
   let g:ale_hover_cursor = 0
 augroup END
-
-" augroup deoplete_config
-"   autocmd!
-"
-"   if has('nvim')
-"     let g:deoplete#enable_at_startup = 1
-"     let g:deoplete#auto_completion_start_length = 0
-"     " let g:deoplete#file#enable_buffer_path = 1
-"
-"     inoremap <silent><expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
-"     inoremap <silent><expr><s-tab> pumvisible() ? "\<c-p>" : "\<s-tab>"
-"
-"     function! s:my_cr_function()
-"       return pumvisible() ? deoplete#close_popup() : "\<CR>"
-"     endfunction
-"     inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
-"
-"     " Fix deoplete inserting giberrish when using multiple cursors
-"     func! Multiple_cursors_before()
-"       :ALEDisable
-"
-"       if deoplete#is_enabled()
-"         call deoplete#disable()
-"         let g:deoplete_is_enable_before_multi_cursors = 1
-"       else
-"         let g:deoplete_is_enable_before_multi_cursors = 0
-"       endif
-"     endfunc
-"     func! Multiple_cursors_after()
-"       :ALEEnable
-"
-"       if g:deoplete_is_enable_before_multi_cursors
-"         call deoplete#enable()
-"       endif
-"     endfunc
-"   endif
-" augroup END
 
 lua << EOF
   local cmp = require'cmp'
@@ -1005,12 +806,6 @@ augroup javascript_config
   au BufRead,BufNewFile .eslintrc,.babelrc set ft=json syntax=json
 augroup END
 
-augroup committia_config
-  autocmd!
-
-  let g:committia_use_singlecolumn = 1
-augroup END
-
 augroup terminal_config
   autocmd!
 
@@ -1038,13 +833,6 @@ augroup closetag_config
   let g:closetag_filenames = "*.html,*.xhtml,*.phtml,*.xml,*.jsx,*.react.js,*.js,*.tsx,*.vue"
 augroup END
 
-augroup matchup_config
-  autocmd!
-
-  let g:matchup_matchparen_deferred = 1
-  let g:matchup_matchparen_status_offscreen = 0
-augroup END
-
 augroup extradite_config
   autocmd!
 
@@ -1061,39 +849,9 @@ augroup rooter_config
   let g:rooter_patterns = ['.git/']
 augroup END
 
-augroup smartgf_config
-  autocmd!
-
-  let g:smartgf_key = '<CR>'
-augroup END
-
-" augroup autopairs_config
-"   autocmd!
-"
-"   let g:AutoPairsMultilineClose = 0
-" augroup END
-
 lua << END
   require('nvim-autopairs').setup{}
 END
-
-augroup indent_guides_config
-  autocmd!
-
-  let g:indent_guides_exclude_filetypes = ['help', 'nerdtree', 'terminal']
-augroup END
-
-augroup echodoc_config
-  autocmd!
-
-  let g:echodoc_enable_at_startup = 1
-augroup END
-
-" augroup tagbar_config
-"   autocmd!
-"
-"   " nmap T :TagbarToggle<CR>:echo<CR>
-" augroup END
 
 augroup scratch_config
   autocmd!
@@ -1108,12 +866,6 @@ augroup gitgutter_config
 
   let g:gitgutter_override_sign_column_highlight = 0
 augroup END
-
-"augroup toggle_maximize_config
-"  autocmd!
-"
-"  autocmd FileType javascript,ruby nnoremap <buffer> <silent> <CR> :call ToggleMaximizeCurrentWindow()<CR>
-"augroup END
 
 augroup neoformat_config
   autocmd!
@@ -1138,12 +890,6 @@ augroup neoformat_config
             \ 'stdin': 1,
             \ }
 
-  " let g:neoformat_typescript_tslint = {
-  "           \ 'exe': './node_modules/.bin/tslint',
-  "           \ 'args': ['--format codeFrame --fix'],
-  "           \ 'stdin': 1,
-  "           \ }
-
   let g:neoformat_enabled_javascript = ['prettier']
   let g:neoformat_enabled_typescript = ['prettier']
   let g:neoformat_enabled_typescriptreact = ['prettier']
@@ -1151,19 +897,8 @@ augroup neoformat_config
 
 
   autocmd BufWritePre **/*.js,**/*.ts,**/*.tsx silent Neoformat
-  " autocmd BufWritePre apps/**/*.js,src/**/*.js,cypress/**/*.js,test/**/*.js,libs/**/*.js silent Neoformat
-  " autocmd BufWritePre apps/**/*.ts,src/**/*.ts,cypress/**/*.ts,test/**/*.ts,libs/**/*.ts silent Neoformat
-  " autocmd BufWritePre apps/**/*.tsx,src/**/*.tsx,cypress/**/*.tsx,test/**/*.tsx,libs/**/*.tsx silent Neoformat
-  " autocmd BufWritePre *.rb silent Neoformat
-
-  " Enable alignment
-  " let g:neoformat_basic_format_align = 1
-
   " Enable tab to spaces conversion
   let g:neoformat_basic_format_retab = 1
-
-  " Enable trimmming of trailing whitespace
-  " let g:neoformat_basic_format_trim = 1
 
   " Run all enabled formatters (by default Neoformat stops after the first formatter succeeds)
   let g:neoformat_run_all_formatters = 1
@@ -1183,14 +918,6 @@ augroup typescript_config
   autocmd FileType typescript,typescriptreact,javascript,javascript.jsx nnoremap <buffer> <CR> :ALEGoToDefinition<CR>
   autocmd FileType typescript,typescriptreact,javascript,javascript.jsx nnoremap <buffer> <leader>x :ALEHover<CR>
 
-  let g:nvim_typescript#diagnostics_enable = 0
-augroup END
-
-augroup elixir_config
-  autocmd!
-
-  let g:alchemist_mappings_disable = 1
-  let g:alchemist_keyword_map = '<leader>K'
 augroup END
 
 augroup syntaxattr_config
@@ -1199,46 +926,11 @@ augroup syntaxattr_config
   map <leader><S-x> :call SyntaxAttr#SyntaxAttr()<CR>
 augroup END
 
-"augroup zoomwintab_config
-"  autocmd!
-"
-"  nmap <silent> W :ZoomWinTabToggle<CR>
-"augroup END
-
-"augroup goyo_config
-"  autocmd!
-"
-"  let g:goyo_height = '100%'
-"  let g:goyo_width = 120
-"augroup END
-
-" augroup easygrep_config
-"   autocmd!
-
-"   let g:EasyGrepJumpToMatch = 0
-"   let g:EasyGrepIgnoreCase = 0
-"   let g:EasyGrepRoot = 'repository'
-
-"   nmap <silent> F <plug>EgMapGrepCurrentWord_V
-" augroup END
-
-" augroup cursorword_config
-"   autocmd!
-"
-"   autocmd FileType qf let b:cursorword = 0
-" augroup END
-
 augroup markdown_config
   autocmd!
 
   autocmd FileType markdown setl conceallevel=0
 augroup END
-
-" augroup hexokinase_config
-"   autocmd!
-"
-"   let g:Hexokinase_highlighters = ['virtual']
-" augroup END
 
 augroup reload_vimrc_config
   autocmd!
@@ -1279,49 +971,3 @@ augroup MyAutoCmds
     autocmd DirChanged * call <SID>source_project_config()
   endif
 augroup END
-
-"lua << EOF
-"  require('avante').setup({
-"    mappings = {
-"      sidebar = {
-"        switch_windows = 'S-Tab',
-"      },
-"    },
-"    windows = {
-"      sidebar_header = {
-"        enabled = false,
-"      },
-"      edit = {
-"        start_insert = false,
-"      },
-"      ask = {
-"        start_insert = false,
-"      },
-"    },
-"    hints = { enabled = true },
-"  })
-"EOF
-
-"lua << EOF
-"  require("codecompanion").setup({
-"    strategies = {
-"      chat = {
-"        adapter = "anthropic",
-"      },
-"      inline = {
-"        adapter = "anthropic",
-"      },
-"      cmd = {
-"        adapter = "anthropic",
-"      }
-"    }
-"  })
-"
-"  vim.g.codecompanion_auto_tool_mode = true
-"EOF
-
-"lua << EOF
-"  require('render-markdown').setup({
-"    ft = { "codecompanion" }
-"  })
-"EOF
