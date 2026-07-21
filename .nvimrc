@@ -648,17 +648,107 @@ augroup END
 augroup ale_config
   autocmd!
 
-  let g:ale_sign_column_always = 1
-  let g:ale_sign_error = '✖'
-  let g:ale_sign_warning = '✖'
-  let g:ale_warn_about_trailing_whitespace = 0
-  let g:ale_echo_msg_format = '%linter%: %s'
+  " Run Oxlint through ALE's LSP integration in projects that configure it.
+  call ale#Set('oxlint_executable', 'oxlint')
+  call ale#Set('oxlint_use_global', get(g:, 'ale_use_global_executables', 0))
+
+  function! s:OxlintExecutable(buffer) abort
+    return ale#path#FindExecutable(a:buffer, 'oxlint', [
+    \   'node_modules/.bin/oxlint',
+    \ ])
+  endfunction
+
+  function! s:OxlintNodeExecutable(buffer) abort
+    let l:nvmrc_path = ale#path#FindNearestFile(a:buffer, '.nvmrc')
+    let l:node_version = !empty(l:nvmrc_path) ? get(readfile(l:nvmrc_path), 0, '') : ''
+    let l:node_version = substitute(trim(l:node_version), '^v', '', '')
+    let l:nvm_nodes = empty(l:node_version)
+    \ ? []
+    \ : glob(expand('~/.nvm/versions/node/v' . l:node_version . '*/bin/node'), 0, 1)
+
+    return !empty(l:nvm_nodes) ? l:nvm_nodes[0] : 'node'
+  endfunction
+
+  function! s:OxlintCommand(buffer) abort
+    let l:executable = s:OxlintExecutable(a:buffer)
+    let l:local_entrypoint = fnamemodify(l:executable, ':h:h') . '/oxlint/bin/oxlint'
+
+    if filereadable(l:local_entrypoint)
+      return ale#Escape(s:OxlintNodeExecutable(a:buffer))
+      \ . ' ' . ale#Escape(l:local_entrypoint)
+      \ . ' --lsp'
+    endif
+
+    return '%e --lsp'
+  endfunction
+
+  function! s:OxlintProjectRoot(buffer) abort
+    let l:nearest_config = ''
+
+    for l:config_name in [
+    \   '.oxlintrc.json',
+    \   '.oxlintrc.jsonc',
+    \   'oxlint.config.ts',
+    \   'oxlint.config.mts',
+    \ ]
+      let l:config_path = ale#path#FindNearestFile(a:buffer, l:config_name)
+
+      if !empty(l:config_path)
+      \ && (empty(l:nearest_config)
+      \     || strlen(fnamemodify(l:config_path, ':p:h')) > strlen(fnamemodify(l:nearest_config, ':p:h')))
+        let l:nearest_config = l:config_path
+      endif
+    endfor
+
+    return empty(l:nearest_config) ? '' : fnamemodify(l:nearest_config, ':p:h')
+  endfunction
+
+  function! s:OxlintLanguage(buffer) abort
+    return getbufvar(a:buffer, '&filetype')
+  endfunction
+
+  for s:oxlint_filetype in ['javascript', 'typescript']
+    call ale#linter#Define(s:oxlint_filetype, {
+    \   'name': 'oxlint',
+    \   'lsp': 'stdio',
+    \   'executable': function('s:OxlintExecutable'),
+    \   'command': function('s:OxlintCommand'),
+    \   'cwd': function('s:OxlintProjectRoot'),
+    \   'project_root': function('s:OxlintProjectRoot'),
+    \   'language': function('s:OxlintLanguage'),
+    \ })
+  endfor
+  unlet s:oxlint_filetype
+
+  function! s:EnableOxlintForBuffer(buffer) abort
+    let l:filetype = getbufvar(a:buffer, '&filetype')
+    let l:base_filetype = l:filetype =~# '^typescript' ? 'typescript' : 'javascript'
+
+    if empty(s:OxlintProjectRoot(a:buffer))
+      return
+    endif
+
+    let l:linters = copy(get(g:ale_linters, l:base_filetype, []))
+    if index(l:linters, 'oxlint') < 0
+      call add(l:linters, 'oxlint')
+    endif
+
+    call setbufvar(a:buffer, 'ale_linters', l:linters)
+  endfunction
+
+  autocmd FileType javascript,javascriptreact,typescript,typescriptreact call <SID>EnableOxlintForBuffer(bufnr(''))
 
   let g:ale_linters = {
   \   'javascript': ['eslint', 'flow'],
   \   'ruby': ['rubocop'],
   \   'typescript': ['tsserver', 'eslint', 'tslint']
   \}
+
+  let g:ale_sign_column_always = 1
+  let g:ale_sign_error = '✖'
+  let g:ale_sign_warning = '✖'
+  let g:ale_warn_about_trailing_whitespace = 0
+  let g:ale_echo_msg_format = '%linter%: %s'
 
   let g:ale_ruby_rubocop_options = '-R'
 
