@@ -15,7 +15,6 @@ Plug 'srstevenson/vim-picker'
 
 " Interface
 Plug 'nvim-lualine/lualine.nvim'
-Plug 'inkarkat/SyntaxAttr.vim'
 Plug 'milkypostman/vim-togglelist'
 Plug 'tpope/vim-rsi'
 Plug 'xiyaowong/nvim-cursorword'
@@ -658,7 +657,7 @@ augroup ale_config
     \ ])
   endfunction
 
-  function! s:OxlintNodeExecutable(buffer) abort
+  function! s:ProjectNodeExecutable(buffer) abort
     let l:nvmrc_path = ale#path#FindNearestFile(a:buffer, '.nvmrc')
     let l:node_version = !empty(l:nvmrc_path) ? get(readfile(l:nvmrc_path), 0, '') : ''
     let l:node_version = substitute(trim(l:node_version), '^v', '', '')
@@ -674,7 +673,7 @@ augroup ale_config
     let l:local_entrypoint = fnamemodify(l:executable, ':h:h') . '/oxlint/bin/oxlint'
 
     if filereadable(l:local_entrypoint)
-      return ale#Escape(s:OxlintNodeExecutable(a:buffer))
+      return ale#Escape(s:ProjectNodeExecutable(a:buffer))
       \ . ' ' . ale#Escape(l:local_entrypoint)
       \ . ' --lsp'
     endif
@@ -707,6 +706,46 @@ augroup ale_config
     return getbufvar(a:buffer, '&filetype')
   endfunction
 
+  " Use TypeScript 7's standard LSP only in projects that opt into its native package.
+  function! s:TypeScriptNativeProjectRoot(buffer) abort
+    let l:project_root = fnamemodify(bufname(a:buffer), ':p:h')
+
+    while !empty(l:project_root)
+      if filereadable(l:project_root . '/node_modules/@typescript/native/package.json')
+        return l:project_root
+      endif
+
+      let l:parent_directory = fnamemodify(l:project_root, ':h')
+      if l:parent_directory is# l:project_root
+        break
+      endif
+
+      let l:project_root = l:parent_directory
+    endwhile
+
+    return ''
+  endfunction
+
+  function! s:TypeScriptNativeExecutable(buffer) abort
+    let l:project_root = s:TypeScriptNativeProjectRoot(a:buffer)
+    let l:executable = l:project_root . '/node_modules/.bin/tsc'
+
+    return !empty(l:project_root) && executable(l:executable) ? l:executable : ''
+  endfunction
+
+  function! s:TypeScriptNativeLanguage(buffer) abort
+    return getbufvar(a:buffer, '&filetype')
+  endfunction
+
+  function! s:TypeScriptNativeCommand(buffer) abort
+    let l:project_root = s:TypeScriptNativeProjectRoot(a:buffer)
+    let l:entrypoint = l:project_root . '/node_modules/@typescript/native/bin/tsc'
+
+    return ale#Escape(s:ProjectNodeExecutable(a:buffer))
+    \ . ' ' . ale#Escape(l:entrypoint)
+    \ . ' --lsp --stdio'
+  endfunction
+
   for s:oxlint_filetype in ['javascript', 'typescript']
     call ale#linter#Define(s:oxlint_filetype, {
     \   'name': 'oxlint',
@@ -719,6 +758,19 @@ augroup ale_config
     \ })
   endfor
   unlet s:oxlint_filetype
+
+  for s:typescript_native_filetype in ['javascript', 'typescript']
+    call ale#linter#Define(s:typescript_native_filetype, {
+    \   'name': 'typescript_native',
+    \   'lsp': 'stdio',
+    \   'language': function('s:TypeScriptNativeLanguage'),
+    \   'executable': function('s:TypeScriptNativeExecutable'),
+    \   'command': function('s:TypeScriptNativeCommand'),
+    \   'cwd': function('s:TypeScriptNativeProjectRoot'),
+    \   'project_root': function('s:TypeScriptNativeProjectRoot'),
+    \ })
+  endfor
+  unlet s:typescript_native_filetype
 
   function! s:EnableOxlintForBuffer(buffer) abort
     let l:filetype = getbufvar(a:buffer, '&filetype')
@@ -736,7 +788,29 @@ augroup ale_config
     call setbufvar(a:buffer, 'ale_linters', l:linters)
   endfunction
 
+  function! s:EnableTypeScriptNativeForBuffer(buffer) abort
+    let l:filetype = getbufvar(a:buffer, '&filetype')
+    let l:base_filetype = l:filetype =~# '^typescript' ? 'typescript' : 'javascript'
+    let l:buffer_linters = getbufvar(a:buffer, 'ale_linters', v:null)
+
+    if empty(s:TypeScriptNativeExecutable(a:buffer))
+      return
+    endif
+
+    let l:linters = l:buffer_linters is v:null
+    \ ? copy(get(g:ale_linters, l:base_filetype, []))
+    \ : copy(l:buffer_linters)
+    call filter(l:linters, 'v:val !=# ''tsserver''')
+
+    if index(l:linters, 'typescript_native') < 0
+      call add(l:linters, 'typescript_native')
+    endif
+
+    call setbufvar(a:buffer, 'ale_linters', l:linters)
+  endfunction
+
   autocmd FileType javascript,javascriptreact,typescript,typescriptreact call <SID>EnableOxlintForBuffer(bufnr(''))
+  autocmd FileType javascript,javascriptreact,typescript,typescriptreact call <SID>EnableTypeScriptNativeForBuffer(bufnr(''))
 
   let g:ale_linters = {
   \   'javascript': ['eslint', 'flow'],
@@ -770,6 +844,9 @@ augroup ale_config
 
   let g:ale_virtualtext_cursor = 0
   let g:ale_hover_cursor = 0
+
+  " Disable TS LSP syntaxt highlighting for now
+  let g:ale_use_neovim_lsp_api = 0
 augroup END
 
 lua << EOF
@@ -994,12 +1071,6 @@ augroup neoformat_config
   let g:neoformat_run_all_formatters = 1
 augroup END
 
-augroup syntax_attr_config
-  autocmd!
-
-   nmap <leader>x :call SyntaxAttr#SyntaxAttr()<CR>
-augroup END
-
 augroup typescript_config
   autocmd!
 
@@ -1008,12 +1079,6 @@ augroup typescript_config
   autocmd FileType typescript,typescriptreact,javascript,javascript.jsx nnoremap <buffer> <CR> :ALEGoToDefinition<CR>
   autocmd FileType typescript,typescriptreact,javascript,javascript.jsx nnoremap <buffer> <leader>x :ALEHover<CR>
 
-augroup END
-
-augroup syntaxattr_config
-  autocmd!
-
-  map <leader><S-x> :call SyntaxAttr#SyntaxAttr()<CR>
 augroup END
 
 augroup markdown_config

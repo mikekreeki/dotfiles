@@ -141,3 +141,5 @@
   helper = osxkeychain
 [http]
 	postBuffer = 157286400
+[credential "https://git.heroku.com"]
+	helper = !heroku git:credentials
